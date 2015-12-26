@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+            <div class="header-logo-small">&nbsp;</div>
+        </a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
+
+            <li><a ui-sref="games.overview">My Games</a></li>
+            <li><a ui-sref="games.history">History</a></li>
+            
+            <li class="dropdown" ng-show="user.isAdmin">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a ui-sref="matches.overview">Matches</a></li>
+                    <li><a ui-sref="user.overview">User</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-if="user.isLoggedIn"><a href="" ng-click="logout()">Log out</a></li>
+
+            <li ng-if="user.isLoggedIn"><a ui-sref="user.profile({ userId: user.id })" ng-bind="user.name"></a></li>
+
+            <li ng-if="user.isLoggedIn"><img ng-src="{{user.picture}}" alt="avatar" height="55" /></li>
+
+            <li ng-if="!user.isLoggedIn"><a ui-sref="login">Sign in</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="alert-container container">
+    <div class="inner-alert-container">
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{ alert.msg }}</alert>
+    </div>
+</div>
+

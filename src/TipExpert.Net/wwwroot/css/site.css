@@ -1,34 +1,259 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.header-logo {
+    background: url(../images/tipexpert_v4_2_white.png) no-repeat;
+    background-size: 300px, 70px;
+    width: 325px;
+    height: 80px;
+    margin-top: 10px;
 }
 
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+.header-logo-small {
+    background: url(../images/tipexpert_v4_2_white.png) no-repeat;
+    background-size: 125px 20px;
+    width: 160px;
+    height: 25px;
+    margin-top: 10px;
 }
 
-/* Carousel */
-.carousel-caption {
-    z-index: 10 !important;
+.login-info {
+    margin: 10px 0 10px 40px;
 }
 
-    .carousel-caption p {
-        font-size: 20px;
-        line-height: 1.4;
-    }
+.center-login {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-@media (min-width: 768px) {
-    .carousel-caption {
-        z-index: 10 !important;
-    }
+
+/* HOME */
+.home-content {
+    margin-top: 100px;
+}
+
+.home-left {
+    padding-right: 70px;
+}
+
+.home-right {
+    padding-left: 70px;
+}
+
+
+/* MATCH  */
+.league-list {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.league-item, .league-item-editor {
+    line-height: 3em;
+    padding: 0px 5px 0px 5px;
+}
+
+.league-item:hover, .league-item.selected:hover {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.league-item.selected {
+    background-color: #c0c3ce;
+}
+
+.new-item {
+    margin-top: 10px;
+}
+
+.league-list li {
+    border-bottom: 1px #fff solid;
+}
+
+.league-list li:first-child {
+    border-top: 1px #fff solid;
+}
+
+.league-list li:last-child {
+    border-bottom: 0;
+}
+
+.league-item > .league-edit-buttons {
+    display: none;
+}
+
+.league-item:hover > .league-edit-buttons {
+    display: block;
+    float: right;
+    margin-right: 5px;
+}
+
+.edit-button {
+    margin: 5px;
+}
+
+.left-area {
+    padding: 10px;
+    max-width: 300px;
+    background-color: #dedede;
+}
+
+.match-content {
+    margin-top: 15px;
+    margin-left: 40px;
+}
+
+.save-match-buttons {
+    margin: 10px 20px;
+}
+
+.save-match-buttons .input-group-btn {
+    width: 100px;
+}
+
+.match-team-col {
+    padding: 0 10px 0 10px;
+    max-width: 200px;
+}
+
+.match-score {
+    width: 30px;
+}
+
+.match-score-left-col {
+    padding-left: 40px;
+}
+
+.match-table-row {
+    cursor: pointer;
+}
+
+
+/* GAME */
+.game-title {
+    font-size: 20px;
+}
+
+.game-min-stake {
+    margin-left: 10px;
+}
+
+.game-description {
+    margin-left: 5px;
+}
+
+.game-tip-team-col {
+    padding: 0 10px 0 10px;
+    max-width: 200px;
+}
+
+.game-tip-score {
+    width: 30px;
+}
+
+.game-tip-score-left-col {
+    padding-left: 40px;
+}
+
+.game-tip-result-left-col {
+    padding-left: 10px;
+}
+
+.game-tip-result-col, .game-tip-result-caption-col {
+    padding-left: 50px;
+}
+
+.game-tip-result-caption-col {
+	text-align: center;
+}
+
+.game-tip-sumrow-col, .game-tip-sumrow-value-col {
+	font-weight: bold;
+	padding-top: 15px;
+}
+
+.game-tip-rankingrow-col, .game-tip-rankingrow-value-col {
+	font-weight: bold;
+}
+
+.game-tip-sumrow-value-col, .game-tip-rankingrow-value-col {
+	text-align: center;
+	padding-left: 50px;
+}
+
+.game-tip-sumrow-col, .game-tip-rankingrow-col {
+	text-align: right;
+}
+
+.game-finished-statistics {
+	padding-left: 15px;
+}
+
+.game-stake {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.edit-stake-button {
+    margin-left: 25px;
+    color: #beb9b9;
+    cursor: pointer;
+}
+
+.stake-text {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.stake-form {
+    margin-left: 10px;
+    margin-top: -5px;
+}
+
+.game-participants, .game-tips, .game-finished-tips {
+    margin-top: 40px;
+}
+
+
+/* EDIT GAME */
+.players-container {
+    margin-top: 40px;
+}
+
+.league-dropdown {
+    margin-left: 10px;
+    color: inherit;
+}
+
+.match-selection {
+    margin-top: 40px;
+}
+
+.selected-match {
+    background-color: #a8eba5;
+}
+
+.match-selection-item:hover {
+    cursor: pointer;
+    background-color: #a5d2eb;
+}
+
+.user-selection {
+    margin-top: 40px;
+}
+
+.selected-user {
+    background-color: #a8eba5;
+}
+
+.user-selection-item:hover {
+    cursor: pointer;
+    background-color: #a5d2eb;
+}
+
+/* User Profile */
+.profile-row {
+    line-height: 2;
 }
