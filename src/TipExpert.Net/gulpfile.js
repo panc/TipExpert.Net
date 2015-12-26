@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='min, inject' Clean='clean' />
+/// <binding BeforeBuild='min' Clean='clean' />
 var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
@@ -45,24 +45,3 @@ gulp.task("min:css", function () {
 
 gulp.task("min", ["min:js", "min:css"]);
 
-
-gulp.task('inject:js', function () {
-    // it's not necessary to read the files (will speed up things), we're only after their paths: 
-    var sources = gulp.src([paths.js, "!" + paths.minJs], { read: false });
-
-    var options = {
-        ignorePath: '/wwwroot',
-        addPrefix: '~',
-        addRootSlash: false
-    };
-
-    return gulp.src('./Views/Shared/_Layout.cshtml')
-        .pipe(inject(sources, options))
-        .pipe(gulp.dest('./Views/Shared/'));
-});
-
-gulp.task('inject:css', function () {
-    //tbd
-});
-
-gulp.task("inject", ["inject:js", "inject:css"]);
