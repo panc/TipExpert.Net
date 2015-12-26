@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('tipExpert.user', ['ngCookies']);
+// define all available modules
+angular.module('tipExpert.user', [ 'ngCookies' ]);
+angular.module('tipExpert.match', [ ]);
+angular.module('tipExpert.game', [ ]);
 angular.module('tipExpert.home', []);
 
-var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user', 'ui.bootstrap', 'ui.router', 'pascalprecht.translate']);
-
-            //, , 'tipExpert.match', 'tipExpert.game',
-            //'ui.bootstrap', 'ui.router', 'ngRoute', 'pascalprecht.translate']);
+var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user', 'tipExpert.match', 'tipExpert.game', 'ui.bootstrap', 'ui.router', 'pascalprecht.translate']);
 
 // configure the main module
 tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
