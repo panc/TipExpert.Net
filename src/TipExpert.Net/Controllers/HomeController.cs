@@ -6,7 +6,6 @@ namespace TipExpert.Net.Controllers
     {
         public IActionResult Index()
         {
-            ViewBag.Titel = "Test";
             return View();
         }
 
