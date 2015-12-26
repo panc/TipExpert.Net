@@ -20,6 +20,7 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
 using Microsoft.Framework.Runtime;
+using TipExpert.Net.Controllers;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net
@@ -41,6 +42,7 @@ namespace TipExpert.Net
                 builder.AddUserSecrets();
             }
             builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -49,16 +51,10 @@ namespace TipExpert.Net
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Entity Framework services to the services container.
-//            services.AddEntityFramework()
-//                .AddSqlServer()
-//                .AddDbContext<ApplicationDbContext>(options =>
-//                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
             // Add Identity services to the services container.
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddUserStore<ApplicationUser>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationIdentityRole>()
+                .AddUserStore<ApplicationUserStore>()
+                .AddRoleStore<ApplicationRoleStore>();
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.

@@ -4,7 +4,7 @@
 angular.module('tipExpert.user', [ 'ngCookies' ]);
 angular.module('tipExpert.match', [ ]);
 angular.module('tipExpert.game', [ ]);
-angular.module('tipExpert.home', []);
+angular.module('tipExpert.home', [ ]);
 
 var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user', 'tipExpert.match', 'tipExpert.game', 'ui.bootstrap', 'ui.router', 'pascalprecht.translate']);
 
@@ -15,12 +15,12 @@ tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '
     var abstractView = {
         'header': {
             templateUrl: '/js/home/views/header.html',
-            controller: 'navigationController',
+            controller: 'navigationController'
         },
         'main': {
             // Note: abstract still needs a ui-view for its children to populate.
             // We can simply add it inline here.
-            template: '<ui-view/>',
+            template: '<ui-view/>'
         }
     };
 

@@ -2,18 +2,14 @@
 
 var userModule = angular.module( 'tipExpert.user' );
 
-userModule.factory('Auth', ['$http', '$q', '$cookieStore', 'userService', function($http, $q, $cookieStore, userService) {
+userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService', function($http, $q, $cookieStore, userService) {
 
     var accessLevels = userConfig.accessLevels;
     var userRoles = userConfig.roles;
 
-    var reloadProfile = function() {
-        var id = currentUser.id;
-        if (!id || id == '')
-            return;
-
-        userService.loadProfile(id).then(changeUser);
-    };
+    var currentUser = $cookieStore.get('user') || { id: '', name: '', role: userRoles.public, email: '' };
+    currentUser.isLoggedIn = currentUser.role == userRoles.user || currentUser.role == userRoles.admin;
+    $cookieStore.remove('user');
 
     var changeUser = function(user) {
         currentUser.id = user.id;
@@ -27,9 +23,13 @@ userModule.factory('Auth', ['$http', '$q', '$cookieStore', 'userService', functi
         currentUser.isAdmin = user.role == userRoles.admin;
     };
 
-    var currentUser = $cookieStore.get('user') || { id: '', name: '', role: userRoles.public, email: '' };
-    currentUser.isLoggedIn = currentUser.role == userRoles.user || currentUser.role == userRoles.admin;
-    $cookieStore.remove('user');
+    var reloadProfile = function() {
+        var id = currentUser.id;
+        if (!id || id == '')
+            return;
+
+        userService.loadProfile(id).then(changeUser);
+    };
 
     reloadProfile();
 
@@ -59,7 +59,7 @@ userModule.factory('Auth', ['$http', '$q', '$cookieStore', 'userService', functi
             return deferred.promise;
         },
         login: function(user, success, error) {
-            $http.post('/auth', user).success(function(usr) {
+            $http.post('/Account/Login', user).success(function(usr) {
                 changeUser(usr);
                 success(usr);
             }).error(error);

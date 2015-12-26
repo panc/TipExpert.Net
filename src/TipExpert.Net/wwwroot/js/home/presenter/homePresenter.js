@@ -3,7 +3,7 @@
 var homeModule = angular.module('tipExpert.home');
 
 homeModule.controller('homeController', [
-    '$scope', '$state', '$window', 'Auth', 'alertService', function($scope, $state, $window, Auth, alertService) {
+    '$scope', '$state', '$window', 'authService', 'alertService', function ($scope, $state, $window, authService, alertService) {
 
         $scope.user = {
             name: '',
@@ -17,7 +17,7 @@ homeModule.controller('homeController', [
             if ($scope.submitForm.$invalid)
                 return;
 
-            Auth.signup($scope.user)
+            authService.signup($scope.user)
 				.then(function() {
 					$state.go('games.overview');
 				})

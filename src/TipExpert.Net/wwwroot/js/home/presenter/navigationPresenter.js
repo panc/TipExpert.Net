@@ -2,12 +2,12 @@
 
 var user = angular.module('tipExpert.user');
 
-user.controller('navigationController', ['$scope', '$state', 'Auth', 'alertService', function($scope, $state, Auth, alertService) {
+user.controller('navigationController', ['$scope', '$state', 'authService', 'alertService', function ($scope, $state, authService, alertService) {
 
-    $scope.user = Auth.user;
+    $scope.user = authService.user;
 
     $scope.logout = function() {
-        Auth.logout(function() {
+        authService.logout(function () {
             $state.go('home');
         },
         alertService.error);
@@ -19,9 +19,9 @@ user.controller('navigationController', ['$scope', '$state', 'Auth', 'alertServi
         if ($scope.loginForm.$invalid)
                 return;
 
-        Auth.login({
-                email: $scope.loginForm.email.$modelValue,
-                password: $scope.loginForm.password.$modelValue
+        authService.login({
+                Email: $scope.loginForm.email.$modelValue,
+                Password: $scope.loginForm.password.$modelValue
             },
             function(res) {
                 $state.go('games.overview');
