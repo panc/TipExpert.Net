@@ -1,13 +1,16 @@
 {
-  "name": "ASP.NET",
+  "name": "TipExpert.Net",
   "private": true,
   "dependencies": {
-    "bootstrap": "3.0.0",
-    "bootstrap-touch-carousel": "0.8.0",
-    "hammer.js": "2.0.4",
-    "jquery": "2.1.4",
-    "jquery-validation": "1.11.1",
-    "jquery-validation-unobtrusive": "3.2.2",
-    "angular": "angularjs#~1.4.8"
+    "angular": "1.4.*",
+    "angular-ui-router": "0.2.*",
+    "angular-resource": "latest",
+    "angular-cookies": "latest",
+    "bootstrap": "3.3.*",
+    "angular-bootstrap": "0.11.*",
+    "angular-ui-utils": "0.1.*",
+    "angular-translate": "2.4.*",
+    "angular-translate-loader-static-files": "2.4.*",
+    "angular-translate-storage-cookie": "2.4.*"
   }
 }
