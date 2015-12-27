@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 
-namespace TipExpert.Net.Controllers
+namespace TipExpert.Net.Authentication
 {
     public class ApplicationUserStore : IUserStore<ApplicationUser>
     {

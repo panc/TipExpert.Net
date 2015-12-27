@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TipExpert.Net.Controllers
+namespace TipExpert.Net.Authentication
 {
     /// <summary>
     /// Represents a Role entity
