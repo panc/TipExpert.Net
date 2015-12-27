@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using TipExpert.Net;
 
 namespace TipExpert.Core
 {
@@ -35,6 +34,27 @@ namespace TipExpert.Core
             _user.Value.Remove(user);
         }
 
+        public Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
+        {
+            return Task.Run(() =>
+            {
+                return _user.Value.FirstOrDefault(x => x.Email == email);
+
+            }, cancellationToken);
+        }
+
+        public Task<User> GetUserById(string id)
+        {
+            return Task.Run(() =>
+            {
+                return _user.Value.FirstOrDefault(x => x.Id.ToString() == id);
+            });
+        }
+
+        public void Dispose()
+        {
+        }
+
         public Task SaveChangesAsync()
         {
             return Task.Factory.StartNew(() =>
@@ -51,19 +71,6 @@ namespace TipExpert.Core
 
             var content = File.ReadAllText(_filePath);
             return JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
-        }
-
-        public Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
-        {
-            return Task.Run(() =>
-            {
-                return _user.Value.FirstOrDefault(x => x.Email == email);
-
-            }, cancellationToken);
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

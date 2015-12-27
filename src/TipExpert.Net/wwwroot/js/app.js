@@ -6,7 +6,7 @@ angular.module('tipExpert.match', [ ]);
 angular.module('tipExpert.game', [ ]);
 angular.module('tipExpert.home', [ ]);
 
-var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user', 'tipExpert.match', 'tipExpert.game', 'ui.bootstrap', 'ui.router', 'pascalprecht.translate']);
+var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user', 'tipExpert.match', 'tipExpert.game', 'ui.bootstrap', 'ui.router', 'pascalprecht.translate', 'ngCookies']);
 
 // configure the main module
 tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -170,31 +170,31 @@ tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '
 //    });
 //}]);
 
-//tipExpert.run(['$rootScope', '$location', '$state', 'Auth', 'alertService', function($rootScope, $location, $state, Auth, alertService) {
-//
-//    $rootScope.$state = $state;
-//
-//    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-//
-//        var isLoggedIn = Auth.user.isLoggedIn;
-//
-//        if (!Auth.authorize(toState.access)) {
-//
-//            event.preventDefault();
-//            if (!isLoggedIn) {
-//                $state.go('home');
-//            }
-//            else {
-//                if (!fromState.controller)
-//                    $state.go('games.overview');
-//
-//                alertService.error('You are not allowed to access this page');
-//            }
-//        }
-//        else if (toState.name == 'home' && isLoggedIn) {
-//
-//            event.preventDefault();
-//            $state.go('games.overview');
-//        }
-//    });
-//}]);
+tipExpert.run(['$rootScope', '$location', '$state', 'authService', 'alertService', function($rootScope, $location, $state, authService, alertService) {
+
+    $rootScope.$state = $state;
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
+        var isLoggedIn = authService.user.isLoggedIn;
+
+        if (!authService.authorize(toState.access)) {
+
+            event.preventDefault();
+            if (!isLoggedIn) {
+                $state.go('home');
+            }
+            else {
+                if (!fromState.controller)
+                    $state.go('games.overview');
+
+                alertService.error('You are not allowed to access this page');
+            }
+        }
+        else if (toState.name == 'home' && isLoggedIn) {
+
+            event.preventDefault();
+            $state.go('games.overview');
+        }
+    });
+}]);

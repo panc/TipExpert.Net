@@ -9,9 +9,10 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
 
     var currentUser = $cookieStore.get('user') || { id: '', name: '', role: userRoles.public, email: '' };
     currentUser.isLoggedIn = currentUser.role == userRoles.user || currentUser.role == userRoles.admin;
-    $cookieStore.remove('user');
 
     var changeUser = function(user) {
+        $cookieStore.remove('user');
+
         currentUser.id = user.id;
         currentUser.name = user.name;
         currentUser.role = user.role;
@@ -21,6 +22,8 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
 
         currentUser.isLoggedIn = user.role == userRoles.user || user.role == userRoles.admin;
         currentUser.isAdmin = user.role == userRoles.admin;
+
+        $cookieStore.put('user', currentUser);
     };
 
     var reloadProfile = function() {

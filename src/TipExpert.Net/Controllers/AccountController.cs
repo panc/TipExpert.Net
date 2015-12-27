@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
@@ -9,6 +10,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
+using TipExpert.Core;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
@@ -18,15 +20,18 @@ namespace TipExpert.Net.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-         private readonly ILogger _logger;
+        private readonly UserStore _userStore;
+        private readonly ILogger _logger;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            UserStore userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _userStore = userStore;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -56,7 +61,16 @@ namespace TipExpert.Net.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
+
+                    var userId = User.GetUserId();
+                    var user = await _userStore.GetUserById(userId);
+                    
+                    return Json(new UserDto
+                    {
+                        email = user.Email,
+                        name = user.UserName,
+                        role = user.Role
+                    });
                 }
                 if (result.RequiresTwoFactor)
                 {
