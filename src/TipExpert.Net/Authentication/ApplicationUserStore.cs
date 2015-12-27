@@ -5,7 +5,7 @@ using TipExpert.Core;
 
 namespace TipExpert.Net.Authentication
 {
-    public class ApplicationUserStore : IUserStore<ApplicationUser>
+    public class ApplicationUserStore : IUserPasswordStore<ApplicationUser>
     {
         private readonly UserStore _userStore;
 
@@ -24,23 +24,27 @@ namespace TipExpert.Net.Authentication
             return user.Id.ToString();
         }
 
-        public Task<string> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
+        public async Task<string> GetUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+            return user.UserName;
         }
 
-        public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken)
+        public async Task SetUserNameAsync(ApplicationUser appUser, string userName, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+            user.UserName = userName;
+
+            await _userStore.SaveChangesAsync();
         }
 
-        public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
+        public async Task<string> GetNormalizedUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+            return user.Email;
         }
 
-        public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName,
-            CancellationToken cancellationToken)
+        public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
@@ -77,6 +81,26 @@ namespace TipExpert.Net.Authentication
                 Email = user.Email,
                 UserName = user.UserName
             };
+        }
+
+        public async Task SetPasswordHashAsync(ApplicationUser appUser, string passwordHash, CancellationToken cancellationToken)
+        {
+            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+            user.PasswordHash = passwordHash;
+
+            await _userStore.SaveChangesAsync();
+        }
+
+        public async Task<string> GetPasswordHashAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        {
+            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+            return user.PasswordHash;
+        }
+
+        public async Task<bool> HasPasswordAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        {
+            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+            return !string.IsNullOrEmpty(user.PasswordHash);
         }
     }
 }

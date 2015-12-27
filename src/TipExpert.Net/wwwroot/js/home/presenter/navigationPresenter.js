@@ -20,8 +20,10 @@ user.controller('navigationController', ['$scope', '$state', 'authService', 'ale
                 return;
 
         authService.login({
-                Email: $scope.loginForm.email.$modelValue,
-                Password: $scope.loginForm.password.$modelValue
+                //Email: $scope.loginForm.email.$modelValue,
+                //Password: $scope.loginForm.password.$modelValue
+                Email: 'T@T.COM',
+                Password: 'T@T.COM'
             },
             function(res) {
                 $state.go('games.overview');
