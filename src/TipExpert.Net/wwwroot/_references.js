@@ -17,7 +17,6 @@
 /// <reference path="js/match/presenter/matchPresenter.js" />
 /// <reference path="js/match/services/leagueService.js" />
 /// <reference path="js/match/services/matchService.js" />
-/// <reference path="js/site.min.js" />
 /// <reference path="js/user/presenter/userPresenter.js" />
 /// <reference path="js/user/presenter/userProfilePresenter.js" />
 /// <reference path="js/user/services/authenticationService.js" />

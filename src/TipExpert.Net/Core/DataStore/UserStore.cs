@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TipExpert.Net;
 
 namespace TipExpert.Core
 {
@@ -10,35 +13,24 @@ namespace TipExpert.Core
     {
         private const string FILE_NAME = "user.json";
 
-        private static UserStore _instance;
-
-        public static UserStore Create(string appDataPath)
-        {
-            if (_instance == null)
-                _instance = new UserStore(appDataPath);
-
-            return _instance;
-        }
-
-
         private readonly string _filePath;
         private readonly Lazy<List<User>> _user;
 
-        private UserStore(string appDataPath)
+        public UserStore(string appDataPath)
         {
             _user = new Lazy<List<User>>(_ReadFilmsFromFile);
             _filePath = Path.Combine(appDataPath, FILE_NAME);
         }
 
-        public User[] Films => _user.Value.ToArray();
+        public User[] User => _user.Value.ToArray();
 
-        public void AddFilm(User user)
+        public void AddUser(User user)
         {
             user.Id = Guid.NewGuid();
             _user.Value.Add(user);
         }
 
-        public void RemoveFilm(User user)
+        public void RemoveUser(User user)
         {
             _user.Value.Remove(user);
         }
@@ -59,6 +51,15 @@ namespace TipExpert.Core
 
             var content = File.ReadAllText(_filePath);
             return JsonConvert.DeserializeObject<List<User>>(content) ?? new List<User>();
+        }
+
+        public Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
+        {
+            return Task.Run(() =>
+            {
+                return _user.Value.FirstOrDefault(x => x.Email == email);
+
+            }, cancellationToken);
         }
 
         public void Dispose()

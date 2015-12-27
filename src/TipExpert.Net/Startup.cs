@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication.Facebook;
@@ -20,16 +21,19 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
 using Microsoft.Framework.Runtime;
-using TipExpert.Net.Controllers;
-using TipExpert.Net.Models;
+using TipExpert.Net.Authentication;
 
 namespace TipExpert.Net
 {
     public class Startup
     {
+        private string _appDataPath;
+
         public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
         {
             // Setup configuration sources.
+
+            _appDataPath = appEnv.ApplicationBasePath;
 
             var builder = new ConfigurationBuilder(appEnv.ApplicationBasePath)
                 .AddJsonFile("config.json")
@@ -55,6 +59,12 @@ namespace TipExpert.Net
             services.AddIdentity<ApplicationUser, ApplicationIdentityRole>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
+
+            services.AddSingleton(s =>
+            {
+                var appDataPath = Path.Combine(_appDataPath, "App_Data");
+                return new Core.UserStore(appDataPath);
+            });
 
             // Configure the options for the authentication middleware.
             // You can add options for Google, Twitter and other middleware as shown below.
