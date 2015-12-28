@@ -64,9 +64,18 @@ namespace TipExpert.Net.Authentication
             throw new System.NotImplementedException();
         }
 
-        public Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var user = await _userStore.GetUserById(userId);
+
+            if (user == null)
+                return null;
+
+            return new ApplicationUser
+            {
+                Email = user.Email,
+                UserName = user.UserName
+            };
         }
 
         public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)

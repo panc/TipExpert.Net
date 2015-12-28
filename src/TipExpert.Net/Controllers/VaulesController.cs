@@ -26,6 +26,12 @@ namespace TipExpert.Net.Controllers
         {
         }
 
+        [HttpPost]
+        [Route("[Action]")]
+        public void Another([FromBody]string value)
+        {
+        }
+
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)

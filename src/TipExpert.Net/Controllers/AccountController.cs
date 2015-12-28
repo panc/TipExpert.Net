@@ -16,6 +16,7 @@ using TipExpert.Net.Models;
 namespace TipExpert.Net.Controllers
 {
     [Authorize]
+    [Route("api/Account")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -62,8 +63,7 @@ namespace TipExpert.Net.Controllers
                 {
                     _logger.LogInformation(1, "User logged in.");
 
-                    var userId = User.GetUserId();
-                    var user = await _userStore.GetUserById(userId);
+                    var user = await _userStore.FindUserByEmail(model.Email, new CancellationToken());
                     
                     return Json(new UserDto
                     {

@@ -6,27 +6,24 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using TipExpert.Net.Authentication;
+using TipExpert.Net.Middleware;
 
 namespace TipExpert.Net
 {
     public class Startup
     {
-        private string _appDataPath;
+        private string _applicationBasePath;
 
         public Startup(IHostingEnvironment env)
         {
-            //_appDataPath = appEnv.ApplicationBasePath;
-            
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
+            // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+            //if (env.IsDevelopment())
+            //    builder.AddUserSecrets();
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -44,7 +41,7 @@ namespace TipExpert.Net
 
             services.AddSingleton(s =>
             {
-                var appDataPath = Path.Combine(_appDataPath, "App_Data");
+                var appDataPath = Path.Combine(_applicationBasePath, "App_Data");
                 return new Core.UserStore(appDataPath);
             });
 
@@ -52,23 +49,19 @@ namespace TipExpert.Net
             services.AddMvc();
         }
 
-        // Configure is called after ConfigureServices is called.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var appenvironment = (IApplicationEnvironment)app.ApplicationServices.GetService(typeof (IApplicationEnvironment));
-            _appDataPath = appenvironment.ApplicationBasePath;
+            _applicationBasePath = appenvironment.ApplicationBasePath;
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            // Configure the HTTP request pipeline.
-
-            // Add the following to the request pipeline only in development environment.
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -85,6 +78,8 @@ namespace TipExpert.Net
             // Add cookie-based authentication to the request pipeline.
             app.UseIdentity();
 
+            app.UseAngularServer("/test.html");
+
             // Add authentication middleware to the request pipeline. You can configure options such as Id and Secret in the ConfigureServices method.
             // For more information see http://go.microsoft.com/fwlink/?LinkID=532715
 //            app.UseFacebookAuthentication(options =>
@@ -92,17 +87,16 @@ namespace TipExpert.Net
 //                options.AppId = Configuration["Authentication:Facebook:AppId"];
 //                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
 //            });
-            // app.UseGoogleAuthentication();
-            // app.UseMicrosoftAccountAuthentication();
-            // app.UseTwitterAuthentication();
 
             // Add MVC to the request pipeline.
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc(
+//                routes =>
+//            {
+//                routes.MapRoute(
+//                    name: "default",
+//                    template: "{controller=Home}/{action=Index}/{id?}");
+//            }
+            );
         }
 
         // Entry point for the application.
