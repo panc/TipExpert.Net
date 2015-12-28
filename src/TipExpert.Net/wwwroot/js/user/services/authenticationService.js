@@ -61,8 +61,8 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
 			
             return deferred.promise;
         },
-        login: function(user, success, error) {
-            $http.post('/Account/Login', user).success(function(usr) {
+        login: function (user, success, error) {
+            $http.post('/api/Account/Login', user).success(function(usr) {
                 changeUser(usr);
                 success(usr);
             }).error(error);

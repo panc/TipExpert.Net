@@ -52,7 +52,7 @@ namespace TipExpert.Net
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var appenvironment = (IApplicationEnvironment)app.ApplicationServices.GetService(typeof (IApplicationEnvironment));
+            var appenvironment = (IApplicationEnvironment)app.ApplicationServices.GetService(typeof(IApplicationEnvironment));
             _applicationBasePath = appenvironment.ApplicationBasePath;
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -71,32 +71,31 @@ namespace TipExpert.Net
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-            
+
             // Add static files to the request pipeline.
             app.UseStaticFiles();
 
             // Add cookie-based authentication to the request pipeline.
             app.UseIdentity();
 
-            app.UseRedirectOfInvalidRequests("/api/", "/test.html");
+            app.UseRedirectOfInvalidRequests("/api/", "/");
 
             // Add authentication middleware to the request pipeline. You can configure options such as Id and Secret in the ConfigureServices method.
             // For more information see http://go.microsoft.com/fwlink/?LinkID=532715
-//            app.UseFacebookAuthentication(options =>
-//            {
-//                options.AppId = Configuration["Authentication:Facebook:AppId"];
-//                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-//            });
+            //app.UseFacebookAuthentication(options =>
+            //{
+            //    options.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
             // Add MVC to the request pipeline.
             app.UseMvc(
-//                routes =>
-//            {
-//                routes.MapRoute(
-//                    name: "default",
-//                    template: "{controller=Home}/{action=Index}/{id?}");
-//            }
-            );
+                routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
         }
 
         // Entry point for the application.

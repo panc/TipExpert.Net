@@ -16,7 +16,7 @@ using TipExpert.Net.Models;
 namespace TipExpert.Net.Controllers
 {
     [Authorize]
-    [Route("api/Account")]
+    [Route("api/[controller]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -36,21 +36,10 @@ namespace TipExpert.Net.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        //
-        // GET: /Account/Login
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-//        [ValidateAntiForgeryToken]
+        [Route("[Action]")]
+        //        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;

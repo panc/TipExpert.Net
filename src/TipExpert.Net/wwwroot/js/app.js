@@ -127,6 +127,8 @@ tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '
             access: accessLevels.public
         });
 
+    $urlRouterProvider.otherwise('/');
+
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
