@@ -78,7 +78,7 @@ namespace TipExpert.Net
             // Add cookie-based authentication to the request pipeline.
             app.UseIdentity();
 
-            app.UseAngularServer("/test.html");
+            app.UseRedirectOfInvalidRequests("/api/", "/test.html");
 
             // Add authentication middleware to the request pipeline. You can configure options such as Id and Secret in the ConfigureServices method.
             // For more information see http://go.microsoft.com/fwlink/?LinkID=532715
