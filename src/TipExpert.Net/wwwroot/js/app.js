@@ -149,28 +149,28 @@ tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '
     }]);
 }]);
 
-//tipExpert.config(['$translateProvider', function($translateProvider) {
-//
-//    $translateProvider
-//        .fallbackLanguage('en')
-//        .registerAvailableLanguageKeys(['en', 'de'], {
-//            'en_US': 'en',
-//            'en_UK': 'en',
-//            'de_DE': 'de',
-//            'de_CH': 'de',
-//            'de_AT': 'de'
-//        });
-//
-//    $translateProvider.useCookieStorage();
-//    $translateProvider.determinePreferredLanguage();
-//
-//    var origin = window.location.origin || window.location.protocol + '//' + window.location.host;
-//
-//    $translateProvider.useStaticFilesLoader({
-//        prefix:  origin + '/locales/',
-//        suffix: '.json'
-//    });
-//}]);
+tipExpert.config(['$translateProvider', function($translateProvider) {
+
+    $translateProvider
+        .fallbackLanguage('en')
+        .registerAvailableLanguageKeys(['en', 'de'], {
+            'en_US': 'en',
+            'en_UK': 'en',
+            'de_DE': 'de',
+            'de_CH': 'de',
+            'de_AT': 'de'
+        });
+
+    $translateProvider.useCookieStorage();
+    $translateProvider.determinePreferredLanguage();
+
+    var origin = window.location.origin || window.location.protocol + '//' + window.location.host;
+
+    $translateProvider.useStaticFilesLoader({
+        prefix:  origin + '/locales/',
+        suffix: '.json'
+    });
+}]);
 
 tipExpert.run(['$rootScope', '$location', '$state', 'authService', 'alertService', function($rootScope, $location, $state, authService, alertService) {
 

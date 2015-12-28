@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
-using Microsoft.AspNet.StaticFiles;
-using Microsoft.Extensions.Logging;
 
 namespace TipExpert.Net.Middleware
 {
@@ -16,11 +13,6 @@ namespace TipExpert.Net.Middleware
         {
             _next = next;
             _options = options;
-        }
-
-        private Task _NoOpNext(HttpContext context)
-        {
-            return Task.Run(() => { });
         }
 
         public async Task Invoke(HttpContext context)

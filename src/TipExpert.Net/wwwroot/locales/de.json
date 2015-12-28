@@ -1,0 +1,39 @@
+﻿{
+	"FOOTER-ENGLISH": "Englisch",
+	"FOOTER-GERMAN": "Deutsch",
+	"FOOTER-ABOUT-US": "Über uns",
+	"FOOTER-SUPPORT": "Hilfe/Support",
+	"FOOTER-FAQ": "FAQ",
+	"FOOTER-IMPRESSUM": "Impressum",
+
+	"HOME-INFO": "TIPEXPERT ist ein kostenloses Tippspiel, das dir die Möglichkeit bietet, dich mit deinen Freunden und Bekannten sportlich zu messen und Spaß am Sport zu haben.",
+	"HOME-SIGN-UP": "Registrierung",
+	"HOME-SIGN-UP-BUTTON": "Registrieren",
+	
+	"GAME-MINSTAKEAREA": "1. Minimalen Einsatz festlegen",
+	"GAME-MATCHAREA": "2. Spielpaarungen festlegen",
+	"GAME-PLAYERSAREA": "3. Freunde auswählen",
+	"GAME-PARTICIPANTS": "Teilnehmer",
+	"GAME-TIPS": "Meine Tips",
+	"GAME-TIPS-DESCRIPTION": "Gib deine Tipps zu allen noch nicht abgeschlossenen Partien ab.",
+	"GAME-SELECT-MATCH-HEADER": "Spielpaarungsauswahl",
+	"GAME-SELECT-MATCH-DESCRIPTION": "Wähle die Spielpaarungen für dein Tippspiel aus.",
+	"GAME-SELECT-PLAYER-HEADER": "Spieler Auswsahl",
+	"GAME-SELECT-PLAYER-DESCRIPTION": "Lade Freunde oder andere Benutzer zu dein Tippspiel ein (no Mail Support yet!)",
+	"GAME-EARNEDCOINS": "Erhaltene Münzen:",
+	"GAME-SUMPOINTS-COL": "Gesamtpunkte:",
+	"GAME-RANKING-COL": "Platzierung:",
+	"GAME-STATISTICS": "Statistik",
+	"GAME-STATISTICS-ALLMATCHES": "Statistik aller abgeschlossenen Partien:",
+	"GAME-STATISTICS-FINISHEDGAME": "Abschlussplatzierung",
+	
+	"MYGAMES-CREATED": "Von mir erstellte Tipp-Spiele:",
+	"MYGAMES-INVITED": "Tipp-Spiele zu denen ich eingeladen wurde:",
+
+    "GAMESHISTORY-TITLE": "Tippiel-Historie",
+
+	"PROFILE-USERNAME": "Benuter",
+	"PROFILE-RIGHT": "Rechte",
+	"PROFILE-EMAIL": "E-Mail",
+	"PROFILE-COINS": "Coins"
+}
