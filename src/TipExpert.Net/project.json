@@ -1,7 +1,8 @@
-﻿{
+{
     "webroot": "wwwroot",
     "userSecretsId": "aspnet5-TipExpert.Net-79ba8bb8-418a-4475-a322-789ff37331ac",
-    "version": "1.0.0-*",
+    "version": "0.1.0-*",
+    "authors": [ "Christoph Pangerl" ],
 
     "dependencies": {
         "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
@@ -26,7 +27,8 @@
         "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
         "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-*",
         "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final",
-        "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final"
+        "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+        "TipExpert.Core": "0.1.0-*"
     },
 
     "commands": {
@@ -34,8 +36,7 @@
     },
 
     "frameworks": {
-        "dnx451": { },
-        "dnxcore50": { }
+        "dnx451": { }
     },
 
     "exclude": [

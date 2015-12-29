@@ -1,6 +1,6 @@
 using System;
 
-namespace TipExpert
+namespace TipExpert.Core
 {
     public class User
     {
