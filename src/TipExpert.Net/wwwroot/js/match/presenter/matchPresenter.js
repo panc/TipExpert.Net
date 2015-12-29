@@ -53,30 +53,9 @@ match.controller('matchController', [
 
         // matches
 
-        $scope.loadMatches = function(league) {
-            $scope.selectedLeague = league;
-
-            matchService.load(league,
-                function(matches) {
-                    $scope.matches = matches;
-                },
-                alertService.error);
-        };
-
-        $scope.addMatch = function() {
-            var match = { homeTeam: '', guestTeam: '', dueDate: Date.now(), league: $scope.selectedLeague._id };
-            showEditMatchDialog(match, function(newMatch) {
-                $scope.matches.push(newMatch);
-            });
-        };
-
-        $scope.editMatch = function(match) {
-            showEditMatchDialog(match);
-        };
-
         var showEditMatchDialog = function(match, onSavedCallback) {
             var modalInstance = $modal.open({
-                templateUrl: '/modules/match/views/editMatchDialog.html',
+                templateUrl: '/js/match/views/editMatchDialog.html',
                 controller: 'EditMatchController',
                 resolve: {
                     match: function() {
@@ -93,6 +72,33 @@ match.controller('matchController', [
             }, function() {
                 // canceld -> nothing to do
             });
+        };
+
+        $scope.loadMatches = function(league) {
+            $scope.selectedLeague = league;
+
+            matchService.load(league,
+                function(matches) {
+                    $scope.matches = matches;
+                },
+                alertService.error);
+        };
+
+        $scope.addMatch = function() {
+            var match = {
+                homeTeam: '',
+                guestTeam: '',
+                dueDate: Date.now(),
+                leagueId: $scope.selectedLeague.id
+            };
+
+            showEditMatchDialog(match, function(newMatch) {
+                $scope.matches.push(newMatch);
+            });
+        };
+
+        $scope.editMatch = function(match) {
+            showEditMatchDialog(match);
         };
 
         leagueService.load(

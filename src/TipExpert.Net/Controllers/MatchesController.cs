@@ -22,5 +22,15 @@ namespace TipExpert.Net.Controllers
             var leagues = await _matchStore.GetAll();
             return Mapper.Map<MatchDto[]>(leagues);
         }
+
+        [HttpPost]
+        public async Task<MatchDto> Post([FromBody]MatchDto newMatch)
+        {
+            var match = Mapper.Map<Match>(newMatch);
+            await _matchStore.Add(match);
+            await _matchStore.SaveChangesAsync();
+
+            return Mapper.Map<MatchDto>(match);
+        }
     }
 }

@@ -13,7 +13,7 @@ match.controller('EditMatchController', [
 
             var success = function(newOrUpdatedMatch) { $modalInstance.close(newOrUpdatedMatch); };
 
-            if (match._id)
+            if (match.id)
                 matchService.update(match, success, alertService.error);
             else
                 matchService.create(match, success, alertService.error);

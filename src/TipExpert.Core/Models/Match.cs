@@ -8,6 +8,14 @@ namespace TipExpert.Core
 
         public Guid LeagueId { get; set; }
 
-        public string Name { get; set; }
+        public string HomeTeam { get; set; }
+
+        public string GuestTeam { get; set; }
+
+        public int HomeScore { get; set; }
+
+        public int GuestScore { get; set; }
+
+        public string DueDate { get; set; }
     }
 }
