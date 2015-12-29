@@ -17,13 +17,14 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
 
-        <link asp-src-include="~/css/**/*.css" asp-src-exclude="~/css/**/*.min.css"/>
+        <link rel="stylesheet" asp-href-include="~/css/**/*.css" asp-href-exclude="~/css/**/*.min.css"/>
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-        <link rel="stylesheet" href="~/css/site.min.css" asp-file-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
 
@@ -60,7 +61,7 @@
         <script src="~/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
         <script src="~/lib/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
 
-        <script src="~/js/site.min.js" asp-file-version="true"></script>
+        <script src="~/js/app.min.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("scripts", required: false)

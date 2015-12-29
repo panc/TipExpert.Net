@@ -10,7 +10,7 @@ matchModule.factory('matchService', ['$http', function($http) {
     return {
         load: function(league, success, error) {
             $http.get('/api/leagues/' + league.id + '/matches')
-                .success(function(data, status, headers, config) {
+                .success(function(data) {
                     
                     success(data);
                 })
@@ -19,7 +19,7 @@ matchModule.factory('matchService', ['$http', function($http) {
         
         create: function (newMatch, success, error) {
             $http.post('api/matches/', newMatch)
-                .success(function(match, status, headers, config) {
+                .success(function(match) {
                     success(match);
                 })
                 .error(error);
@@ -27,7 +27,7 @@ matchModule.factory('matchService', ['$http', function($http) {
         
         update: function (match, success, error) {
             $http.put('/api/matches/' + match.id, match)
-                .success(function(updatedMatch, status, headers, config) {
+                .success(function(updatedMatch) {
                     success(updatedMatch);
                 })
                 .error(error);
