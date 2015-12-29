@@ -21,14 +21,14 @@ namespace TipExpert.Net.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserStore _userStore;
+        private readonly IUserStore _userStore;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILoggerFactory loggerFactory,
-            UserStore userStore)
+            IUserStore userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;

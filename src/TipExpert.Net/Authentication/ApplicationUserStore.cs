@@ -7,9 +7,9 @@ namespace TipExpert.Net.Authentication
 {
     public class ApplicationUserStore : IUserPasswordStore<ApplicationUser>
     {
-        private readonly UserStore _userStore;
+        private readonly IUserStore _userStore;
 
-        public ApplicationUserStore(UserStore userStore)
+        public ApplicationUserStore(IUserStore userStore)
         {
             _userStore = userStore;
         }
@@ -66,7 +66,7 @@ namespace TipExpert.Net.Authentication
 
         public async Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            var user = await _userStore.GetUserById(userId);
+            var user = await _userStore.GetById(userId);
 
             if (user == null)
                 return null;

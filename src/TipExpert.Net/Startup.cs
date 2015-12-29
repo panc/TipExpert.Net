@@ -40,7 +40,7 @@ namespace TipExpert.Net
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
-            services.AddSingleton(s => new UserStore(_appDataPath));
+            services.AddSingleton<IUserStore, UserStore>(s => new UserStore(_appDataPath));
             services.AddSingleton<ILeagueStore, LeagueStore>(s => new LeagueStore(_appDataPath));
 
             // Add MVC services to the services container.
