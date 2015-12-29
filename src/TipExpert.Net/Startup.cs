@@ -107,6 +107,7 @@ namespace TipExpert.Net
             Mapper.Initialize(c =>
             {
                 c.CreateMap<User, UserDto>();
+                c.CreateMap<UserDto, User>();
                 c.CreateMap<League, LeagueDto>();
                 c.CreateMap<LeagueDto, League>();
                 c.CreateMap<Match, MatchDto>();

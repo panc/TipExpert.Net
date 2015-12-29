@@ -14,8 +14,8 @@ user.factory('userService', ['$http', '$q', function($http, $q) {
             return deferred.promise;
         }
 
-        $http.get('/api/user')
-            .success(function(data, status, headers, config) {
+        $http.get('/api/account')
+            .success(function(data) {
 
                 angular.forEach(data, function(user) {
                     users.push(user);
@@ -53,7 +53,7 @@ user.factory('userService', ['$http', '$q', function($http, $q) {
             var promises = [];
             
             angular.forEach(usersToSave, function(user) {
-                promises.push($http.put('/api/user/' + user._id, user));
+                promises.push($http.put('/api/account/' + user.id, user));
             });
 
             $q.all(promises)

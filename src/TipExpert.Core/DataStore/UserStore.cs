@@ -33,11 +33,11 @@ namespace TipExpert.Core
             return Task.Run(() => Entities.ToArray());
         }
 
-        public Task<User> GetById(string id)
+        public Task<User> GetById(Guid id)
         {
             return Task.Run(() =>
             {
-                return Entities.FirstOrDefault(x => x.Id.ToString() == id);
+                return Entities.FirstOrDefault(x => x.Id == id);
             });
         }
 

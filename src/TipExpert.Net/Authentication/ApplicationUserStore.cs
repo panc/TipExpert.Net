@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using TipExpert.Core;
@@ -27,13 +28,13 @@ namespace TipExpert.Net.Authentication
         public async Task<string> GetUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
             var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            return user.UserName;
+            return user.Name;
         }
 
         public async Task SetUserNameAsync(ApplicationUser appUser, string userName, CancellationToken cancellationToken)
         {
             var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            user.UserName = userName;
+            user.Name = userName;
 
             await _userStore.SaveChangesAsync();
         }
@@ -66,7 +67,7 @@ namespace TipExpert.Net.Authentication
 
         public async Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            var user = await _userStore.GetById(userId);
+            var user = await _userStore.GetById(Guid.Parse(userId));
 
             if (user == null)
                 return null;
@@ -74,7 +75,7 @@ namespace TipExpert.Net.Authentication
             return new ApplicationUser
             {
                 Email = user.Email,
-                UserName = user.UserName
+                UserName = user.Name
             };
         }
 
@@ -88,7 +89,7 @@ namespace TipExpert.Net.Authentication
             return new ApplicationUser
             {
                 Email = user.Email,
-                UserName = user.UserName
+                UserName = user.Name
             };
         }
 

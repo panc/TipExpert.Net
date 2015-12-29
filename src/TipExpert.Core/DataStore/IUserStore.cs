@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace TipExpert.Core
 
         Task<User[]> GetAll();
 
-        Task<User> GetById(string id);
+        Task<User> GetById(Guid id);
 
         Task<User> FindUserByEmail(string email, CancellationToken cancellationToken);
 

@@ -15,7 +15,7 @@ game.controller('AddGameController', ['$scope', '$modalInstance', '$state', 'gam
         gameService.create($scope.game,
             function(newGame) {
                 $modalInstance.close();
-                $state.go('games.edit', { gameId: newGame._id });
+                $state.go('games.edit', { gameId: newGame.id });
             },
             alertService.error);
     };

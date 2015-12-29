@@ -11,7 +11,7 @@ namespace TipExpert.Core
 
         Task<Match[]> GetAll();
 
-        Task<Match> GetById(string id);
+        Task<Match> GetById(Guid id);
 
         Task SaveChangesAsync();
 

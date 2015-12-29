@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using System;
+using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
 using TipExpert.Core;
@@ -31,6 +32,30 @@ namespace TipExpert.Net.Controllers
             await _matchStore.SaveChangesAsync();
 
             return Mapper.Map<MatchDto>(match);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<MatchDto> Put(Guid id, [FromBody]MatchDto matchDto)
+        {
+            var match = await _matchStore.GetById(id);
+            match.DueDate = matchDto.dueDate;
+            match.GuestScore = matchDto.guestScore;
+            match.HomeScore = matchDto.homeScore;
+            match.GuestTeam = matchDto.guestTeam;
+            match.HomeTeam = matchDto.homeTeam;
+            match.LeagueId = matchDto.leagueId;
+
+            await _matchStore.SaveChangesAsync();
+
+            return Mapper.Map<MatchDto>(match);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task Delete(Guid id)
+        {
+            var match = await _matchStore.GetById(id);
+            await _matchStore.Remove(match);
+            await _matchStore.SaveChangesAsync();
         }
     }
 }

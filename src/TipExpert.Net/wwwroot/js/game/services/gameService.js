@@ -94,7 +94,7 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         },
 
         delete: function(game, success, error) {
-            $http.delete('/api/games/' + game._id + '/edit')
+            $http.delete('/api/games/' + game.id + '/edit')
                 .success(success)
                 .error(error);
         }

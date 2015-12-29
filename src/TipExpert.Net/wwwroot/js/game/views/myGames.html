@@ -6,8 +6,8 @@
             <li ng-repeat="game in createdGames">
                 <span>
                     {{game.title}}
-                    <a ui-sref="games.show({ gameId: game._id })">Show</a>
-                    <a ui-sref="games.edit({ gameId: game._id })">Edit</a>
+                    <a ui-sref="games.show({ gameId: game.id })">Show</a>
+                    <a ui-sref="games.edit({ gameId: game.id })">Edit</a>
                 </span>
             </li>
         </ul>
@@ -19,7 +19,7 @@
             <li ng-repeat="game in invitedGames">
                 <span>
                     {{game.title}}
-                    <a ui-sref="games.show({ gameId: game._id })">Show</a>
+                    <a ui-sref="games.show({ gameId: game.id })">Show</a>
                 </span>
             </li>
         </ul>

@@ -6,7 +6,7 @@
             <li ng-repeat="game in games">
                 <span>
                     {{game.title}}
-                    <a ui-sref="games.show({ gameId: game._id })">Show</a>
+                    <a ui-sref="games.show({ gameId: game.id })">Show</a>
                 </span>
             </li>
         </ul>
