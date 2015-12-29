@@ -14,7 +14,7 @@ matchModule.factory('leagueService', ['$http', function($http) {
             }
 
             $http.get('/api/leagues')
-                .success(function(data, status, headers, config) {
+                .success(function(data) {
                     leagues.length = 0;
                     angular.forEach(data, function(league) {
                         leagues.push(league);
@@ -27,7 +27,7 @@ matchModule.factory('leagueService', ['$http', function($http) {
 
         create: function(newLeague, success, error) {
             $http.post('api/leagues/', newLeague)
-                .success(function(league, status, headers, config) {
+                .success(function(league) {
                     leagues.push(league);
                     success(league);
                 })
@@ -35,16 +35,16 @@ matchModule.factory('leagueService', ['$http', function($http) {
         },
 
         update: function(league, success, error) {
-            $http.put('/api/leagues/' + league._id, league)
-                .success(function(newLeague, status, headers, config) {
+            $http.put('/api/leagues/' + league.id, league)
+                .success(function(newLeague) {
                     success();
                 })
                 .error(error);
         },
 
         delete: function(league, error) {
-            $http.delete('api/leagues/' + league._id)
-                .success(function(data, status, headers, config) {
+            $http.delete('api/leagues/' + league.id)
+                .success(function() {
                     var index = leagues.indexOf(league);
                     leagues.splice(index, 1);
                 })

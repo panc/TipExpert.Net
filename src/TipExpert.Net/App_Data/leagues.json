@@ -1,10 +1,1 @@
-[
-    {
-        "Id": "47706454-692d-40f9-81da-992f1e6da38e",
-        "Name": "Test League"
-    },
-    {
-        "Id": "57706454-692d-40f9-81da-992f1e6da38e",
-        "Name": "Bundesliga"
-    }
-]
+[{"Id":"47706454-692d-40f9-81da-992f1e6da38e","Name":"Test League"},{"Id":"57706454-692d-40f9-81da-992f1e6da38e","Name":"Bundesliga"},{"Id":"02f51df1-1713-4ebe-b5a4-d2edd28021c3","Name":"New League Test"}]

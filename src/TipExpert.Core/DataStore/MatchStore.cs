@@ -39,5 +39,13 @@ namespace TipExpert.Core
                 return Entities.FirstOrDefault(x => x.Id.ToString() == id);
             });
         }
+
+        public Task<Match[]> GetMatchesForLeague(Guid leagueId)
+        {
+            return Task.Run(() =>
+            {
+                return Entities.Where(x => x.LeagueId == leagueId).ToArray();
+            });
+        }
     }
 }

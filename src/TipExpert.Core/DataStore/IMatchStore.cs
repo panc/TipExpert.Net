@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace TipExpert.Core
@@ -13,5 +14,7 @@ namespace TipExpert.Core
         Task<Match> GetById(string id);
 
         Task SaveChangesAsync();
+
+        Task<Match[]> GetMatchesForLeague(Guid leagueId);
     }
 }

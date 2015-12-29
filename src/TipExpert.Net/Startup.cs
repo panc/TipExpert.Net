@@ -108,6 +108,7 @@ namespace TipExpert.Net
             {
                 c.CreateMap<User, UserDto>();
                 c.CreateMap<League, LeagueDto>();
+                c.CreateMap<LeagueDto, League>();
                 c.CreateMap<Match, MatchDto>();
             });
         }

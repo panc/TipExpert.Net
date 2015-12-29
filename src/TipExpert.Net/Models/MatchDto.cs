@@ -4,8 +4,8 @@ namespace TipExpert.Net.Models
 {
     public class MatchDto
     {
-        public Guid Id { get; set; }
+        public Guid id { get; set; }
 
-        public string Name { get; set; } 
+        public string name { get; set; } 
     }
 }
