@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using AutoMapper;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,8 @@ using Microsoft.Extensions.PlatformAbstractions;
 using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
 using TipExpert.Core;
+using TipExpert.Net.Models;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace TipExpert.Net
 {
@@ -94,6 +97,17 @@ namespace TipExpert.Net
                         name: "default",
                         template: "{controller=Home}/{action=Index}/{id?}");
                 });
+
+            _SetupMapper();
+        }
+
+        private void _SetupMapper()
+        {
+            Mapper.Initialize(c =>
+            {
+                c.CreateMap<User, UserDto>();
+                c.CreateMap<League, LeagueDto>();
+            });
         }
 
         // Entry point for the application.

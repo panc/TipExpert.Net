@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
 using TipExpert.Core;
+using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
 {
@@ -15,9 +17,10 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet]
-        public async Task<League[]> Get()
+        public async Task<LeagueDto[]> Get()
         {
-            return await _leagueStore.GetAll();
+            var leagues = await _leagueStore.GetAll();
+            return Mapper.Map<LeagueDto[]>(leagues);
         }
     }
 }

@@ -28,7 +28,8 @@
         "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-*",
         "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final",
         "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
-        "TipExpert.Core": "0.1.0-*"
+        "TipExpert.Core": "0.1.0-*",
+        "AutoMapper": "4.1.1"
     },
 
     "commands": {

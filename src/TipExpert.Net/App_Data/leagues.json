@@ -1,1 +1,10 @@
-[{"Id":"47706454-692d-40f9-81da-992f1e6da38e","Name":"Test League"}]
+[
+    {
+        "Id": "47706454-692d-40f9-81da-992f1e6da38e",
+        "Name": "Test League"
+    },
+    {
+        "Id": "57706454-692d-40f9-81da-992f1e6da38e",
+        "Name": "Bundesliga"
+    }
+]
