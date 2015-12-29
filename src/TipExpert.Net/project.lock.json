@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    "DNX,Version=v4.5.1": {
+    "DNX,Version=v4.6": {
       "EntityFramework.Core/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1852,11 +1852,17 @@
       },
       "System.Numerics.Vectors/4.1.1-beta-23516": {
         "type": "package",
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System.Numerics"
+        ],
         "compile": {
-          "lib/portable-net45+win8/System.Numerics.Vectors.dll": {}
+          "ref/net46/_._": {},
+          "ref/net46/System.Numerics.Vectors.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+win8/System.Numerics.Vectors.dll": {}
+          "lib/net46/_._": {},
+          "lib/net46/System.Numerics.Vectors.dll": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -1976,7 +1982,7 @@
       },
       "TipExpert.Core/0.1.0": {
         "type": "project",
-        "framework": "DNX,Version=v4.5.1",
+        "framework": "DNX,Version=v4.6",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-rc2-23513",
           "Newtonsoft.Json": "8.0.1",
@@ -1987,7 +1993,7 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/win7-x86": {
+    "DNX,Version=v4.6/win7-x86": {
       "EntityFramework.Core/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -3846,11 +3852,17 @@
       },
       "System.Numerics.Vectors/4.1.1-beta-23516": {
         "type": "package",
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System.Numerics"
+        ],
         "compile": {
-          "lib/portable-net45+win8/System.Numerics.Vectors.dll": {}
+          "ref/net46/_._": {},
+          "ref/net46/System.Numerics.Vectors.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+win8/System.Numerics.Vectors.dll": {}
+          "lib/net46/_._": {},
+          "lib/net46/System.Numerics.Vectors.dll": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -3970,7 +3982,7 @@
       },
       "TipExpert.Core/0.1.0": {
         "type": "project",
-        "framework": "DNX,Version=v4.5.1",
+        "framework": "DNX,Version=v4.6",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-rc2-23513",
           "Newtonsoft.Json": "8.0.1",
@@ -3981,7 +3993,7 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/win7-x64": {
+    "DNX,Version=v4.6/win7-x64": {
       "EntityFramework.Core/7.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -5840,11 +5852,17 @@
       },
       "System.Numerics.Vectors/4.1.1-beta-23516": {
         "type": "package",
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System.Numerics"
+        ],
         "compile": {
-          "lib/portable-net45+win8/System.Numerics.Vectors.dll": {}
+          "ref/net46/_._": {},
+          "ref/net46/System.Numerics.Vectors.dll": {}
         },
         "runtime": {
-          "lib/portable-net45+win8/System.Numerics.Vectors.dll": {}
+          "lib/net46/_._": {},
+          "lib/net46/System.Numerics.Vectors.dll": {}
         }
       },
       "System.Reflection/4.0.0": {
@@ -5964,7 +5982,7 @@
       },
       "TipExpert.Core/0.1.0": {
         "type": "project",
-        "framework": "DNX,Version=v4.5.1",
+        "framework": "DNX,Version=v4.6",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-rc2-23513",
           "Newtonsoft.Json": "8.0.1",
@@ -8263,6 +8281,6 @@
       "Microsoft.Extensions.Logging.Debug >= 1.0.0-rc1-final",
       "TipExpert.Core >= 0.1.0-*"
     ],
-    "DNX,Version=v4.5.1": []
+    "DNX,Version=v4.6": []
   }
 }

@@ -7,12 +7,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
+using TipExpert.Core;
 
 namespace TipExpert.Net
 {
     public class Startup
     {
-        private string _applicationBasePath;
+        private string _appDataPath;
 
         public Startup(IHostingEnvironment env)
         {
@@ -39,11 +40,8 @@ namespace TipExpert.Net
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
-            services.AddSingleton(s =>
-            {
-                var appDataPath = Path.Combine(_applicationBasePath, "App_Data");
-                return new Core.UserStore(appDataPath);
-            });
+            services.AddSingleton(s => new UserStore(_appDataPath));
+            services.AddSingleton<ILeagueStore, LeagueStore>(s => new LeagueStore(_appDataPath));
 
             // Add MVC services to the services container.
             services.AddMvc();
@@ -53,7 +51,7 @@ namespace TipExpert.Net
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var appenvironment = (IApplicationEnvironment)app.ApplicationServices.GetService(typeof(IApplicationEnvironment));
-            _applicationBasePath = appenvironment.ApplicationBasePath;
+            _appDataPath = Path.Combine(appenvironment.ApplicationBasePath, "App_Data");
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

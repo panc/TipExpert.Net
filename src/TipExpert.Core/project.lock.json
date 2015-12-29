@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    "DNX,Version=v4.5.1": {
+    "DNX,Version=v4.6": {
       "Microsoft.CSharp/4.0.1-rc2-23513": {
         "type": "package",
         "frameworkAssemblies": [
@@ -61,7 +61,7 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/win7-x86": {
+    "DNX,Version=v4.6/win7-x86": {
       "Microsoft.CSharp/4.0.1-rc2-23513": {
         "type": "package",
         "frameworkAssemblies": [
@@ -126,7 +126,7 @@
         }
       }
     },
-    "DNX,Version=v4.5.1/win7-x64": {
+    "DNX,Version=v4.6/win7-x64": {
       "Microsoft.CSharp/4.0.1-rc2-23513": {
         "type": "package",
         "frameworkAssemblies": [
@@ -526,6 +526,6 @@
       "System.Threading >= 4.0.11-rc2-23513",
       "Newtonsoft.Json >= 8.0.1"
     ],
-    "DNX,Version=v4.5.1": []
+    "DNX,Version=v4.6": []
   }
 }
