@@ -43,7 +43,7 @@ game.controller( 'editGameController', ['$scope', '$state', '$stateParams', '$mo
 
     $scope.addMatch = function () {
         var modalInstance = $modal.open( {
-            templateUrl: '/modules/game/views/selectMatchesDialog.html',
+            templateUrl: '/js/game/views/selectMatchesDialog.html',
             controller: 'SelectMatchesController',
             resolve: {
                 game: function () {
@@ -63,7 +63,7 @@ game.controller( 'editGameController', ['$scope', '$state', '$stateParams', '$mo
 
     $scope.addPlayer = function () {
         var modalInstance = $modal.open( {
-            templateUrl: '/modules/game/views/selectPlayersDialog.html',
+            templateUrl: '/js/game/views/selectPlayersDialog.html',
             controller: 'SelectPlayersController',
             resolve: {
                 game: function () {
