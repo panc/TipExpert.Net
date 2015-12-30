@@ -9,11 +9,6 @@
         "dnx46": { }
     },
     "dependencies": {
-        "Microsoft.CSharp": "4.0.1-rc2-23513",
-        "System.Collections": "4.0.11-rc2-23513",
-        "System.Linq": "4.0.1-rc2-23513",
-        "System.Runtime": "4.0.21-rc2-23513",
-        "System.Threading": "4.0.11-rc2-23513",
         "Newtonsoft.Json": "8.0.1"
     }
 }
