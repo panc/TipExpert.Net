@@ -51,12 +51,14 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 .error(error);
         },
 
-        create: function(newGame, success, error) {
+        create: function(newGame) {
+            var deferred = $q.defer();
+            
             $http.post('/api/games', newGame)
-                .success(function(game, status, headers, config) {
-                    success(game);
-                })
-                .error(error);
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         },
 
         update: function(game, success, error) {

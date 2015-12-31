@@ -20,7 +20,7 @@ namespace TipExpert.Net.Controllers
         [HttpGet("{userId}/created")]
         public async Task<GameDto[]> GetCreatedGames(Guid userId)
         {
-            var games= await _gameStore.GetAll();
+            var games = await _gameStore.GetAll();
             return Mapper.Map<GameDto[]>(games);
         }
 
@@ -29,6 +29,16 @@ namespace TipExpert.Net.Controllers
         {
             var games = await _gameStore.GetAll();
             return Mapper.Map<GameDto[]>(games);
+        }
+
+        [HttpPost()]
+        public async Task<GameDto> Post([FromBody]GameDto newGame)
+        {
+            var game = new Game { Title = newGame.title };
+            await _gameStore.Add(game);
+            await _gameStore.SaveChangesAsync();
+
+            return Mapper.Map<GameDto>(game);
         }
     }
 }

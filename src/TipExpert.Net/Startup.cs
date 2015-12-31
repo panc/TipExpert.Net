@@ -46,6 +46,7 @@ namespace TipExpert.Net
             services.AddSingleton<IUserStore, UserStore>(s => new UserStore(_appDataPath));
             services.AddSingleton<ILeagueStore, LeagueStore>(s => new LeagueStore(_appDataPath));
             services.AddSingleton<IMatchStore, MatchStore>(s => new MatchStore(_appDataPath));
+            services.AddSingleton<IGameStore, GameStore>(s => new GameStore(_appDataPath));
 
             // Add MVC services to the services container.
             services.AddMvc();
@@ -108,10 +109,22 @@ namespace TipExpert.Net
             {
                 c.CreateMap<User, UserDto>();
                 c.CreateMap<UserDto, User>();
+
                 c.CreateMap<League, LeagueDto>();
                 c.CreateMap<LeagueDto, League>();
+
                 c.CreateMap<Match, MatchDto>();
                 c.CreateMap<MatchDto, Match>();
+
+                c.CreateMap<Game, GameDto>();
+                c.CreateMap<GameDto, Game>();
+                c.CreateMap<Player, PlayerDto>();
+                c.CreateMap<PlayerDto, Player>();
+                c.CreateMap<MatchTips, MatchTipsDto>();
+                c.CreateMap<MatchTipsDto, MatchTips>();
+                c.CreateMap<Tip, TipDto>();
+                c.CreateMap<TipDto, Tip>();
+
             });
         }
 

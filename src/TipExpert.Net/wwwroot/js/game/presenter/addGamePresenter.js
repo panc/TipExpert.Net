@@ -2,25 +2,27 @@
 
 var game = angular.module('tipExpert.game');
 
-game.controller('AddGameController', ['$scope', '$modalInstance', '$state', 'gameService', 'alertService', function($scope, $modalInstance, $state, gameService, alertService) {
-    
-    $scope.game = { };
+game.controller('AddGameController', [
+    '$scope', '$modalInstance', '$state', 'gameService', 'alertService', function($scope, $modalInstance, $state, gameService, alertService) {
 
-    $scope.save = function() {
-        $scope.submitted = true;
+        $scope.game = {};
 
-        if (this.addGameForm.$invalid)
-            return;
+        $scope.save = function() {
+            $scope.submitted = true;
 
-        gameService.create($scope.game,
-            function(newGame) {
-                $modalInstance.close();
-                $state.go('games.edit', { gameId: newGame.id });
-            },
-            alertService.error);
-    };
+            if (this.addGameForm.$invalid)
+                return;
 
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-}]);
+            gameService.create($scope.game)
+                .then(function(newGame) {
+                    $modalInstance.close();
+                    $state.go('games.edit', { gameId: newGame.id });
+                })
+                .catch(alertService.error);
+        };
+
+        $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        };
+    }
+]);
