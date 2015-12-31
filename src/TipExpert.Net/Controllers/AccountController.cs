@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
 {
+    // TODO:
+    // http://www.asp.net/web-api/overview/security/individual-accounts-in-web-api
+
     [Authorize]
     [Route("api/account")]
     public class AccountController : Controller
@@ -36,23 +40,51 @@ namespace TipExpert.Net.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login([FromBody] LoginDto model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.email, model.password, model.rememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation(1, "User logged in.");
-
-                    var user = await _userStore.FindUserByEmail(model.Email, new CancellationToken());
+                    var user = await _userStore.FindUserByEmail(model.email, new CancellationToken());
                     return Json(Mapper.Map<UserDto>(user));
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return Json(new { success = false, message = "Invalid login attemt."});
+            var r = Json(new { success = false, message = "Invalid login attemt." });
+            r.StatusCode = 500;
+            return r;
+        }
+
+        [HttpPost("signup")]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Signup([FromBody] SignupDto model)
+        {
+            var message = "Invalid register information.";
+
+            if (ModelState.IsValid)
+            {
+                var appUser = new ApplicationUser { UserName = model.name, Email = model.email };
+                var result = await _userManager.CreateAsync(appUser, model.password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(appUser, isPersistent: false);
+
+                    var user = await _userStore.FindUserByEmail(model.email, new CancellationToken());
+                    return Json(Mapper.Map<UserDto>(user));
+                }
+
+                message = result.Errors.First().Description;
+            }
+
+            // If we got this far, something failed, redisplay form
+            var r = Json(new { success = false, message = message });
+            r.StatusCode = 500;
+            return r;
         }
 
         [HttpGet]
@@ -76,36 +108,6 @@ namespace TipExpert.Net.Controllers
         }
 
         #region TODO
-
-        //
-        // POST: /Account/Register
-        [HttpPost("[Action]")]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-                _AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
 
         //
         // POST: /Account/LogOff
@@ -174,7 +176,7 @@ namespace TipExpert.Net.Controllers
         {
             if (User.IsSignedIn())
             {
-//                return RedirectToAction(nameof(ManageController.Index), "Manage");
+                //                return RedirectToAction(nameof(ManageController.Index), "Manage");
                 return _RedirectToLocal(".");
             }
 

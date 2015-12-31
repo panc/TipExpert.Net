@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
 using TipExpert.Core;
+using TipExpert.Net.Authentication;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
@@ -17,24 +19,38 @@ namespace TipExpert.Net.Controllers
             _gameStore = gameStore;
         }
 
-        [HttpGet("{userId}/created")]
-        public async Task<GameDto[]> GetCreatedGames(Guid userId)
+        [HttpGet("{gameId}")]
+        public async Task<GameDto> GetGameForUser(Guid gameId)
         {
-            var games = await _gameStore.GetAll();
-            return Mapper.Map<GameDto[]>(games);
+            var game = await _gameStore.GetById(gameId);
+            return Mapper.Map<GameDto>(game);
         }
 
-        [HttpGet("{userId}/finished")]
-        public async Task<GameDto[]> GetFinishedGames(Guid userId)
+        [HttpGet("{gameId}/edit")]
+        public async Task<GameDto> GetGameForEdit(Guid gameId)
         {
-            var games = await _gameStore.GetAll();
+            var game = await _gameStore.GetById(gameId);
+            return Mapper.Map<GameDto>(game);
+        }
+
+        [HttpGet("created")]
+        public async Task<GameDto[]> GetCreatedGames()
+        {
+            var userId = User.GetUserIdAsGuid();
+
+            var games = await _gameStore.GetGamesCreatedByUser(userId);
             return Mapper.Map<GameDto[]>(games);
         }
 
         [HttpPost()]
         public async Task<GameDto> Post([FromBody]GameDto newGame)
         {
-            var game = new Game { Title = newGame.title };
+            var game = new Game
+            {
+                Title = newGame.title,
+                CreatorId = User.GetUserIdAsGuid()
+            };
+
             await _gameStore.Add(game);
             await _gameStore.SaveChangesAsync();
 

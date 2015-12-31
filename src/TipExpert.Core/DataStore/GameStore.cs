@@ -32,6 +32,13 @@ namespace TipExpert.Core
             return Task.Run(() => Entities.ToArray());
         }
 
+        public Task<Game[]> GetGamesCreatedByUser(Guid userId)
+        {
+            return Task.Run(() => Entities
+                .Where(x => x.CreatorId == userId && x.IsFinished == false)
+                .ToArray());
+        }
+
         public Task<Game> GetById(Guid id)
         {
             return Task.Run(() =>

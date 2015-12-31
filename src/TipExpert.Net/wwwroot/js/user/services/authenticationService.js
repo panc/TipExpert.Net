@@ -52,20 +52,30 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
         signup: function(user) {
             var deferred = $q.defer();
 
-			$http.post('/signup', user)
-			.success(function(res) {
-                changeUser(res);
-                deferred.resolve(res);
-            })
-			.error(deferred.reject);
+            $http.post('/api/account/signup', user)
+                .success(function(user) {
+                    changeUser(user);
+                    deferred.resolve(user);
+                })
+                .error(function (error) {
+                    deferred.reject(error.message);
+                });
 			
             return deferred.promise;
         },
-        login: function (user, success, error) {
-            $http.post('/api/account/login', user).success(function(usr) {
-                changeUser(usr);
-                success(usr);
-            }).error(error);
+        login: function (user) {
+            var deferred = $q.defer();
+
+            $http.post('/api/account/login', user)
+                .success(function(user) {
+                    changeUser(user);
+                    deferred.resolve(user);
+                })
+                .error(function(error) {
+                    deferred.reject(error.message);
+                });
+
+            return deferred.promise;
         },
         logout: function(success, error) {
             $http.post('/logout').success(function() {

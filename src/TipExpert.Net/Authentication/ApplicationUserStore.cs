@@ -19,40 +19,53 @@ namespace TipExpert.Net.Authentication
         {
         }
 
-        public async Task<string> GetUserIdAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        public Task<string> GetUserIdAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            return user.Id.ToString();
+            return Task.FromResult(appUser.Id.ToString());
         }
 
-        public async Task<string> GetUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        public Task<string> GetUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            return user.Name;
+            return Task.FromResult(appUser.UserName);
         }
 
-        public async Task SetUserNameAsync(ApplicationUser appUser, string userName, CancellationToken cancellationToken)
+        public Task SetUserNameAsync(ApplicationUser appUser, string userName, CancellationToken cancellationToken)
         {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            user.Name = userName;
+            appUser.UserName = userName;
+            return Task.CompletedTask;
+        }
 
+        public Task<string> GetNormalizedUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(appUser.Email);
+        }
+
+        public Task SetNormalizedUserNameAsync(ApplicationUser appUser, string normalizedName, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public async Task<IdentityResult> CreateAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        {
+            var existingUser = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
+
+            if (existingUser != null)
+                return IdentityResult.Failed(new IdentityError() {Code = "1", Description = "User with the same Email-Adress already exists!"});
+
+            var user = new User
+            {
+                Name = appUser.UserName,
+                Email = appUser.Email,
+                PasswordHash = appUser.PasswordHash,
+                Role = 2
+            };
+
+            await _userStore.AddUser(user);
             await _userStore.SaveChangesAsync();
-        }
 
-        public async Task<string> GetNormalizedUserNameAsync(ApplicationUser appUser, CancellationToken cancellationToken)
-        {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            return user.Email;
-        }
+            appUser.Id = user.Id;
 
-        public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
+            return IdentityResult.Success;
         }
 
         public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken)
@@ -89,28 +102,25 @@ namespace TipExpert.Net.Authentication
             return new ApplicationUser
             {
                 Email = user.Email,
-                UserName = user.Name
+                UserName = user.Name,
+                PasswordHash = user.PasswordHash
             };
         }
 
-        public async Task SetPasswordHashAsync(ApplicationUser appUser, string passwordHash, CancellationToken cancellationToken)
+        public Task SetPasswordHashAsync(ApplicationUser appUser, string passwordHash, CancellationToken cancellationToken)
         {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            user.PasswordHash = passwordHash;
-
-            await _userStore.SaveChangesAsync();
+            appUser.PasswordHash = passwordHash;
+            return Task.CompletedTask;
         }
 
-        public async Task<string> GetPasswordHashAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        public Task<string> GetPasswordHashAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            return user.PasswordHash;
+            return Task.FromResult(appUser.PasswordHash);
         }
 
-        public async Task<bool> HasPasswordAsync(ApplicationUser appUser, CancellationToken cancellationToken)
+        public Task<bool> HasPasswordAsync(ApplicationUser appUser, CancellationToken cancellationToken)
         {
-            var user = await _userStore.FindUserByEmail(appUser.Email, cancellationToken);
-            return !string.IsNullOrEmpty(user.PasswordHash);
+            return Task.FromResult(!string.IsNullOrEmpty(appUser.PasswordHash));
         }
     }
 }

@@ -41,7 +41,7 @@ user.factory('userService', ['$http', '$q', function($http, $q) {
         loadProfile: function(userId) {
             var deferred = $q.defer();
 
-            $http.get('/api/user/' + userId)
+            $http.get('/api/account/' + userId)
                 .success(deferred.resolve)
                 .error(deferred.reject);
 

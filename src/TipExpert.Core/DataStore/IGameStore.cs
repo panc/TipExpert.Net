@@ -9,9 +9,11 @@ namespace TipExpert.Core
 
         Task Remove(Game game);
 
+        Task<Game> GetById(Guid id);
+
         Task<Game[]> GetAll();
 
-        Task<Game> GetById(Guid id);
+        Task<Game[]> GetGamesCreatedByUser(Guid userId);
 
         Task SaveChangesAsync();
     }

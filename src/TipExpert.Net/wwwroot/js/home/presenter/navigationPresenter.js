@@ -19,16 +19,16 @@ user.controller('navigationController', ['$scope', '$state', 'authService', 'ale
         if ($scope.loginForm.$invalid)
                 return;
 
-        authService.login({
-                //Email: $scope.loginForm.email.$modelValue,
-                //Password: $scope.loginForm.password.$modelValue
-                Email: 'T@T.COM',
-                Password: 'T@T.COM'
-            },
-            function(res) {
+        var user = {
+            email: $scope.loginForm.email.$modelValue,
+            password: $scope.loginForm.password.$modelValue
+        };
+
+        authService.login(user)
+            .then(function() {
                 $state.go('games.overview');
-            },
-            alertService.error);
+            })
+            .catch(alertService.error);
     };
 
     $scope.loginOauth = function(provider) {

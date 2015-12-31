@@ -39,7 +39,14 @@ namespace TipExpert.Net
         public void ConfigureServices(IServiceCollection services)
         {
             // Add Identity services to the services container.
-            services.AddIdentity<ApplicationUser, ApplicationIdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationIdentityRole>(
+                c =>
+                {
+                    c.Password.RequireDigit = false;
+                    c.Password.RequireUppercase = false;
+                    c.Password.RequireNonLetterOrDigit = false;
+                    c.Password.RequiredLength = 1;
+                })
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
