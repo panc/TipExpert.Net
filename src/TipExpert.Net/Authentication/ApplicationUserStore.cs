@@ -101,6 +101,7 @@ namespace TipExpert.Net.Authentication
 
             return new ApplicationUser
             {
+                Id = user.Id,
                 Email = user.Email,
                 UserName = user.Name,
                 PasswordHash = user.PasswordHash
