@@ -43,9 +43,11 @@ namespace TipExpert.Core
 
         public Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
         {
+            email = email.ToUpper();
+
             return Task.Run(() =>
             {
-                return Entities.FirstOrDefault(x => x.Email == email);
+                return Entities.FirstOrDefault(x => x.Email.ToUpper() == email);
 
             }, cancellationToken);
         }
