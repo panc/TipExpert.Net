@@ -42,7 +42,7 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<GameDto[]>(games);
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<GameDto> Post([FromBody]GameDto newGame)
         {
             var game = new Game
@@ -52,6 +52,20 @@ namespace TipExpert.Net.Controllers
             };
 
             await _gameStore.Add(game);
+            await _gameStore.SaveChangesAsync();
+
+            return Mapper.Map<GameDto>(game);
+        }
+
+        [HttpPut("{gameId}/edit")]
+        public async Task<GameDto> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
+        {
+            var game = await _gameStore.GetById(gameId);
+
+            game.Title = gameDto.title;
+            game.Description = gameDto.description;
+            game.MinStake = gameDto.minStake;
+
             await _gameStore.SaveChangesAsync();
 
             return Mapper.Map<GameDto>(game);

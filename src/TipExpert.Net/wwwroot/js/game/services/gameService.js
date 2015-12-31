@@ -43,12 +43,14 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 .error(error);
         },
 
-        loadForEdit: function(gameId, success, error) {
+        loadForEdit: function(gameId) {
+            var deferred = $q.defer();
+
             $http.get('/api/games/' + gameId + '/edit')
-                .success(function(data, status, headers, config) {
-                    success(data);
-                })
-                .error(error);
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         },
 
         create: function(newGame) {
@@ -61,12 +63,14 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
             return deferred.promise;
         },
 
-        update: function(game, success, error) {
-            $http.put('/api/games/' + game._id + '/edit', game)
-                .success(function(data, status, headers, config) {
-                    success(data);
-                })
-                .error(error);
+        update: function (game) {
+            var deferred = $q.defer();
+
+            $http.put('/api/games/' + game.id + '/edit', game)
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         },
 
         updateStake: function(gameId, playerId, newStake, success, error) {

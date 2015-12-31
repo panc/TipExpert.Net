@@ -9,11 +9,11 @@ game.controller('editGameController', [
         $scope.game = {};
 
         if ($stateParams.gameId) {
-            gameService.loadForEdit($stateParams.gameId,
-                function(game) {
+            gameService.loadForEdit($stateParams.gameId)
+                .then(function (game) {
                     $scope.game = game;
-                },
-                alertService.error);
+                })
+                .catch(alertService.error);
         }
 
         $scope.save = function() {
@@ -22,12 +22,12 @@ game.controller('editGameController', [
             if ($scope.submitForm.$invalid)
                 return;
 
-            gameService.update($scope.game,
-                function(updatedGame) {
+            gameService.update($scope.game)
+                .then(function(updatedGame) {
                     $scope.game = updatedGame;
                     alertService.info('Successfully saved!');
-                },
-                alertService.error);
+                })
+                .catch(alertService.error);
         };
 
         $scope.delete = function() {
