@@ -1,23 +1,18 @@
-﻿using System.IO;
-using AutoMapper;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
 using TipExpert.Core;
-using TipExpert.Net.Models;
+using TipExpert.Core.Configuration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace TipExpert.Net
 {
     public class Startup
     {
-        private string _appDataPath;
-
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
@@ -50,10 +45,12 @@ namespace TipExpert.Net
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
-            services.AddSingleton<IUserStore, UserStore>(s => new UserStore(_appDataPath));
-            services.AddSingleton<ILeagueStore, LeagueStore>(s => new LeagueStore(_appDataPath));
-            services.AddSingleton<IMatchStore, MatchStore>(s => new MatchStore(_appDataPath));
-            services.AddSingleton<IGameStore, GameStore>(s => new GameStore(_appDataPath));
+            services.AddTransient<IDataStoreConfiguration, DataStoreConfiguration>();
+
+            services.AddSingleton<IUserStore, UserStore>();
+            services.AddSingleton<ILeagueStore, LeagueStore>();
+            services.AddSingleton<IMatchStore, MatchStore>();
+            services.AddSingleton<IGameStore, GameStore>();
 
             // Add MVC services to the services container.
             services.AddMvc();
@@ -62,9 +59,6 @@ namespace TipExpert.Net
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var appenvironment = (IApplicationEnvironment)app.ApplicationServices.GetService(typeof(IApplicationEnvironment));
-            _appDataPath = Path.Combine(appenvironment.ApplicationBasePath, "App_Data");
-
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -107,32 +101,7 @@ namespace TipExpert.Net
                         template: "{controller=Home}/{action=Index}/{id?}");
                 });
 
-            _SetupMapper();
-        }
-
-        private void _SetupMapper()
-        {
-            Mapper.Initialize(c =>
-            {
-                c.CreateMap<User, UserDto>();
-                c.CreateMap<UserDto, User>();
-
-                c.CreateMap<League, LeagueDto>();
-                c.CreateMap<LeagueDto, League>();
-
-                c.CreateMap<Match, MatchDto>();
-                c.CreateMap<MatchDto, Match>();
-
-                c.CreateMap<Game, GameDto>();
-                c.CreateMap<GameDto, Game>();
-                c.CreateMap<Player, PlayerDto>();
-                c.CreateMap<PlayerDto, Player>();
-                c.CreateMap<MatchTips, MatchTipsDto>();
-                c.CreateMap<MatchTipsDto, MatchTips>();
-                c.CreateMap<Tip, TipDto>();
-                c.CreateMap<TipDto, Tip>();
-
-            });
+            MappingHelper.InitializeMappings();
         }
 
         // Entry point for the application.

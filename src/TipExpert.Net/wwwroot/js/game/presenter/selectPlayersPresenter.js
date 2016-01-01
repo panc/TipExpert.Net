@@ -6,7 +6,7 @@ game.controller('SelectPlayersController', [
     '$scope', '$modalInstance', 'authService', 'userService', 'gameService', 'alertService', 'game',
     function($scope, $modalInstance, authService, userService, gameService, alertService, game) {
 
-        var selectedplayers = [];// game.players.slice(0);
+        var selectedplayers = game.players.slice(0);
 
         var areUserEqual = function(user, otherUser) {
             return user.name == otherUser.name;
@@ -22,7 +22,7 @@ game.controller('SelectPlayersController', [
                 // if not selected remove the user from the player-list of the game
                 angular.forEach(selectedplayers, function(player) {
 
-                    if (areUserEqual(user, player.user)) {
+                    if (areUserEqual(user, player)) {
                         var index = selectedplayers.indexOf(player);
                         selectedplayers.splice(index, 1);
                     }
@@ -50,7 +50,7 @@ game.controller('SelectPlayersController', [
                 angular.forEach(users, function(user) {
                     angular.forEach(selectedplayers, function(player) {
 
-                        if (areUserEqual(user, player.user))
+                        if (areUserEqual(user, player))
                             user.selected = true;
                     });
                 });

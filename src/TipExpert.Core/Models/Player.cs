@@ -6,6 +6,8 @@ namespace TipExpert.Core
     {
         public Guid UserId { get; set; }
 
+        public User User { get; set; }
+
         public double? Stake { get; set; }
 
         public double? Profit { get; set; }

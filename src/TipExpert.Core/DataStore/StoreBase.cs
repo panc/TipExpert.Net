@@ -11,10 +11,10 @@ namespace TipExpert.Core
         private readonly string _filePath;
         private readonly Lazy<List<TEntity>> _entities;
 
-        public StoreBase(string appDataPath, string fileName)
+        public StoreBase(IDataStoreConfiguration configuration, string fileName)
         {
             _entities = new Lazy<List<TEntity>>(_ReadFromFile);
-            _filePath = Path.Combine(appDataPath, fileName);
+            _filePath = Path.Combine(configuration.AppDataPath, fileName);
         }
 
         protected List<TEntity> Entities => _entities.Value;
@@ -32,13 +32,21 @@ namespace TipExpert.Core
         {
         }
 
+        protected virtual void OnEntitiesLoaded(List<TEntity> entities)
+        {
+        }
+
         private List<TEntity> _ReadFromFile()
         {
             if (!File.Exists(_filePath))
                 return new List<TEntity>();
 
             var content = File.ReadAllText(_filePath);
-            return JsonConvert.DeserializeObject<List<TEntity>>(content) ?? new List<TEntity>();
+            var entities = JsonConvert.DeserializeObject<List<TEntity>>(content) ?? new List<TEntity>();
+
+            OnEntitiesLoaded(entities);
+
+            return entities;
         }
     }
 }

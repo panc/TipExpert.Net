@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,9 +9,12 @@ namespace TipExpert.Core
     {
         private const string FILE_NAME = "games.json";
 
-        public GameStore(string appDataPath)
-            : base(appDataPath, FILE_NAME)
+        private readonly IUserStore _userStore;
+
+        public GameStore(IDataStoreConfiguration configuration, IUserStore userStore)
+            : base(configuration, FILE_NAME)
         {
+            _userStore = userStore;
         }
 
         public Task Add(Game game)
@@ -45,6 +49,17 @@ namespace TipExpert.Core
             {
                 return Entities.FirstOrDefault(x => x.Id == id);
             });
+        }
+
+        protected override async void OnEntitiesLoaded(List<Game> entities)
+        {
+            foreach (var game in entities)
+            {
+                foreach (var player in game.Players)
+                {
+                    player.User = await _userStore.GetById(player.UserId);
+                }
+            }
         }
     }
 }

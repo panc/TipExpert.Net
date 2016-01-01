@@ -8,8 +8,8 @@ namespace TipExpert.Core
     {
         private const string FILE_NAME = "matches.json";
 
-        public MatchStore(string appDataPath)
-            : base(appDataPath, FILE_NAME)
+        public MatchStore(IDataStoreConfiguration configuration)
+            : base(configuration, FILE_NAME)
         {
         }
 

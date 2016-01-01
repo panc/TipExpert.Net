@@ -9,8 +9,8 @@ namespace TipExpert.Core
     {
         private const string FILE_NAME = "user.json";
 
-        public UserStore(string appDataPath)
-            : base(appDataPath, FILE_NAME)
+        public UserStore(IDataStoreConfiguration configuration)
+            : base(configuration, FILE_NAME)
         {
         }
 

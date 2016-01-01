@@ -8,8 +8,8 @@ namespace TipExpert.Core
     {
         private const string FILE_NAME = "leagues.json";
 
-        public LeagueStore(string appDataPath)
-            : base(appDataPath, FILE_NAME)
+        public LeagueStore(IDataStoreConfiguration configuration)
+            : base(configuration, FILE_NAME)
         {
         }
 
