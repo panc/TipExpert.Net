@@ -25,6 +25,8 @@ namespace TipExpert.Core
             {
                 var content = JsonConvert.SerializeObject(Entities);
                 File.WriteAllText(_filePath, content);
+
+                OnEntitiesSaved(Entities);
             });
         }
 
@@ -33,6 +35,10 @@ namespace TipExpert.Core
         }
 
         protected virtual void OnEntitiesLoaded(List<TEntity> entities)
+        {
+        }
+
+        protected virtual void OnEntitiesSaved(List<TEntity> entities)
         {
         }
 

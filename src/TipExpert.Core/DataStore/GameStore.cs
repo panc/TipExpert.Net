@@ -54,11 +54,20 @@ namespace TipExpert.Core
         protected override async void OnEntitiesLoaded(List<Game> entities)
         {
             foreach (var game in entities)
+                await _LoadRelations(game);
+        }
+
+        protected override async void OnEntitiesSaved(List<Game> entities)
+        {
+            foreach (var game in entities)
+                await _LoadRelations(game);
+        }
+
+        private async Task _LoadRelations(Game game)
+        {
+            foreach (var player in game.Players)
             {
-                foreach (var player in game.Players)
-                {
-                    player.User = await _userStore.GetById(player.UserId);
-                }
+                player.User = await _userStore.GetById(player.UserId);
             }
         }
     }

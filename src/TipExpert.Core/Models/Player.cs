@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace TipExpert.Core
 {
@@ -6,6 +7,7 @@ namespace TipExpert.Core
     {
         public Guid UserId { get; set; }
 
+        [JsonIgnore]
         public User User { get; set; }
 
         public double? Stake { get; set; }
