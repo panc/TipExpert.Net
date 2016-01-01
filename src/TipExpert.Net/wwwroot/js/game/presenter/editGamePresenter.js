@@ -22,7 +22,7 @@ game.controller('editGameController', [
             if ($scope.submitForm.$invalid)
                 return;
 
-            gameService.update($scope.game)
+            gameService.updateGameInfo($scope.game)
                 .then(function(updatedGame) {
                     $scope.game = updatedGame;
                     alertService.info('Successfully saved!');

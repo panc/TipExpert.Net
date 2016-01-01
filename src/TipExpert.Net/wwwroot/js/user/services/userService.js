@@ -4,38 +4,25 @@ var user = angular.module('tipExpert.user');
 
 user.factory('userService', ['$http', '$q', function($http, $q) {
 
-    var users = [];
-
-    var load = function() {
-        var deferred = $q.defer();
-
-        if (users.length > 0) {
-            deferred.resolve(users);
-            return deferred.promise;
-        }
-
-        $http.get('/api/account')
-            .success(function(data) {
-
-                angular.forEach(data, function(user) {
-                    users.push(user);
-                });
-
-                deferred.resolve(users);
-            })
-            .error(deferred.reject);
-
-        return deferred.promise;
-    };
-
     return {
-        loadAllUser: load,
+        loadAllUser: function() {
+            var deferred = $q.defer();
+
+            $http.get('/api/account')
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
+        },
 
         loadFriendsForUser: function(user) {
-            // todo:
-            // return all users for now
-            // we can load the friends of a user later on
-            return load();
+            var deferred = $q.defer();
+
+            $http.get('/api/account/friends')
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         },
 
         loadProfile: function(userId) {

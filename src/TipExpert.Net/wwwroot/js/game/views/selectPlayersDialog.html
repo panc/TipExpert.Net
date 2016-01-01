@@ -4,13 +4,12 @@
         <h4 class="modal-title" translate="GAME-SELECT-PLAYER-HEADER"></h4>
     </div>
 
-
     <div class="modal-body">
         <div class="modal-description" translate="GAME-SELECT-PLAYER-DESCRIPTION"></div>
         
         <div class="user-selection">
             <ul>
-                <li ng-repeat="user in users" ng-click="toggleUserSelection(user)" ng-class="{ 'selected-user': user.selected }" class="user-selection-item">
+                <li ng-repeat="user in users track by user.userId" ng-click="toggleUserSelection(user)" ng-class="{ 'selected-user': user.selected }" class="user-selection-item">
                     <div>{{ user.name }}</div>
                 </li>
             </ul>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
@@ -57,7 +58,7 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<GameDto>(game);
         }
 
-        [HttpPut("{gameId}/edit")]
+        [HttpPut("{gameId}/data")]
         public async Task<GameDto> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
         {
             var game = await _gameStore.GetById(gameId);
@@ -65,6 +66,17 @@ namespace TipExpert.Net.Controllers
             game.Title = gameDto.title;
             game.Description = gameDto.description;
             game.MinStake = gameDto.minStake;
+
+            await _gameStore.SaveChangesAsync();
+
+            return Mapper.Map<GameDto>(game);
+        }
+
+        [HttpPut("{gameId}/players")]
+        public async Task<GameDto> UpdatePlayers(Guid gameId, [FromBody]PlayerDto[] playerDtos)
+        {
+            var game = await _gameStore.GetById(gameId);
+            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
 
             await _gameStore.SaveChangesAsync();
 

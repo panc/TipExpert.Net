@@ -63,10 +63,27 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
             return deferred.promise;
         },
 
-        update: function (game) {
+        updateGameData: function (game) {
             var deferred = $q.defer();
 
-            $http.put('/api/games/' + game.id + '/edit', game)
+            var gameData = {
+                id: game.id,
+                title: game.title,
+                description: game.description,
+                minState: game.minState
+            }
+
+            $http.put('/api/games/' + game.id + '/data', gameData)
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
+        },
+
+        updatePlayers: function (gameId, players) {
+            var deferred = $q.defer();
+
+            $http.put('/api/games/' + gameId + '/players', players)
                 .success(deferred.resolve)
                 .error(deferred.reject);
 

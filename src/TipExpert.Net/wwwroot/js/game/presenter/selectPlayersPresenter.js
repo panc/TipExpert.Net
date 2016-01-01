@@ -6,7 +6,7 @@ game.controller('SelectPlayersController', [
     '$scope', '$modalInstance', 'authService', 'userService', 'gameService', 'alertService', 'game',
     function($scope, $modalInstance, authService, userService, gameService, alertService, game) {
 
-        var selectedplayers = game.players.slice(0);
+        var selectedplayers = [];// game.players.slice(0);
 
         var areUserEqual = function(user, otherUser) {
             return user.name == otherUser.name;
@@ -17,8 +17,7 @@ game.controller('SelectPlayersController', [
 
             if (user.selected) {
                 // if selected add the user to the player-list of the game
-                var container = { user: user };
-                selectedplayers.push(container);
+                selectedplayers.push(user);
             } else {
                 // if not selected remove the user from the player-list of the game
                 angular.forEach(selectedplayers, function(player) {
@@ -33,13 +32,11 @@ game.controller('SelectPlayersController', [
 
         $scope.save = function() {
 
-            game.players = selectedplayers;
-
-            gameService.update(game,
-                function(updatedGame) {
+            gameService.updatePlayers(game.id, selectedplayers)
+                .then(function(updatedGame) {
                     $modalInstance.close(updatedGame);
-                },
-                alertService.error);
+                })
+                .catch(alertService.error);
         };
 
         $scope.cancel = function() {

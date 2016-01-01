@@ -94,6 +94,21 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<UserDto[]>(user);
         }
 
+        [HttpGet("friends")]
+        public async Task<PlayerDto[]> GetFriends()
+        {
+            // return all users for now
+            // we can load the friends of a user later on
+
+            var user = await _userStore.GetAll();
+            return user.Select(x => new PlayerDto
+                {
+                    userId = x.Id,
+                    name = x.Name
+                })
+                .ToArray(); 
+        }
+
         [HttpPut("{id}")]
         public async Task<UserDto> Put(Guid id, [FromBody]UserDto userDto)
         {
