@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,10 +27,14 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet("{gameId}/edit")]
-        public async Task<GameDto> GetGameForEdit(Guid gameId)
+        public async Task<IActionResult> GetGameForEdit(Guid gameId)
         {
             var game = await _gameStore.GetById(gameId);
-            return Mapper.Map<GameDto>(game);
+
+            if (!_IsCurrentUserGameCreator(game))
+                return HttpBadRequest("Not allowed to edit game!");
+
+            return Json(Mapper.Map<GameDto>(game));
         }
 
         [HttpGet("created")]
@@ -59,9 +62,12 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/data")]
-        public async Task<GameDto> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
+        public async Task<IActionResult> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
         {
             var game = await _gameStore.GetById(gameId);
+
+            if (!_IsCurrentUserGameCreator(game))
+                return HttpBadRequest("Not allowed to edit game!");
 
             game.Title = gameDto.title;
             game.Description = gameDto.description;
@@ -69,18 +75,27 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.SaveChangesAsync();
 
-            return Mapper.Map<GameDto>(game);
+            return Json(Mapper.Map<GameDto>(game));
         }
 
         [HttpPut("{gameId}/players")]
-        public async Task<GameDto> UpdatePlayers(Guid gameId, [FromBody]PlayerDto[] playerDtos)
+        public async Task<IActionResult> UpdatePlayers(Guid gameId, [FromBody]PlayerDto[] playerDtos)
         {
             var game = await _gameStore.GetById(gameId);
-            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
 
+            if (!_IsCurrentUserGameCreator(game))
+                return HttpBadRequest("Not allowed to edit game!");
+
+            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
             await _gameStore.SaveChangesAsync();
 
-            return Mapper.Map<GameDto>(game);
+            return Json(Mapper.Map<GameDto>(game));
+        }
+
+        private bool _IsCurrentUserGameCreator(Game game)
+        {
+            var userId = User.GetUserIdAsGuid();
+            return game.CreatorId == userId;
         }
     }
 }
