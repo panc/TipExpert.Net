@@ -2,47 +2,23 @@
 
 var matchModule = angular.module('tipExpert.match');
 
-matchModule.factory('leagueService', ['$http', '$q', function ($http, $q) {
+matchModule.factory('leagueService', ['$http', function ($http) {
 
     return {
         load: function() {
-            var deferred = $q.defer();
-
-            $http.get('/api/leagues')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/leagues');
         },
 
         create: function(newLeague) {
-            var deferred = $q.defer();
-            
-            $http.post('api/leagues/', newLeague)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.post('api/leagues/', newLeague);
         },
 
         update: function(league) {
-            var deferred = $q.defer();
-
-            $http.put('/api/leagues/' + league.id, league)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.put('/api/leagues/' + league.id, league);
         },
 
         delete: function(league) {
-            var deferred = $q.defer();
-
-            $http.delete('api/leagues/' + league.id)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.delete('api/leagues/' + league.id);
         }
     };
 }]);

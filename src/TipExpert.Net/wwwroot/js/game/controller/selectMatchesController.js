@@ -10,7 +10,7 @@ game.controller('selectMatchesController', [
 
         $scope.loadMatches = function(league) {
             matchService.loadForSelection(league)
-                .then(function(matches) {
+                .success(function (matches) {
                     $scope.matches = matches;
 
                     angular.forEach(matches, function(match) {
@@ -23,7 +23,7 @@ game.controller('selectMatchesController', [
                     });
 
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.toggleMatchSelection = function(match) {
@@ -58,7 +58,7 @@ game.controller('selectMatchesController', [
         };
 
         leagueService.load()
-            .then(function(leagues) {
+            .success(function (leagues) {
                 $scope.leagues = leagues;
 
                 if (leagues.length > 0) {
@@ -66,6 +66,6 @@ game.controller('selectMatchesController', [
                     $scope.loadMatches($scope.league);
                 }
             })
-            .catch(alertService.error);
+            .error(alertService.error);
     }
 ]);

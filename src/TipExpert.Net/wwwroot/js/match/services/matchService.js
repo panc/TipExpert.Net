@@ -2,60 +2,27 @@
 
 var matchModule = angular.module('tipExpert.match');
 
-matchModule.factory('matchService', ['$http', '$q', function ($http, $q) {
-
-    // todo:
-    // use cache for the matches...
+matchModule.factory('matchService', ['$http', function ($http) {
 
     return {
         load: function(league) {
-            var deferred = $q.defer();
-
-            $http.get('/api/leagues/' + league.id + '/matches')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/leagues/' + league.id + '/matches');
         },
 
         loadForSelection: function(league) {
-            var deferred = $q.defer();
-
-            $http.get('/api/leagues/' + league.id + '/matches/notfinished')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/leagues/' + league.id + '/matches/notfinished');
         },
         
         create: function (newMatch) {
-            var deferred = $q.defer();
-
-            $http.post('api/matches/', newMatch)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.post('api/matches/', newMatch);
         },
         
         update: function (match) {
-            var deferred = $q.defer();
-            
-            $http.put('/api/matches/' + match.id, match)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-          
-            return deferred.promise;
+            return $http.put('/api/matches/' + match.id, match);
         },
         
         delete: function (match) {
-            var deferred = $q.defer();
-            
-            $http.delete('api/matches/' + match.id)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.delete('api/matches/' + match.id);
         }
     };
 }]);

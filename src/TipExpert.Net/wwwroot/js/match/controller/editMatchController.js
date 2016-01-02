@@ -15,10 +15,10 @@ match.controller('editMatchController', [
                 ? matchService.update(match)
                 : matchService.create(match);
 
-            promise.then(function(newOrUpdatedMatch) {
+            promise.success(function (newOrUpdatedMatch) {
                     $modalInstance.close(newOrUpdatedMatch);
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.cancel = function() {

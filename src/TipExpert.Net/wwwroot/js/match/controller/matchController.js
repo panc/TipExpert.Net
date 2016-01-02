@@ -13,7 +13,7 @@ match.controller('matchController', [
 
         var reloadLeagues = function() {
             leagueService.load()
-                .then(function(leagues) {
+                .success(function(leagues) {
                     $scope.leagues = leagues;
 
                     angular.forEach($scope.leagues, function(league) {
@@ -23,25 +23,25 @@ match.controller('matchController', [
                     if ($scope.leagues.length > 0)
                         $scope.loadMatches($scope.leagues[0]);
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         }
 
         $scope.addLeague = function() {
 
             leagueService.create($scope.newLeague)
-                .then(function(league) {
+                .success(function (league) {
                     league.editorEnabled = false;
                     $scope.leagues.push(league);
 
                     $scope.newLeague = "";
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.removeLeague = function(league) {
             leagueService.delete(league)
-                .then(reloadLeagues)
-                .catch(alertService.error);
+                .success(reloadLeagues)
+                .error(alertService.error);
         };
 
         $scope.editLeague = function(league) {
@@ -57,10 +57,10 @@ match.controller('matchController', [
             league.name = league.editableName;
 
             leagueService.update(league)
-                .then(function(updatedLeague) {
+                .success(function (updatedLeague) {
                     league.editorEnabled = false;
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         // matches
@@ -69,10 +69,10 @@ match.controller('matchController', [
             $scope.selectedLeague = league;
 
             matchService.load(league)
-                .then(function(matches) {
+                .success(function (matches) {
                     $scope.matches = matches;
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.addMatch = function() {
