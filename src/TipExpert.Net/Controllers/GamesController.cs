@@ -33,8 +33,8 @@ namespace TipExpert.Net.Controllers
             var game = await _gameStore.GetById(gameId);
 
             if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Not allowed to edit game!");
-
+                return HttpBadRequest("Only the game creator can edit the game!");
+            
             return Json(Mapper.Map<GameDto>(game));
         }
 
@@ -48,7 +48,7 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPost]
-        public async Task<GameDto> Post([FromBody]GameDto newGame)
+        public async Task<GameDto> CreateGame([FromBody]GameDto newGame)
         {
             var game = new Game
             {
@@ -68,8 +68,8 @@ namespace TipExpert.Net.Controllers
             var game = await _gameStore.GetById(gameId);
 
             if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Not allowed to edit game!");
-
+                return HttpBadRequest("Only the game creator can edit the game!");
+                
             game.Title = gameDto.title;
             game.Description = gameDto.description;
             game.MinStake = gameDto.minStake;
@@ -107,8 +107,8 @@ namespace TipExpert.Net.Controllers
             var game = await _gameStore.GetById(gameId);
 
             if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Not allowed to edit game!");
-
+                return HttpBadRequest("Only the game creator can edit the game!");
+                
             var ids = matchDtos.Select(x => x.matchId).ToList();
             var list = new List<MatchTips>();
 
@@ -129,6 +129,25 @@ namespace TipExpert.Net.Controllers
             await _gameStore.SaveChangesAsync();
 
             return Json(Mapper.Map<GameDto>(game));
+        }
+
+        [HttpDelete("{gameId}")]
+        public async Task<IActionResult> DeleteGame(Guid gameId)
+        {
+            var game = await _gameStore.GetById(gameId);
+
+            if (!_IsCurrentUserGameCreator(game))
+                return HttpBadRequest("Only the game creator can edit the game!");
+
+            if (game.IsFinished)
+                return HttpBadRequest("Can not delete a finished game!");
+
+            // todo: check whether the game is already running
+
+            await _gameStore.Remove(game);
+            await _gameStore.SaveChangesAsync();
+
+            return Json(new { success = true });
         }
 
         private bool _IsCurrentUserGameCreator(Game game)

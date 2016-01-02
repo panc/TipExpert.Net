@@ -36,11 +36,14 @@ game.controller('editGameController', [
                 return;
             }
 
-            gameService.delete($scope.game, function() {
+            // todo: ask whether the game should realy be deleted
+
+            gameService.delete($scope.game.id)
+                .success(function() {
                     alertService.info('Successfully deleted!');
                     $state.go('games.overview');
-                },
-                alertService.error);
+                })
+                .error(alertService.error);
         };
 
         $scope.addMatch = function() {

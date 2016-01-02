@@ -126,10 +126,9 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 .error(error);
         },
 
-        delete: function(game, success, error) {
-            $http.delete('/api/games/' + game.id + '/edit')
-                .success(success)
-                .error(error);
+        delete: function(gameId) {
+
+            return $http.delete('/api/games/' + gameId);
         }
     };
 }]);

@@ -67,14 +67,16 @@ namespace TipExpert.Core
 
         private async Task _LoadRelations(Game game)
         {
-            foreach (var player in game.Players)
+            if (game.Players != null)
             {
-                player.User = await _userStore.GetById(player.UserId);
+                foreach (var player in game.Players)
+                    player.User = await _userStore.GetById(player.UserId);
             }
 
-            foreach (var matchTips in game.Matches)
+            if (game.Matches != null)
             {
-                matchTips.Match = await _matchStore.GetById(matchTips.MatchId);
+                foreach (var matchTips in game.Matches)
+                    matchTips.Match = await _matchStore.GetById(matchTips.MatchId);
             }
         }
     }
