@@ -11,25 +11,37 @@ match.controller('matchController', [
 
         // leagues
 
+        var reloadLeagues = function() {
+            leagueService.load()
+                .then(function(leagues) {
+                    $scope.leagues = leagues;
+
+                    angular.forEach($scope.leagues, function(league) {
+                        league.editorEnabled = false;
+                    });
+
+                    if ($scope.leagues.length > 0)
+                        $scope.loadMatches($scope.leagues[0]);
+                })
+                .catch(alertService.error);
+        }
+
         $scope.addLeague = function() {
 
-            leagueService.create($scope.newLeague,
-                    function(league) {
-                        league.editorEnabled = false;
-                        $scope.newLeague = "";
-                    }),
-                function(data) {
-                    // todo   
-                    alert(data);
-                };
+            leagueService.create($scope.newLeague)
+                .then(function(league) {
+                    league.editorEnabled = false;
+                    $scope.leagues.push(league);
+
+                    $scope.newLeague = "";
+                })
+                .catch(alertService.error);
         };
 
         $scope.removeLeague = function(league) {
-            leagueService.delete(league,
-                function(data) {
-                    // todo
-                    alert(data);
-                });
+            leagueService.delete(league)
+                .then(reloadLeagues)
+                .catch(alertService.error);
         };
 
         $scope.editLeague = function(league) {
@@ -44,11 +56,11 @@ match.controller('matchController', [
         $scope.saveLeague = function(league) {
             league.name = league.editableName;
 
-            leagueService.update(league,
-                function() {
+            leagueService.update(league)
+                .then(function(updatedLeague) {
                     league.editorEnabled = false;
-                },
-                alertService.error);
+                })
+                .catch(alertService.error);
         };
 
         // matches
@@ -101,17 +113,6 @@ match.controller('matchController', [
             showEditMatchDialog(match);
         };
 
-        leagueService.load()
-            .then(function(leagues) {
-                $scope.leagues = leagues;
-
-                angular.forEach($scope.leagues, function(league) {
-                    league.editorEnabled = false;
-                });
-
-                if ($scope.leagues.length > 0)
-                    $scope.loadMatches($scope.leagues[0]);
-            })
-            .catch(alertService.error);
+        reloadLeagues();
     }
 ]);
