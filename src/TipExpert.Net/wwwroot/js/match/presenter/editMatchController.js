@@ -4,7 +4,7 @@
 
 var match = angular.module('tipExpert.match');
 
-match.controller('EditMatchController', [
+match.controller('editMatchController', [
     '$scope', '$modalInstance', 'matchService', 'alertService', 'match', function($scope, $modalInstance, matchService, alertService, match) {
 
         $scope.match = match;

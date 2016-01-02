@@ -10,7 +10,7 @@ game.controller('myGamesController', [
         $scope.createGame = function() {
             $modal.open({
                 templateUrl: '/js/game/views/addGameDialog.html',
-                controller: 'AddGameController'
+                controller: 'addGameController'
             });
         };
 

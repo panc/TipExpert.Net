@@ -66,7 +66,7 @@ game.controller('editGameController', [
         $scope.addPlayer = function() {
             var modalInstance = $modal.open({
                 templateUrl: '/js/game/views/selectPlayersDialog.html',
-                controller: 'SelectPlayersController',
+                controller: 'selectPlayersController',
                 resolve: {
                     game: function() {
                         return $scope.game;

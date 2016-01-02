@@ -56,7 +56,7 @@ match.controller('matchController', [
         var showEditMatchDialog = function(match, onSavedCallback) {
             var modalInstance = $modal.open({
                 templateUrl: '/js/match/views/editMatchDialog.html',
-                controller: 'EditMatchController',
+                controller: 'editMatchController',
                 resolve: {
                     match: function() {
                         return match;
