@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
@@ -101,23 +102,31 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/matches")]
-        public async Task<IActionResult> UpdateMatches(Guid gameId, [FromBody]MatchDto[] matchesDtos)
+        public async Task<IActionResult> UpdateMatches(Guid gameId, [FromBody]MatchTipsDto[] matchDtos)
         {
             var game = await _gameStore.GetById(gameId);
 
             if (!_IsCurrentUserGameCreator(game))
                 return HttpBadRequest("Not allowed to edit game!");
 
-//            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
+            var ids = matchDtos.Select(x => x.matchId).ToList();
+            var list = new List<MatchTips>();
 
-//            // game creator always has to be part of the players list
-//            var creatorId = User.GetUserIdAsGuid();
-//            if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
-//            {
-//                game.Players.Add(new Player { UserId = creatorId });
-//            }
-//
-//            await _gameStore.SaveChangesAsync();
+            foreach (var id in ids)
+            {
+                MatchTips entry = null;
+
+                if (game.Matches != null)
+                    entry = game.Matches.FirstOrDefault(x => x.MatchId == id);
+
+                if (entry == null)
+                    entry = new MatchTips { MatchId = id };
+
+                list.Add(entry);
+            }
+
+            game.Matches = list;
+            await _gameStore.SaveChangesAsync();
 
             return Json(Mapper.Map<GameDto>(game));
         }

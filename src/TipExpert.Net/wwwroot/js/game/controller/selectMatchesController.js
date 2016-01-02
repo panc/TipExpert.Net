@@ -46,7 +46,7 @@ game.controller('selectMatchesController', [
 
         $scope.save = function() {
 
-            gameService.updateMatches(game)
+            gameService.updateMatches(game.id, selectedMatches)
                 .then(function(updatedGame) {
                     $modalInstance.close(updatedGame);
                 })

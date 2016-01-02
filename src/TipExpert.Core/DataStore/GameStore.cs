@@ -10,11 +10,13 @@ namespace TipExpert.Core
         private const string FILE_NAME = "games.json";
 
         private readonly IUserStore _userStore;
+        private readonly IMatchStore _matchStore;
 
-        public GameStore(IDataStoreConfiguration configuration, IUserStore userStore)
+        public GameStore(IDataStoreConfiguration configuration, IUserStore userStore, IMatchStore matchStore)
             : base(configuration, FILE_NAME)
         {
             _userStore = userStore;
+            _matchStore = matchStore;
         }
 
         public Task Add(Game game)
@@ -68,6 +70,11 @@ namespace TipExpert.Core
             foreach (var player in game.Players)
             {
                 player.User = await _userStore.GetById(player.UserId);
+            }
+
+            foreach (var matchTips in game.Matches)
+            {
+                matchTips.Match = await _matchStore.GetById(matchTips.MatchId);
             }
         }
     }
