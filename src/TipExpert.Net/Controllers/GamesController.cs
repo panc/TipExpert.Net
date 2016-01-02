@@ -87,6 +87,14 @@ namespace TipExpert.Net.Controllers
                 return HttpBadRequest("Not allowed to edit game!");
 
             game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
+
+            // game creator always has to be part of the players list
+            var creatorId = User.GetUserIdAsGuid();
+            if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
+            {
+                game.Players.Add(new Player { UserId = creatorId });
+            }
+
             await _gameStore.SaveChangesAsync();
 
             return Json(Mapper.Map<GameDto>(game));

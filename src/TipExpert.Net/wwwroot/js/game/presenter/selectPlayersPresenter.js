@@ -9,10 +9,15 @@ game.controller('SelectPlayersController', [
         var selectedplayers = game.players.slice(0);
 
         var areUserEqual = function(user, otherUser) {
-            return user.name == otherUser.name;
+            return user.name === otherUser.name;
         };
 
         $scope.toggleUserSelection = function(user) {
+
+            // current user always has to be part of the players list
+            if (authService.user != null && user.userId === authService.user.id)
+                return;
+
             user.selected = !user.selected;
 
             if (user.selected) {
