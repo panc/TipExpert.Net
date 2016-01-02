@@ -70,7 +70,7 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 id: game.id,
                 title: game.title,
                 description: game.description,
-                minState: game.minState
+                minStake: game.minStake
             }
 
             $http.put('/api/games/' + game.id + '/data', gameData)
