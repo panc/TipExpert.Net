@@ -77,11 +77,11 @@ match.controller('matchController', [
         $scope.loadMatches = function(league) {
             $scope.selectedLeague = league;
 
-            matchService.load(league,
-                function(matches) {
+            matchService.load(league)
+                .then(function(matches) {
                     $scope.matches = matches;
-                },
-                alertService.error);
+                })
+                .catch(alertService.error);
         };
 
         $scope.addMatch = function() {
@@ -101,8 +101,8 @@ match.controller('matchController', [
             showEditMatchDialog(match);
         };
 
-        leagueService.load(
-            function(leagues) {
+        leagueService.load()
+            .then(function(leagues) {
                 $scope.leagues = leagues;
 
                 angular.forEach($scope.leagues, function(league) {
@@ -111,10 +111,7 @@ match.controller('matchController', [
 
                 if ($scope.leagues.length > 0)
                     $scope.loadMatches($scope.leagues[0]);
-            },
-            function(data) {
-                // todo
-                alert(data);
-            });
+            })
+            .catch(alertService.error);
     }
 ]);

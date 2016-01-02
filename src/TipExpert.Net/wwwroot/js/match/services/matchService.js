@@ -2,19 +2,20 @@
 
 var matchModule = angular.module('tipExpert.match');
 
-matchModule.factory('matchService', ['$http', function($http) {
+matchModule.factory('matchService', ['$http', '$q', function ($http, $q) {
 
     // todo:
     // use cache for the matches...
 
     return {
-        load: function(league, success, error) {
+        load: function(league) {
+            var deferred = $q.defer();
+
             $http.get('/api/leagues/' + league.id + '/matches')
-                .success(function(data) {
-                    
-                    success(data);
-                })
-                .error(error);
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         },
         
         create: function (newMatch, success, error) {

@@ -2,27 +2,17 @@
 
 var matchModule = angular.module('tipExpert.match');
 
-matchModule.factory('leagueService', ['$http', function($http) {
-
-    var leagues = [];
+matchModule.factory('leagueService', ['$http', '$q', function ($http, $q) {
 
     return {
-        load: function(success, error) {
-            if (leagues.length > 0) {
-                success(leagues);
-                return;
-            }
+        load: function() {
+            var deferred = $q.defer();
 
             $http.get('/api/leagues')
-                .success(function(data) {
-                    leagues.length = 0;
-                    angular.forEach(data, function(league) {
-                        leagues.push(league);
-                    });
+                .success(deferred.resolve)
+                .error(deferred.reject);
 
-                    success(leagues);
-                })
-                .error(error);
+            return deferred.promise;
         },
 
         create: function(newLeague, success, error) {

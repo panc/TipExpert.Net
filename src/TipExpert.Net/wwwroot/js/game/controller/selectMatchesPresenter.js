@@ -7,15 +7,15 @@ game.controller('SelectMatchesController', ['$scope', '$modalInstance', 'leagueS
     var selectedMatches = game.matches.slice(0);
 
     var areMatchesEqual = function(match, otherMatch) {
-        return match.homeTeam == otherMatch.homeTeam
-            && match.guestTeam == otherMatch.guestTeam
-            && match.dueDate == otherMatch.dueDate
-            && match.league == otherMatch.league;
+        return match.homeTeam === otherMatch.homeTeam
+            && match.guestTeam === otherMatch.guestTeam
+            && match.dueDate === otherMatch.dueDate
+            && match.league === otherMatch.league;
     };
     
     $scope.loadMatches = function(league) {
-        matchService.load(league,
-            function(matches) {
+        matchService.load(league)
+            .then(function(matches) {
                 $scope.matches = matches;
 
                 angular.forEach(matches, function(match) {
@@ -26,8 +26,8 @@ game.controller('SelectMatchesController', ['$scope', '$modalInstance', 'leagueS
                     });
                 });
 
-            },
-            alertService.error);
+            })
+            .catch(alertService.error);
     };
 
     $scope.toggleMatchSelection = function(match) {
@@ -65,14 +65,14 @@ game.controller('SelectMatchesController', ['$scope', '$modalInstance', 'leagueS
         $modalInstance.dismiss('cancel');
     };
     
-    leagueService.load(
-        function(leagues) {
+    leagueService.load()
+        .then(function(leagues) {
             $scope.leagues = leagues;
             
             if (leagues.length > 0) {
                 $scope.league = leagues[0];
                 $scope.loadMatches($scope.league);
             }
-        }, 
-        alertService.error);
+        })
+        .catch(alertService.error);
 }]);
