@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -26,11 +27,19 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<LeagueDto[]>(leagues);
         }
 
-        [HttpGet("{id}/matches")]
-        public async Task<MatchDto[]> GetMatches(Guid id)
+        [HttpGet("{leagueId}/matches")]
+        public async Task<MatchDto[]> GetMatches(Guid leagueId)
         {
-            var matches = await _matchStore.GetMatchesForLeague(id);
+            var matches = await _matchStore.GetMatchesForLeague(leagueId);
             return Mapper.Map<MatchDto[]>(matches);
+        }
+
+        [HttpGet("{leagueId}/matches/notfinished")]
+        public async Task<MatchDto[]> GetNotFinishedMatches(Guid leagueId)
+        {
+            var matches = await _matchStore.GetMatchesForLeague(leagueId);
+
+            return Mapper.Map<MatchDto[]>(matches.Where(x => !x.IsFinished));
         }
 
         [HttpPost]

@@ -17,6 +17,16 @@ matchModule.factory('matchService', ['$http', '$q', function ($http, $q) {
 
             return deferred.promise;
         },
+
+        loadForSelection: function(league) {
+            var deferred = $q.defer();
+
+            $http.get('/api/leagues/' + league.id + '/matches/notfinished')
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
+        },
         
         create: function (newMatch) {
             var deferred = $q.defer();

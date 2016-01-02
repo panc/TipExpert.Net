@@ -18,7 +18,7 @@
         
         <div class="match-selection">
             <ul>
-                <li ng-repeat="match in matches" ng-click="toggleMatchSelection(match)" ng-class="{ 'selected-match': match.selected }" class="match-selection-item">
+                <li ng-repeat="match in matches track by match.id" ng-click="toggleMatchSelection(match)" ng-class="{ 'selected-match': match.selected }" class="match-selection-item">
                     <div>{{ match.homeTeam }} : {{ match.guestTeam }} ({{ match.dueDate }})</div>
                 </li>
             </ul>

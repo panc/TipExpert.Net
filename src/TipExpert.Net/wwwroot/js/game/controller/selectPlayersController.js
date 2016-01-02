@@ -9,7 +9,7 @@ game.controller('selectPlayersController', [
         var selectedplayers = game.players.slice(0);
 
         var areUserEqual = function(user, otherUser) {
-            return user.name === otherUser.name;
+            return user.id === otherUser.id;
         };
 
         $scope.toggleUserSelection = function(user) {

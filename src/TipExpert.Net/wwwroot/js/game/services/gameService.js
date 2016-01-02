@@ -90,6 +90,16 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
             return deferred.promise;
         },
 
+        updateMatches: function(gameId, matches) {
+            var deferred = $q.defer();
+
+            $http.put('/api/games/' + gameId + '/matches', matches)
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
+        },
+
         updateStake: function(gameId, playerId, newStake, success, error) {
             $http.put('/api/games/' + gameId + '/stake',
                 {

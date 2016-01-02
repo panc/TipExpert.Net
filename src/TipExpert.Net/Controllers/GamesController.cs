@@ -100,6 +100,28 @@ namespace TipExpert.Net.Controllers
             return Json(Mapper.Map<GameDto>(game));
         }
 
+        [HttpPut("{gameId}/matches")]
+        public async Task<IActionResult> UpdateMatches(Guid gameId, [FromBody]MatchDto[] matchesDtos)
+        {
+            var game = await _gameStore.GetById(gameId);
+
+            if (!_IsCurrentUserGameCreator(game))
+                return HttpBadRequest("Not allowed to edit game!");
+
+//            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
+
+//            // game creator always has to be part of the players list
+//            var creatorId = User.GetUserIdAsGuid();
+//            if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
+//            {
+//                game.Players.Add(new Player { UserId = creatorId });
+//            }
+//
+//            await _gameStore.SaveChangesAsync();
+
+            return Json(Mapper.Map<GameDto>(game));
+        }
+
         private bool _IsCurrentUserGameCreator(Game game)
         {
             var userId = User.GetUserIdAsGuid();

@@ -8,22 +8,16 @@ game.controller('selectMatchesController', [
 
         var selectedMatches = game.matches.slice(0);
 
-        var areMatchesEqual = function(match, otherMatch) {
-            return match.homeTeam === otherMatch.homeTeam
-                && match.guestTeam === otherMatch.guestTeam
-                && match.dueDate === otherMatch.dueDate
-                && match.league === otherMatch.league;
-        };
-
         $scope.loadMatches = function(league) {
-            matchService.load(league)
+            matchService.loadForSelection(league)
                 .then(function(matches) {
                     $scope.matches = matches;
 
                     angular.forEach(matches, function(match) {
-                        angular.forEach(selectedMatches, function(matchContainer) {
 
-                            if (areMatchesEqual(match, matchContainer.match))
+                        angular.forEach(selectedMatches, function(selectedMatch) {
+
+                            if (match.id === selectedMatch.matchId)
                                 match.selected = true;
                         });
                     });
@@ -37,14 +31,13 @@ game.controller('selectMatchesController', [
 
             if (match.selected) {
                 // if selected add the match to the match-list of the game
-                var container = { match: match };
-                selectedMatches.push(container);
+                selectedMatches.push({ matchId: match.id });
             } else {
                 // if not selected remove the match from the match-list of the game
-                angular.forEach(selectedMatches, function(matchContainer) {
+                angular.forEach(selectedMatches, function (selectedMatch) {
 
-                    if (areMatchesEqual(match, matchContainer.match)) {
-                        var index = selectedMatches.indexOf(matchContainer);
+                    if (match.id === selectedMatch.matchId) {
+                        var index = selectedMatches.indexOf(selectedMatch);
                         selectedMatches.splice(index, 1);
                     }
                 });
@@ -53,13 +46,11 @@ game.controller('selectMatchesController', [
 
         $scope.save = function() {
 
-            game.matches = selectedMatches;
-
-            gameService.update(game,
-                function(updatedGame) {
+            gameService.updateMatches(game)
+                .then(function(updatedGame) {
                     $modalInstance.close(updatedGame);
-                },
-                alertService.error);
+                })
+                .catch(alertService.error);
         };
 
         $scope.cancel = function() {

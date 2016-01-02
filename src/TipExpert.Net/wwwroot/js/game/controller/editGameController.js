@@ -46,7 +46,7 @@ game.controller('editGameController', [
         $scope.addMatch = function() {
             var modalInstance = $modal.open({
                 templateUrl: '/js/game/views/selectMatchesDialog.html',
-                controller: 'SelectMatchesController',
+                controller: 'selectMatchesController',
                 resolve: {
                     game: function() {
                         return $scope.game;

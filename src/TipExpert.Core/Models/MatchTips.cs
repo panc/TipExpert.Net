@@ -7,6 +7,8 @@ namespace TipExpert.Core
     {
         public Guid MatchId { get; set; }
 
+        public Match Match { get; set; }
+
         public List<Tip> Tips { get; set; }
     }
 }
