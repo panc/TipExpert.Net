@@ -65,27 +65,6 @@ match.controller('matchController', [
 
         // matches
 
-        var showEditMatchDialog = function(match, onSavedCallback) {
-            var modalInstance = $modal.open({
-                templateUrl: '/js/match/views/editMatchDialog.html',
-                controller: 'editMatchController',
-                resolve: {
-                    match: function() {
-                        return match;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function(newOrUpdatedMatch) {
-
-                if (onSavedCallback)
-                    onSavedCallback(newOrUpdatedMatch);
-
-            }, function() {
-                // canceld -> nothing to do
-            });
-        };
-
         $scope.loadMatches = function(league) {
             $scope.selectedLeague = league;
 
@@ -104,13 +83,26 @@ match.controller('matchController', [
                 leagueId: $scope.selectedLeague.id
             };
 
-            showEditMatchDialog(match, function(newMatch) {
-                $scope.matches.push(newMatch);
-            });
+            $scope.editMatch(match);
         };
 
         $scope.editMatch = function(match) {
-            showEditMatchDialog(match);
+            var modalInstance = $modal.open({
+                templateUrl: '/js/match/views/editMatchDialog.html',
+                controller: 'editMatchController',
+                resolve: {
+                    match: function() {
+                        return match;
+                    }
+                }
+            });
+
+            modalInstance.result
+                .then(function(newOrUpdatedMatch) {
+                    $scope.loadMatches($scope.selectedLeague);
+                }, function() {
+                    // canceld -> nothing to do
+                });
         };
 
         reloadLeagues();

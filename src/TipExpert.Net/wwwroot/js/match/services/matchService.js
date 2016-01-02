@@ -18,25 +18,34 @@ matchModule.factory('matchService', ['$http', '$q', function ($http, $q) {
             return deferred.promise;
         },
         
-        create: function (newMatch, success, error) {
+        create: function (newMatch) {
+            var deferred = $q.defer();
+
             $http.post('api/matches/', newMatch)
-                .success(function(match) {
-                    success(match);
-                })
-                .error(error);
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         },
         
-        update: function (match, success, error) {
+        update: function (match) {
+            var deferred = $q.defer();
+            
             $http.put('/api/matches/' + match.id, match)
-                .success(function(updatedMatch) {
-                    success(updatedMatch);
-                })
-                .error(error);
+                .success(deferred.resolve)
+                .error(deferred.reject);
+          
+            return deferred.promise;
         },
         
-        delete: function (match, error) {
+        delete: function (match) {
+            var deferred = $q.defer();
+            
             $http.delete('api/matches/' + match.id)
-                .error(error);
+                .success(deferred.resolve)
+                .error(deferred.reject);
+
+            return deferred.promise;
         }
     };
 }]);

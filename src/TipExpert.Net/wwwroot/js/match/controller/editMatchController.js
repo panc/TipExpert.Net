@@ -11,12 +11,14 @@ match.controller('editMatchController', [
 
         $scope.save = function() {
 
-            var success = function(newOrUpdatedMatch) { $modalInstance.close(newOrUpdatedMatch); };
+            var promise = (match.id)
+                ? matchService.update(match)
+                : matchService.create(match);
 
-            if (match.id)
-                matchService.update(match, success, alertService.error);
-            else
-                matchService.create(match, success, alertService.error);
+            promise.then(function(newOrUpdatedMatch) {
+                    $modalInstance.close(newOrUpdatedMatch);
+                })
+                .catch(alertService.error);
         };
 
         $scope.cancel = function() {
