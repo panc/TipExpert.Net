@@ -10,6 +10,7 @@ namespace TipExpert.Core
     {
         private readonly string _filePath;
         private readonly Lazy<List<TEntity>> _entities;
+        private readonly object _lockObject = new object();
 
         public StoreBase(IDataStoreConfiguration configuration, string fileName)
         {
@@ -23,10 +24,16 @@ namespace TipExpert.Core
         {
             return Task.Factory.StartNew(() =>
             {
-                var content = JsonConvert.SerializeObject(Entities);
-                File.WriteAllText(_filePath, content);
+                lock (_lockObject)
+                {
+                    if (!_entities.IsValueCreated)
+                        return; // do not save before the entities are loaded the first time
 
-                OnEntitiesSaved(Entities);
+                    var content = JsonConvert.SerializeObject(Entities);
+                    File.WriteAllText(_filePath, content);
+
+                    OnEntitiesSaved(Entities);
+                }
             });
         }
 
@@ -44,15 +51,18 @@ namespace TipExpert.Core
 
         private List<TEntity> _ReadFromFile()
         {
-            if (!File.Exists(_filePath))
-                return new List<TEntity>();
+            lock (_lockObject)
+            {
+                if (!File.Exists(_filePath))
+                    return new List<TEntity>();
 
-            var content = File.ReadAllText(_filePath);
-            var entities = JsonConvert.DeserializeObject<List<TEntity>>(content) ?? new List<TEntity>();
+                var content = File.ReadAllText(_filePath);
+                var entities = JsonConvert.DeserializeObject<List<TEntity>>(content) ?? new List<TEntity>();
 
-            OnEntitiesLoaded(entities);
+                OnEntitiesLoaded(entities);
 
-            return entities;
+                return entities;
+            }
         }
     }
 }
