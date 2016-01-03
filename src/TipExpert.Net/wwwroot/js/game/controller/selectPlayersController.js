@@ -7,11 +7,7 @@ game.controller('selectPlayersController', [
     function($scope, $modalInstance, authService, userService, gameService, alertService, game) {
 
         var selectedplayers = game.players.slice(0);
-
-        var areUserEqual = function(user, otherUser) {
-            return user.id === otherUser.id;
-        };
-
+        
         $scope.toggleUserSelection = function(user) {
 
             // current user always has to be part of the players list
@@ -27,7 +23,7 @@ game.controller('selectPlayersController', [
                 // if not selected remove the user from the player-list of the game
                 angular.forEach(selectedplayers, function(player) {
 
-                    if (areUserEqual(user, player)) {
+                    if (user.userId === player.userId) {
                         var index = selectedplayers.indexOf(player);
                         selectedplayers.splice(index, 1);
                     }
@@ -55,7 +51,7 @@ game.controller('selectPlayersController', [
                 angular.forEach(users, function(user) {
                     angular.forEach(selectedplayers, function(player) {
 
-                        if (areUserEqual(user, player))
+                        if (user.userId === player.userId)
                             user.selected = true;
                     });
                 });
