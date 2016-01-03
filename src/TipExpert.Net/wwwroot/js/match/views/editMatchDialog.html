@@ -6,16 +6,25 @@
     <div class="modal-body">
         <div class="form-group">
             <label class="left control-label">Due Date: </label>
-                
+
             <div class="left">
                 <p class="input-group">
-                    <input type="text" class="form-control" ng-model="match.dueDate" 
-                            is-open="opened" ng-required="true" close-text="Close" datepicker-popup="dd.MM.yyyy"/>
+                    <input type="text" class="form-control" ng-model="match.dueDate"
+                           is-open="opened" ng-required="true" close-text="Close" datepicker-popup="dd.MM.yyyy"/>
                 </p>
             </div>
+            
+            <label class="left control-label match-score-left-col">Finished: </label>
+
+            <div class="left">
+                <p class="input-group">
+                    <input type="checkbox" ng-model="match.isFinished" ng-true-value="true" ng-false-value="false">
+                </p>
+            </div>
+
             <div class="clearfix"></div>
         </div>
-            
+
         <table>
             <tr><th>Home</th><th></th><th>Guest</th></tr>
             <tr>

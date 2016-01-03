@@ -44,6 +44,7 @@ namespace TipExpert.Net.Controllers
             match.GuestTeam = matchDto.guestTeam;
             match.HomeTeam = matchDto.homeTeam;
             match.LeagueId = matchDto.leagueId;
+            match.IsFinished = matchDto.isFinished;
 
             await _matchStore.SaveChangesAsync();
 
