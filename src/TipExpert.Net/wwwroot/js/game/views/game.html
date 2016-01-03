@@ -18,7 +18,7 @@
 
             <div class="input-group" ng-class="{ 'has-error' : stakeForm.stake.$invalid && submitted }">
                 <div class="left">
-                    <input type="number" name="stake" ng-model="stake" class="form-control" required min="{{ minStake }}">
+                    <input type="number" name="stake" ng-model="game.player.stake" class="form-control" required min="{{ game.minStake }}">
                 </div>
 
                 <span class="input-group-btn left">

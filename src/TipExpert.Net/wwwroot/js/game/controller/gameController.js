@@ -2,55 +2,54 @@
 
 var game = angular.module('tipExpert.game');
 
-game.controller('gameController', ['$scope', '$modal', '$stateParams', 'gameService', 'alertService', function($scope, $modal, $stateParams, gameService, alertService) {
-    
-    $scope.game = { };
-    $scope.submitted = true;
-    $scope.minStake = 0.0;
-    $scope.stake = 0.0;
-    $scope.editStake = false;
+game.controller('gameController', [
+    '$scope', '$modal', '$stateParams', 'gameService', 'alertService',
+    function ($scope, $modal, $stateParams, gameService, alertService) {
 
-    $scope.cancelEditStake = function() {
-        $scope.stake = $scope.game.player.stake;
+        $scope.game = {};
+        $scope.submitted = true;
         $scope.editStake = false;
-    };
 
-    $scope.saveStake = function() {
-        gameService.updateStake($scope.game.id, $scope.game.player.id, $scope.stake, 
-            function() {
-                $scope.game.player.stake = $scope.stake;
-                $scope.editStake = false;
-            }, 
-            alertService.error);
-    };
+        $scope.cancelEditStake = function() {
+            $scope.stake = $scope.game.player.stake;
+            $scope.editStake = false;
+        };
 
-    $scope.saveTip = function(tip) {
+        $scope.saveStake = function() {
+            gameService.updateStake($scope.game.id, $scope.game.player.stake)
+                .success(function(game) {
+                    $scope.game = game;
+                    $scope.editStake = false;
+                })
+                .error(alertService.error);
+        };
 
-        gameService.updateTip($scope.game.id, tip.match, tip, 
-            function(homeTip, guestTip) {
-                tip.oldHomeTip = homeTip;
-                tip.oldGuestTip = guestTip;
+        $scope.saveTip = function(tip) {
 
-                tip.showSaveButton = false;
-            }, 
-            alertService.error);
-    };
+            gameService.updateTip($scope.game.id, tip.match, tip,
+                function(homeTip, guestTip) {
+                    tip.oldHomeTip = homeTip;
+                    tip.oldGuestTip = guestTip;
 
-    $scope.cancelTipEditing = function(tip) {
-        
-        tip.homeTip = tip.oldHomeTip;
-        tip.guestTip = tip.oldGuestTip;
+                    tip.showSaveButton = false;
+                },
+                alertService.error);
+        };
 
-        tip.showSaveButton = false;
-    };
+        $scope.cancelTipEditing = function(tip) {
 
-    if ($stateParams.gameId) {
-        gameService.load($stateParams.gameId,
-            function(game) {
-                $scope.game = game;
-                $scope.minStake = game.minStake;
-                $scope.stake = game.player.stake;
-            },
-            alertService.error);
+            tip.homeTip = tip.oldHomeTip;
+            tip.guestTip = tip.oldGuestTip;
+
+            tip.showSaveButton = false;
+        };
+
+        if ($stateParams.gameId) {
+            gameService.load($stateParams.gameId)
+                .success(function(game) {
+                    $scope.game = game;
+                })
+                .error(alertService.error);
+        }
     }
-}]);
+]);

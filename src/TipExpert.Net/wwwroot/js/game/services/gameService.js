@@ -17,12 +17,8 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
             return $http.get('/api/games/finished');
         },
 
-        load: function(gameId, success, error) {
-            $http.get('/api/games/' + gameId)
-                .success(function(data, status, headers, config) {
-                    success(data);
-                })
-                .error(error);
+        load: function(gameId) {
+            return $http.get('/api/games/' + gameId);
         },
 
         loadForEdit: function(gameId) {
@@ -41,27 +37,19 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 minStake: game.minStake
             }
 
-            return $http.put('/api/games/' + game.id + '/data', gameData);
+            return $http.put('/api/games/' + game.id + '/edit/data', gameData);
         },
 
         updatePlayers: function (gameId, players) {
-            return $http.put('/api/games/' + gameId + '/players', players);
+            return $http.put('/api/games/' + gameId + '/edit/players', players);
         },
 
         updateMatches: function(gameId, matches) {
-            return $http.put('/api/games/' + gameId + '/matches', matches);
+            return $http.put('/api/games/' + gameId + '/edit/matches', matches);
         },
 
-        updateStake: function(gameId, playerId, newStake, success, error) {
-            $http.put('/api/games/' + gameId + '/stake',
-                {
-                    playerId: playerId,
-                    stake: newStake
-                })
-                .success(function(data, status, headers, config) {
-                    success();
-                })
-                .error(error);
+        updateStake: function(gameId, newStake) {
+            return $http.put('/api/games/' + gameId + '/stake', newStake);
         },
 
         updateTip: function(gameId, matchId, tip, success, error) {
@@ -79,7 +67,7 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         },
 
         delete: function(gameId) {
-            return $http.delete('/api/games/' + gameId);
+            return $http.delete('/api/games/' + gameId + '/edit');
         }
     };
 }]);

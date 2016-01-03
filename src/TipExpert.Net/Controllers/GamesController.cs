@@ -24,7 +24,7 @@ namespace TipExpert.Net.Controllers
         public async Task<GameDto> GetGameForUser(Guid gameId)
         {
             var game = await _gameStore.GetById(gameId);
-            return Mapper.Map<GameDto>(game);
+            return _PrepareGameForUser(game);
         }
 
         [HttpGet("{gameId}/edit")]
@@ -62,7 +62,24 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<GameDto>(game);
         }
 
-        [HttpPut("{gameId}/data")]
+        [HttpPut("{gameId}/stake")]
+        public async Task<IActionResult> UpdateStake(Guid gameId, [FromBody]int stake)
+        {
+            var game = await _gameStore.GetById(gameId);
+            var userId = User.GetUserIdAsGuid();
+
+            var player = game.Players.FirstOrDefault(x => x.UserId == userId);
+
+            if (player == null)
+                return HttpBadRequest("The user is not defined as a player of that game!");
+
+            player.Stake = stake;
+            await _gameStore.SaveChangesAsync();
+
+            return Json(_PrepareGameForUser(game));
+        }
+
+        [HttpPut("{gameId}/edit/data")]
         public async Task<IActionResult> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
         {
             var game = await _gameStore.GetById(gameId);
@@ -79,7 +96,7 @@ namespace TipExpert.Net.Controllers
             return Json(Mapper.Map<GameDto>(game));
         }
 
-        [HttpPut("{gameId}/players")]
+        [HttpPut("{gameId}/edit/players")]
         public async Task<IActionResult> UpdatePlayers(Guid gameId, [FromBody]PlayerDto[] playerDtos)
         {
             var game = await _gameStore.GetById(gameId);
@@ -101,7 +118,7 @@ namespace TipExpert.Net.Controllers
             return Json(Mapper.Map<GameDto>(game));
         }
 
-        [HttpPut("{gameId}/matches")]
+        [HttpPut("{gameId}/edit/matches")]
         public async Task<IActionResult> UpdateMatches(Guid gameId, [FromBody]MatchTipsDto[] matchDtos)
         {
             var game = await _gameStore.GetById(gameId);
@@ -131,7 +148,7 @@ namespace TipExpert.Net.Controllers
             return Json(Mapper.Map<GameDto>(game));
         }
 
-        [HttpDelete("{gameId}")]
+        [HttpDelete("{gameId}/edit")]
         public async Task<IActionResult> DeleteGame(Guid gameId)
         {
             var game = await _gameStore.GetById(gameId);
@@ -148,6 +165,16 @@ namespace TipExpert.Net.Controllers
             await _gameStore.SaveChangesAsync();
 
             return Json(new { success = true });
+        }
+
+        private GameDto _PrepareGameForUser(Game game)
+        {
+            var userId = User.GetUserIdAsGuid();
+            var gameDto = Mapper.Map<GameDto>(game);
+
+            gameDto.player = gameDto.players.FirstOrDefault(x => x.userId == userId);
+
+            return gameDto;
         }
 
         private bool _IsCurrentUserGameCreator(Game game)
