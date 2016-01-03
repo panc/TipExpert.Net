@@ -84,10 +84,17 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet]
-        public async Task<UserDto[]> Get()
+        public async Task<UserDto[]> GetAllUser()
         {
             var user = await _userStore.GetAll();
             return Mapper.Map<UserDto[]>(user);
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<UserDto> GetUserProfile(Guid userId)
+        {
+            var user = await _userStore.GetById(userId);
+            return Mapper.Map<UserDto>(user);
         }
 
         [HttpGet("friends")]

@@ -13,5 +13,7 @@ namespace TipExpert.Core
         public string PasswordHash { get; set; }
 
         public int Role { get; set; }
+
+        public int Coins { get; set; }
     }
 }

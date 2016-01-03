@@ -10,11 +10,11 @@ user.controller('userProfileController', [
 
         if ($stateParams.userId) {
             userService.loadProfile($stateParams.userId)
-                .then(function(user) {
+                .success(function(user) {
                     $scope.user = user;
                     $scope.hideRole = user.role == userConfig.roles.user;
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         }
     }
 ]);

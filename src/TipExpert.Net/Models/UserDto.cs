@@ -11,5 +11,7 @@ namespace TipExpert.Net.Models
         public string email { get; set; }
 
         public int role { get; set; }
+
+        public int coins { get; set; }
     }
 }
