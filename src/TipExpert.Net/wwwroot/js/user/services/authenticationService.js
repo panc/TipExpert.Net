@@ -31,15 +31,18 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
         if (!id || id == '')
             return;
 
-        userService.loadProfile(id).then(changeUser);
+        userService.loadProfile(id)
+            .success(changeUser)
+            .error(function() {
+                console.log('Failed to reload user profile!');
+            });
     };
 
     reloadProfile();
 
     return {
-        authorize: function(accessLevel, role) {
-            if (role === undefined)
-                role = currentUser.role;
+        authorize: function(accessLevel) {
+            var role = currentUser.role;
 
             if (accessLevel == accessLevels.admin)
                 return role == userRoles.admin;
@@ -49,6 +52,7 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
 
             return true;
         },
+
         signup: function(user) {
             var deferred = $q.defer();
 
@@ -57,12 +61,11 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
                     changeUser(user);
                     deferred.resolve(user);
                 })
-                .error(function (error) {
-                    deferred.reject(error.message);
-                });
+                .error(deferred.reject);
 			
             return deferred.promise;
         },
+
         login: function (user) {
             var deferred = $q.defer();
 
@@ -71,23 +74,27 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
                     changeUser(user);
                     deferred.resolve(user);
                 })
-                .error(function(error) {
-                    deferred.reject(error.message);
-                });
+                .error(deferred.reject);
 
             return deferred.promise;
         },
-        logout: function(success, error) {
-            $http.post('/logout').success(function() {
 
+        logout: function () {
+            var deferred = $q.defer();
+
+            $http.post('api/account/logout').success(function () {
                 changeUser({
                     username: '',
                     role: userRoles.public
                 });
 
-                success();
-            }).error(error);
+                deferred.resolve();
+            })
+            .error(deferred.reject);
+
+            return deferred.promise;
         },
+
         reloadCurrentUserProfile: reloadProfile,
         user: currentUser
     };

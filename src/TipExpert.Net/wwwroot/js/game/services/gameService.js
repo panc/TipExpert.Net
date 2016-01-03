@@ -6,33 +6,15 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
 
     return {
         loadGamesForCurrentUser: function() {
-            var deferred = $q.defer();
-
-            $http.get('/api/games/invited')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/games/invited');
         },
 
         loadGamesCreatedByCurrentUser: function() {
-            var deferred = $q.defer();
-
-            $http.get('/api/games/created')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/games/created');
         },
 
         loadFinishedGamesForCurrentUser: function() {
-            var deferred = $q.defer();
-
-            $http.get('/api/games/finished')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/games/finished');
         },
 
         load: function(gameId, success, error) {
@@ -44,28 +26,14 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         },
 
         loadForEdit: function(gameId) {
-            var deferred = $q.defer();
-
-            $http.get('/api/games/' + gameId + '/edit')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/games/' + gameId + '/edit');
         },
 
         create: function(newGame) {
-            var deferred = $q.defer();
-            
-            $http.post('/api/games', newGame)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.post('/api/games', newGame);
         },
 
         updateGameData: function (game) {
-            var deferred = $q.defer();
-
             var gameData = {
                 id: game.id,
                 title: game.title,
@@ -73,31 +41,15 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 minStake: game.minStake
             }
 
-            $http.put('/api/games/' + game.id + '/data', gameData)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.put('/api/games/' + game.id + '/data', gameData);
         },
 
         updatePlayers: function (gameId, players) {
-            var deferred = $q.defer();
-
-            $http.put('/api/games/' + gameId + '/players', players)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.put('/api/games/' + gameId + '/players', players);
         },
 
         updateMatches: function(gameId, matches) {
-            var deferred = $q.defer();
-
-            $http.put('/api/games/' + gameId + '/matches', matches)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.put('/api/games/' + gameId + '/matches', matches);
         },
 
         updateStake: function(gameId, playerId, newStake, success, error) {
@@ -127,7 +79,6 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         },
 
         delete: function(gameId) {
-
             return $http.delete('/api/games/' + gameId);
         }
     };

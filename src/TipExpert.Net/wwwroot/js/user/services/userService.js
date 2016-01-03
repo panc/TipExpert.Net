@@ -6,33 +6,15 @@ user.factory('userService', ['$http', '$q', function($http, $q) {
 
     return {
         loadAllUser: function() {
-            var deferred = $q.defer();
-
-            $http.get('/api/account')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/account');
         },
 
         loadFriendsForUser: function(user) {
-            var deferred = $q.defer();
-
-            $http.get('/api/account/friends')
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/account/friends');
         },
 
         loadProfile: function(userId) {
-            var deferred = $q.defer();
-
-            $http.get('/api/account/' + userId)
-                .success(deferred.resolve)
-                .error(deferred.reject);
-
-            return deferred.promise;
+            return $http.get('/api/account/' + userId);
         },
 
         update: function(usersToSave) {

@@ -38,10 +38,10 @@ game.controller('selectPlayersController', [
         $scope.save = function() {
 
             gameService.updatePlayers(game.id, selectedplayers)
-                .then(function(updatedGame) {
+                .success(function (updatedGame) {
                     $modalInstance.close(updatedGame);
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.cancel = function() {
@@ -49,7 +49,7 @@ game.controller('selectPlayersController', [
         };
 
         userService.loadFriendsForUser(authService.currentUser)
-            .then(function(users) {
+            .success(function (users) {
                 $scope.users = users;
 
                 angular.forEach(users, function(user) {
@@ -60,6 +60,6 @@ game.controller('selectPlayersController', [
                     });
                 });
             })
-            .catch(alertService.error);
+            .error(alertService.error);
     }
 ]);

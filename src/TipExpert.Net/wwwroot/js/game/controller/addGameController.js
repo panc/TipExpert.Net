@@ -14,11 +14,11 @@ game.controller('addGameController', [
                 return;
 
             gameService.create($scope.game)
-                .then(function(newGame) {
+                .success(function(newGame) {
                     $modalInstance.close();
                     $state.go('games.edit', { gameId: newGame.id });
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.cancel = function() {

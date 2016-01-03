@@ -10,10 +10,10 @@ game.controller('editGameController', [
 
         if ($stateParams.gameId) {
             gameService.loadForEdit($stateParams.gameId)
-                .then(function (game) {
+                .success(function (game) {
                     $scope.game = game;
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         }
 
         $scope.save = function() {
@@ -23,11 +23,11 @@ game.controller('editGameController', [
                 return;
 
             gameService.updateGameData($scope.game)
-                .then(function(updatedGame) {
+                .success(function(updatedGame) {
                     $scope.game = updatedGame;
                     alertService.info('Successfully saved!');
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.delete = function() {

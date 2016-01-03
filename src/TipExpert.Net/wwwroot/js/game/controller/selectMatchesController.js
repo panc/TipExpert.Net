@@ -47,10 +47,10 @@ game.controller('selectMatchesController', [
         $scope.save = function() {
 
             gameService.updateMatches(game.id, selectedMatches)
-                .then(function(updatedGame) {
+                .success(function (updatedGame) {
                     $modalInstance.close(updatedGame);
                 })
-                .catch(alertService.error);
+                .error(alertService.error);
         };
 
         $scope.cancel = function() {

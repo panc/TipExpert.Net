@@ -18,8 +18,8 @@ user.controller('userController', ['$scope', 'userService', 'alertService', func
     };
 
     userService.loadAllUser()
-        .then(function(users) {
+        .success(function(users) {
             $scope.users = users;
         })
-        .catch(alertService.error);
+        .error(alertService.error);
 }]);

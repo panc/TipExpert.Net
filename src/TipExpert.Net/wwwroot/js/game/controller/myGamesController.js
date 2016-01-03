@@ -15,16 +15,16 @@ game.controller('myGamesController', [
         };
 
         gameService.loadGamesCreatedByCurrentUser()
-            .then(function(games) {
+            .success(function(games) {
                 $scope.createdGames = games;
             })
-            .catch(alertService.error);
+            .error(alertService.error);
 
         gameService.loadGamesForCurrentUser()
-            .then(function(games) {
+            .success(function(games) {
                 $scope.invitedGames = games;
             })
-            .catch(alertService.error);
+            .error(alertService.error);
     }
 ]);
 

@@ -53,9 +53,7 @@ namespace TipExpert.Net.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            var r = Json(new { success = false, message = "Invalid login attemt." });
-            r.StatusCode = 500;
-            return r;
+            return HttpBadRequest("Invalid login attemt.");
         }
 
         [HttpPost("signup")]
@@ -82,9 +80,7 @@ namespace TipExpert.Net.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            var r = Json(new { success = false, message = message });
-            r.StatusCode = 500;
-            return r;
+            return HttpBadRequest(message);
         }
 
         [HttpGet]
@@ -122,18 +118,14 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<UserDto>(user);
         }
 
-        #region TODO
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost("[Action]")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
+        [HttpPost("logout")]
+//        [ValidateAntiForgeryToken]
+        public async Task LogOut()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
+        #region TODO
 
         //
         // POST: /Account/ExternalLogin

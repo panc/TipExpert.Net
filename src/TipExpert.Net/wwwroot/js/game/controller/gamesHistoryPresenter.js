@@ -6,9 +6,9 @@ game.controller('gamesHistoryController', ['$scope', '$modal', 'gameService', 'a
     $scope.games = [];
 
     gameService.loadFinishedGamesForCurrentUser()
-        .then(function(games) {
+        .success(function (games) {
             $scope.games = games;
         })
-        .catch(alertService.error);
+        .error(alertService.error);
 }]);
 

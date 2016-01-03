@@ -7,10 +7,11 @@ user.controller('navigationController', ['$scope', '$state', 'authService', 'ale
     $scope.user = authService.user;
 
     $scope.logout = function() {
-        authService.logout(function () {
-            $state.go('home');
-        },
-        alertService.error);
+        authService.logout()
+            .then(function() {
+                $state.go('home');
+            })
+            .catch(alertService.error);
     };
 
     $scope.login = function() {
