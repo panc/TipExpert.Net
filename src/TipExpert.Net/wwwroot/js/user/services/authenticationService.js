@@ -26,20 +26,6 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
         $cookieStore.put('user', currentUser);
     };
 
-    var reloadProfile = function() {
-        var id = currentUser.id;
-        if (!id || id == '')
-            return;
-
-        userService.loadProfile(id)
-            .success(changeUser)
-            .error(function() {
-                console.log('Failed to reload user profile!');
-            });
-    };
-
-    reloadProfile();
-
     return {
         authorize: function(accessLevel) {
             var role = currentUser.role;
@@ -95,7 +81,6 @@ userModule.factory('authService', ['$http', '$q', '$cookieStore', 'userService',
             return deferred.promise;
         },
 
-        reloadCurrentUserProfile: reloadProfile,
         user: currentUser
     };
 }]);
