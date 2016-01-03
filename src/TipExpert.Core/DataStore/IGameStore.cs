@@ -11,9 +11,11 @@ namespace TipExpert.Core
 
         Task<Game> GetById(Guid id);
 
-        Task<Game[]> GetAll();
-
         Task<Game[]> GetGamesCreatedByUser(Guid userId);
+
+        Task<Game[]> GetGamesUserIsInvitedTo(Guid userId);
+
+        Task<Game[]> GetFinishedGames(Guid userId);
 
         Task SaveChangesAsync();
     }

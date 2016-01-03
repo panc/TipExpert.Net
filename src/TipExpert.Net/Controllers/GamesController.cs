@@ -21,10 +21,15 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet("{gameId}")]
-        public async Task<GameDto> GetGameForUser(Guid gameId)
+        public async Task<IActionResult> GetGameForUser(Guid gameId)
         {
             var game = await _gameStore.GetById(gameId);
-            return _PrepareGameForUser(game);
+
+            IActionResult errorResult = _CheckGameIsNotNull(game, gameId);
+            if (errorResult != null)
+                return errorResult;
+
+            return Json(_PrepareGameForUser(game));
         }
 
         [HttpGet("{gameId}/edit")]
@@ -32,8 +37,9 @@ namespace TipExpert.Net.Controllers
         {
             var game = await _gameStore.GetById(gameId);
 
-            if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Only the game creator can edit the game!");
+            IActionResult errorResult = _CheckGameIsNotNull(game, gameId);
+            if (errorResult != null)
+                return errorResult;
             
             return Json(Mapper.Map<GameDto>(game));
         }
@@ -44,6 +50,24 @@ namespace TipExpert.Net.Controllers
             var userId = User.GetUserIdAsGuid();
 
             var games = await _gameStore.GetGamesCreatedByUser(userId);
+            return Mapper.Map<GameDto[]>(games);
+        }
+
+        [HttpGet("invited")]
+        public async Task<GameDto[]> GetInvitedGames()
+        {
+            var userId = User.GetUserIdAsGuid();
+
+            var games = await _gameStore.GetGamesUserIsInvitedTo(userId);
+            return Mapper.Map<GameDto[]>(games);
+        }
+
+        [HttpGet("finished")]
+        public async Task<GameDto[]> GetFinishedGames()
+        {
+            var userId = User.GetUserIdAsGuid();
+
+            var games = await _gameStore.GetFinishedGames(userId);
             return Mapper.Map<GameDto[]>(games);
         }
 
@@ -66,8 +90,15 @@ namespace TipExpert.Net.Controllers
         public async Task<IActionResult> UpdateStake(Guid gameId, [FromBody]int stake)
         {
             var game = await _gameStore.GetById(gameId);
-            var userId = User.GetUserIdAsGuid();
 
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
+
+            var userId = User.GetUserIdAsGuid();
             var player = game.Players.FirstOrDefault(x => x.UserId == userId);
 
             if (player == null)
@@ -84,9 +115,14 @@ namespace TipExpert.Net.Controllers
         {
             var game = await _gameStore.GetById(gameId);
 
-            if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Only the game creator can edit the game!");
-                
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, gameId) ??
+                _CheckCurrentUserIsGameCreator(game) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
+
             game.Title = gameDto.title;
             game.Description = gameDto.description;
             game.MinStake = gameDto.minStake;
@@ -101,8 +137,13 @@ namespace TipExpert.Net.Controllers
         {
             var game = await _gameStore.GetById(gameId);
 
-            if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Not allowed to edit game!");
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, gameId) ??
+                _CheckCurrentUserIsGameCreator(game) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
 
             game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
 
@@ -123,8 +164,13 @@ namespace TipExpert.Net.Controllers
         {
             var game = await _gameStore.GetById(gameId);
 
-            if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Only the game creator can edit the game!");
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, gameId) ??
+                _CheckCurrentUserIsGameCreator(game) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
                 
             var ids = matchDtos.Select(x => x.matchId).ToList();
             var list = new List<MatchTips>();
@@ -153,11 +199,13 @@ namespace TipExpert.Net.Controllers
         {
             var game = await _gameStore.GetById(gameId);
 
-            if (!_IsCurrentUserGameCreator(game))
-                return HttpBadRequest("Only the game creator can edit the game!");
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, gameId) ??
+                _CheckCurrentUserIsGameCreator(game) ?? 
+                _CheckGameIsNotFinished(game);
 
-            if (game.IsFinished)
-                return HttpBadRequest("Can not delete a finished game!");
+            if (errorResult != null)
+                return errorResult;
 
             // todo: check whether the game is already running
 
@@ -177,10 +225,27 @@ namespace TipExpert.Net.Controllers
             return gameDto;
         }
 
-        private bool _IsCurrentUserGameCreator(Game game)
+        private IActionResult _CheckCurrentUserIsGameCreator(Game game)
         {
             var userId = User.GetUserIdAsGuid();
-            return game.CreatorId == userId;
+
+            return game.CreatorId == userId
+                ? null
+                : HttpBadRequest("Only the game creator can edit the game!");
+        }
+
+        private IActionResult _CheckGameIsNotFinished(Game game)
+        {
+            return (game.IsFinished)
+                ? HttpBadRequest("Can not change a finished game!")
+                : null;
+        }
+
+        private IActionResult _CheckGameIsNotNull(Game game, Guid gameId)
+        {
+            return (game == null)
+                ? HttpBadRequest($"Game with id '{gameId}' not found!")
+                : null;
         }
     }
 }

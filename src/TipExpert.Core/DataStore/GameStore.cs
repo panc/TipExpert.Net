@@ -33,15 +33,24 @@ namespace TipExpert.Core
             return Task.Run(() => Entities.Remove(game));
         }
 
-        public Task<Game[]> GetAll()
-        {
-            return Task.Run(() => Entities.ToArray());
-        }
-
         public Task<Game[]> GetGamesCreatedByUser(Guid userId)
         {
             return Task.Run(() => Entities
                 .Where(x => x.CreatorId == userId && x.IsFinished == false)
+                .ToArray());
+        }
+
+        public Task<Game[]> GetGamesUserIsInvitedTo(Guid userId)
+        {
+            return Task.Run(() => Entities
+                .Where(x => !x.IsFinished && x.Players?.FirstOrDefault(p => p.UserId == userId) != null)
+                .ToArray());
+        }
+
+        public Task<Game[]> GetFinishedGames(Guid userId)
+        {
+            return Task.Run(() => Entities
+                .Where(x => x.IsFinished && x.Players?.FirstOrDefault(p => p.UserId == userId) != null)
                 .ToArray());
         }
 
