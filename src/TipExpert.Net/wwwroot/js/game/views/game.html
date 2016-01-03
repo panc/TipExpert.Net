@@ -47,33 +47,33 @@
         </ul>
     </div>
  
-    <div class="game-tips row" ng-show="notFinishedMatches.length > 0">
+    <div class="game-tips row" ng-show="game.matches.length > 0">
         <h3 translate="GAME-TIPS"></h3>
 		<p translate="GAME-TIPS-DESCRIPTION"></p>
         
 		<table>
-            <tr ng-repeat="tip in notFinishedMatches = (game.player.tips | filter:{ finished: false })"
-                ng-init="tip.oldHomeTip = tip.homeTip; tip.oldGuestTip = tip.guestTip">
+            <tr ng-repeat="mt in game.matches track by mt.matchId"
+                ng-init="mt.tipOfPlayer.oldHomeScore = mt.tipOfPlayer.homeScore; mt.tipOfPlayer.oldGuestScore = mt.tipOfPlayer.guestScore">
 
-                <td class="game-tip-team-col">{{ tip.homeTeam }}</td>
+                <td class="game-tip-team-col">{{ mt.match.homeTeam }}</td>
                 <td>&nbsp; - &nbsp;</td>
-                <td class="game-tip-team-col">{{ tip.guestTeam }}</td>
+                <td class="game-tip-team-col">{{ mt.match.guestTeam }}</td>
                 <td class="game-tip-score-left-col">
-                    <input type="text" class="form-control game-tip-score" ng-model="tip.homeTip"
-                           ng-change="tip.showSaveButton = true" />
+                    <input type="text" class="form-control game-tip-score" ng-model="mt.tipOfPlayer.homeScore"
+                           ng-change="mt.showSaveButton = true" />
                 </td>
                 <td>&nbsp; : &nbsp;</td>
                 <td>
-                    <input type="text" class="form-control game-tip-score" ng-model="tip.guestTip"
-                           ng-change="tip.showSaveButton = true" />
+                    <input type="text" class="form-control game-tip-score" ng-model="mt.tipOfPlayer.guestScore"
+                           ng-change="mt.showSaveButton = true" />
                 </td>
-                <td ng-show="tip.showSaveButton">
+                <td ng-show="mt.showSaveButton">
                     <span class="input-group-btn left">
-                        <button class="btn btn-default" type="button" ng-click="saveTip(tip)">
+                        <button class="btn btn-default" type="button" ng-click="saveTip(mt)">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
                         
-						<button class="btn btn-default" type="button" ng-click="cancelTipEditing(tip)">
+						<button class="btn btn-default" type="button" ng-click="cancelTipEditing(mt)">
 							<span class="glyphicon glyphicon-remove"></span>
 						</button>
                     </span>

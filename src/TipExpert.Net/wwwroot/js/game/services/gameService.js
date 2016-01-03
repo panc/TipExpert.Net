@@ -52,18 +52,8 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
             return $http.put('/api/games/' + gameId + '/stake', newStake);
         },
 
-        updateTip: function(gameId, matchId, tip, success, error) {
-            $http.put('/api/games/' + gameId + '/tip',
-                {
-                    tip: tip.id,
-                    match: matchId,
-                    homeTip: tip.homeTip,
-                    guestTip: tip.guestTip
-                })
-                .success(function(data, status, headers, config) {
-                    success(data.homeTip, data.guestTip);
-                })
-                .error(error);
+        updateTip: function(gameId, matchTip) {
+            return $http.put('/api/games/' + gameId + '/tip', matchTip);
         },
 
         delete: function(gameId) {

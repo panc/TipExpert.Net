@@ -9,6 +9,8 @@ namespace TipExpert.Net.Models
 
         public MatchDto match { get; set; }
 
+        public TipDto tipOfPlayer { get; set; }
+
         public List<TipDto> tips { get; set; }
     }
 }

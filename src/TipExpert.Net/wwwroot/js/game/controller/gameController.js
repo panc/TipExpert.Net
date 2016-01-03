@@ -24,24 +24,22 @@ game.controller('gameController', [
                 .error(alertService.error);
         };
 
-        $scope.saveTip = function(tip) {
+        $scope.saveTip = function(mt) {
+            gameService.updateTip($scope.game.id, mt)
+                .success(function(game) {
+                    $scope.game = game;
 
-            gameService.updateTip($scope.game.id, tip.match, tip,
-                function(homeTip, guestTip) {
-                    tip.oldHomeTip = homeTip;
-                    tip.oldGuestTip = guestTip;
-
-                    tip.showSaveButton = false;
-                },
-                alertService.error);
+                    mt.showSaveButton = false;
+                    mt.tipOfPlayer.oldHomeScore = mt.tipOfPlayer.homeScore;
+                    mt.tipOfPlayer.oldGuestScore = mt.tipOfPlayer.guestScore;
+                })
+                .error(alertService.error);
         };
 
-        $scope.cancelTipEditing = function(tip) {
-
-            tip.homeTip = tip.oldHomeTip;
-            tip.guestTip = tip.oldGuestTip;
-
-            tip.showSaveButton = false;
+        $scope.cancelTipEditing = function(mt) {
+            mt.showSaveButton = false;
+            mt.tipOfPlayer.homeScore = mt.tipOfPlayer.oldHomeScore;
+            mt.tipOfPlayer.guestScore = mt.tipOfPlayer.oldGuestScore;
         };
 
         if ($stateParams.gameId) {

@@ -110,6 +110,44 @@ namespace TipExpert.Net.Controllers
             return Json(_PrepareGameForUser(game));
         }
 
+        [HttpPut("{gameId}/tip")]
+        public async Task<IActionResult> UpdateTip(Guid gameId, [FromBody]MatchTipsDto matchTipDto)
+        {
+            var game = await _gameStore.GetById(gameId);
+
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
+
+            var userId = User.GetUserIdAsGuid();
+            var match = game.Matches.FirstOrDefault(x => x.MatchId == matchTipDto.matchId);
+
+            if (match == null)
+                return HttpBadRequest("The match is not defined for that game!");
+
+            var tip = match.Tips?.FirstOrDefault(x => x.UserId == userId);
+            if (tip == null)
+            {
+                tip = new Tip();
+                tip.UserId = userId;
+
+                if (match.Tips == null)
+                    match.Tips = new List<Tip>();
+
+                match.Tips.Add(tip);
+            }
+
+            tip.HomeScore = matchTipDto.tipOfPlayer.homeScore;
+            tip.GuestScore = matchTipDto.tipOfPlayer.guestScore;
+
+            await _gameStore.SaveChangesAsync();
+
+            return Json(_PrepareGameForUser(game));
+        }
+
         [HttpPut("{gameId}/edit/data")]
         public async Task<IActionResult> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
         {
@@ -220,7 +258,16 @@ namespace TipExpert.Net.Controllers
             var userId = User.GetUserIdAsGuid();
             var gameDto = Mapper.Map<GameDto>(game);
 
-            gameDto.player = gameDto.players.FirstOrDefault(x => x.userId == userId);
+            gameDto.player = gameDto.players?.FirstOrDefault(x => x.userId == userId);
+
+            var matches = gameDto.matches?.Where(x => x.match != null && !x.match.isFinished).ToArray();
+
+            foreach (var match in matches ?? Enumerable.Empty<MatchTipsDto>())
+            {
+                match.tipOfPlayer = match.tips?.FirstOrDefault(x => x.userId == userId);
+            }
+
+            gameDto.matches = matches?.ToList();
 
             return gameDto;
         }

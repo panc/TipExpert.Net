@@ -17,5 +17,7 @@ namespace TipExpert.Net.Models
         public int guestScore { get; set; }
 
         public string dueDate { get; set; }
+
+        public bool isFinished { get; set; }
     }
 }
