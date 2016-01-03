@@ -54,4 +54,3 @@ game.controller('gameController', ['$scope', '$modal', '$stateParams', 'gameServ
             alertService.error);
     }
 }]);
-
