@@ -93,7 +93,7 @@
 	</div>
 	
 	
-	<div class="game-finished-tips row" ng-show="finishedMatches.length > 0">
+	<div class="game-finished-tips row" ng-show="game.finishedMatches.length > 0">
 		<h3 translate="GAME-STATISTICS"></h3>
 		<p translate="GAME-STATISTICS-ALLMATCHES"></p>
 		
@@ -107,21 +107,21 @@
 				<th></th>
 				<th></th>
 				<th class="game-tip-result-caption-col" 
-					ng-repeat="p in game.allPlayers">{{ p.name }}</th>
+					ng-repeat="p in game.players">{{ p.name }}</th>
 			</tr>
 			
-			<tr ng-repeat="tip in finishedMatches = (game.player.tips | filter:{ finished: true })">
-				<td class="game-tip-team-col">{{ tip.homeTeam }}</td>
+			<tr ng-repeat="mt in game.finishedMatches track by mt.matchId">
+				<td class="game-tip-team-col">{{ mt.match.homeTeam }}</td>
 				<td>&nbsp; - &nbsp;</td>
-				<td class="game-tip-team-col">{{ tip.guestTeam }}</td>
-				<td class="game-tip-score-left-col">{{ tip.homeResult }}</td>
+				<td class="game-tip-team-col">{{ mt.match.guestTeam }}</td>
+				<td class="game-tip-score-left-col">{{ mt.match.homeScore }}</td>
 				<td>&nbsp; : &nbsp;</td>
-				<td>{{ tip.guestResult }}</td>
+				<td>{{ mt.match.guestScore }}</td>
 				
-				<td ng-repeat="t in tipsOfAllPlayers = (tip.finishedTipsOfAllPlayers)">
+				<td ng-repeat="tip in mt.tips track by tip.userId">
 				
 					<div class="game-tip-result-col">
-						{{ t.homeTip }}&nbsp; : &nbsp;{{ t.guestTip }} ({{ t.points }})
+						{{ tip.homeScore }}&nbsp; : &nbsp;{{ tip.guestScore }} ({{ tip.points }})
 					</div>
 				
 				</td>
@@ -129,12 +129,12 @@
 			
 			<tr>
 				<td colspan="6" class="game-tip-sumrow-col" translate="GAME-SUMPOINTS-COL"></td>
-				<td class="game-tip-sumrow-value-col" ng-repeat="p in game.allPlayers">{{ p.points }}</td>	
+				<td class="game-tip-sumrow-value-col" ng-repeat="p in game.players">{{ p.points }}</td>	
 			</tr>
 			
 			<tr>
 				<td colspan="6" class="game-tip-rankingrow-col" translate="GAME-RANKING-COL"></td>
-				<td class="game-tip-rankingrow-value-col" ng-repeat="p in game.allPlayers">{{ p.ranking }}.</td>	
+				<td class="game-tip-rankingrow-value-col" ng-repeat="p in game.players">{{ p.ranking }}.</td>	
 			</tr>
 		</table>
 	</div>
