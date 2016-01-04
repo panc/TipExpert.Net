@@ -128,15 +128,14 @@ namespace TipExpert.Net.Controllers
             if (match == null)
                 return HttpBadRequest("The match is not defined for that game!");
 
-            var tip = match.Tips?.FirstOrDefault(x => x.UserId == userId);
+            if (match.Tips == null)
+                match.Tips = new List<Tip>();
+
+            var tip = match.Tips.FirstOrDefault(x => x.UserId == userId);
             if (tip == null)
             {
                 tip = new Tip();
                 tip.UserId = userId;
-
-                if (match.Tips == null)
-                    match.Tips = new List<Tip>();
-
                 match.Tips.Add(tip);
             }
 
@@ -215,10 +214,7 @@ namespace TipExpert.Net.Controllers
 
             foreach (var id in ids)
             {
-                MatchTips entry = null;
-
-                if (game.Matches != null)
-                    entry = game.Matches.FirstOrDefault(x => x.MatchId == id);
+                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == id);
 
                 if (entry == null)
                     entry = new MatchTips { MatchId = id };
@@ -265,9 +261,13 @@ namespace TipExpert.Net.Controllers
             foreach (var match in matches ?? Enumerable.Empty<MatchTipsDto>())
             {
                 match.tipOfPlayer = match.tips?.FirstOrDefault(x => x.userId == userId);
+                match.tips = null; // do not pass all tips to the client so that others can not see the tips of all players...
             }
 
+            var finishedMatches = gameDto.matches?.Where(x => x.match != null && x.match.isFinished).ToArray();
+
             gameDto.matches = matches?.ToList();
+            gameDto.finishedMatches = finishedMatches?.ToList();
 
             return gameDto;
         }
