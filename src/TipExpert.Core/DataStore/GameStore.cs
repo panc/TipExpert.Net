@@ -54,6 +54,13 @@ namespace TipExpert.Core
                 .ToArray());
         }
 
+        public Task<Game[]> GetGamesForMatch(Guid matchId)
+        {
+            return Task.Run(() => Entities
+                .Where(x => x.Matches?.FirstOrDefault(m => m.MatchId == matchId) != null)
+                .ToArray());
+        }
+
         public Task<Game> GetById(Guid id)
         {
             return Task.Run(() =>

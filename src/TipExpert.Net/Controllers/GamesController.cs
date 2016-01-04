@@ -256,17 +256,16 @@ namespace TipExpert.Net.Controllers
 
             gameDto.player = gameDto.players?.FirstOrDefault(x => x.userId == userId);
 
-            var matches = gameDto.matches?.Where(x => x.match != null && !x.match.isFinished).ToArray();
+            var finishedMatches = gameDto.matches?.Where(x => x.match != null && x.match.isFinished).ToArray();
+            var notFinishedMatches = gameDto.matches?.Where(x => x.match != null && !x.match.isFinished).ToArray();
 
-            foreach (var match in matches ?? Enumerable.Empty<MatchTipsDto>())
+            foreach (var match in notFinishedMatches ?? Enumerable.Empty<MatchTipsDto>())
             {
                 match.tipOfPlayer = match.tips?.FirstOrDefault(x => x.userId == userId);
                 match.tips = null; // do not pass all tips to the client so that others can not see the tips of all players...
             }
-
-            var finishedMatches = gameDto.matches?.Where(x => x.match != null && x.match.isFinished).ToArray();
-
-            gameDto.matches = matches?.ToList();
+            
+            gameDto.matches = notFinishedMatches?.ToList();
             gameDto.finishedMatches = finishedMatches?.ToList();
 
             return gameDto;

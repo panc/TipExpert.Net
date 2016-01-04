@@ -3,6 +3,7 @@ using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
 using TipExpert.Core;
+using TipExpert.Core.Strategy;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
@@ -11,10 +12,12 @@ namespace TipExpert.Net.Controllers
     public class MatchesController : Controller
     {
         private readonly IMatchStore _matchStore;
+        private readonly IMatchFinalizationStrategy _matchFinalizationStrategy;
 
-        public MatchesController(IMatchStore matchStore)
+        public MatchesController(IMatchStore matchStore, IMatchFinalizationStrategy matchFinalizationStrategy)
         {
             _matchStore = matchStore;
+            _matchFinalizationStrategy = matchFinalizationStrategy;
         }
 
         [HttpGet]
@@ -45,6 +48,8 @@ namespace TipExpert.Net.Controllers
             match.HomeTeam = matchDto.homeTeam;
             match.LeagueId = matchDto.leagueId;
             match.IsFinished = matchDto.isFinished;
+
+            await _matchFinalizationStrategy.UpdateGamesForMatch(match);
 
             await _matchStore.SaveChangesAsync();
 

@@ -17,6 +17,8 @@ namespace TipExpert.Core
 
         Task<Game[]> GetFinishedGames(Guid userId);
 
+        Task<Game[]> GetGamesForMatch(Guid matchId);
+
         Task SaveChangesAsync();
     }
 }

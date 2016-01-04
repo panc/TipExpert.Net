@@ -7,6 +7,7 @@ using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
 using TipExpert.Core;
 using TipExpert.Core.Configuration;
+using TipExpert.Core.Strategy;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace TipExpert.Net
@@ -45,6 +46,7 @@ namespace TipExpert.Net
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
+            services.AddTransient<IMatchFinalizationStrategy, MatchFinalizationStrategy>();
             services.AddTransient<IDataStoreConfiguration, DataStoreConfiguration>();
 
             services.AddSingleton<IUserStore, UserStore>();
