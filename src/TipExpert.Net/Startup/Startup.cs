@@ -46,7 +46,7 @@ namespace TipExpert.Net
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
-            services.AddTransient<IMatchFinalizationStrategy, MatchFinalizationStrategy>();
+            services.AddTransient<IMatchFinalizer, MatchFinalizer>();
             services.AddTransient<IDataStoreConfiguration, DataStoreConfiguration>();
 
             services.AddSingleton<IUserStore, UserStore>();

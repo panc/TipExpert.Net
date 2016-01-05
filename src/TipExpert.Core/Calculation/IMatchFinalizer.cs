@@ -2,7 +2,7 @@
 
 namespace TipExpert.Core.Strategy
 {
-    public interface IMatchFinalizationStrategy
+    public interface IMatchFinalizer
     {
         Task UpdateGamesForMatch(Match match);
     }
