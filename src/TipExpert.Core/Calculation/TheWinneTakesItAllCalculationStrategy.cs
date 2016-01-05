@@ -1,56 +1,48 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace TipExpert.Core.Strategy
 {
     public class TheWinneTakesItAllCalculationStrategy : IProfitCalculationStrategy
     {
-        public void CalcualteProfit(Game game)
+        private readonly IUserStore _userStore;
+
+        public TheWinneTakesItAllCalculationStrategy(IUserStore userStore)
         {
-            var totalStake = game.Players.Sum(x => x.Stake.GetValueOrDefault(game.MinStake));
-
-            game.Players.Sort((a, b) =>
-            {
-                var pointsA = a.TotalPoints.GetValueOrDefault(0);
-                var pointsB = b.TotalPoints.GetValueOrDefault(0);
-
-                if (a == b)
-                    return 0;
-
-                return pointsB - pointsA;
-            });
-
-
-
-            /*
-             
-            var winner = players[0];
-
-            players.forEach( function ( player ) {
-
-                if ( player == winner )
-                    player.profit = totalStake;
-                else
-                    player.profit = 0;
-
-                // update the users coins
-                var userModel = mongoose.model( 'User' );
-                userModel.load( player.user, function ( err, user ) {
-                    if ( err )
-                        return;
-
-                    user.coins += player.profit;
-                    user.save();
-                    logger.debug( 'user: ' + user.name + ' - cash: ' + user.coins );
-                });
-
-                logger.debug( 'player: ' + player.user + ' - profit: ' + player.profit );
-            });
-            */
+            _userStore = userStore;
         }
 
-        public void ResetProfit(Game game)
+        public async Task CalcualteProfit(Game game)
         {
-            throw new System.NotImplementedException();
+            if (game.Players == null)
+                return;
+
+            game.SortPlayers();
+
+            var totalStake = game.Players.Sum(x => x.Stake.GetValueOrDefault(game.MinStake));
+            var winner = game.Players.FirstOrDefault();
+
+            foreach (var player in game.Players)
+            {
+                player.Profit = player == winner ? totalStake : 0;
+
+                // update the users coins
+                var user = await _userStore.GetById(player.UserId);
+                user.Coins += player.Profit.GetValueOrDefault(0);
+                await _userStore.SaveChangesAsync();
+            }
+        }
+
+        public async Task ResetProfit(Game game)
+        {
+            foreach (var player in game.Players)
+            {
+                var user = await _userStore.GetById(player.UserId);
+                user.Coins -= player.Profit.GetValueOrDefault(0);
+                await _userStore.SaveChangesAsync();
+
+                player.Profit = 0;
+            }
         }
     }
 }

@@ -14,6 +14,6 @@ namespace TipExpert.Core
 
         public int Role { get; set; }
 
-        public int Coins { get; set; }
+        public double Coins { get; set; }
     }
 }

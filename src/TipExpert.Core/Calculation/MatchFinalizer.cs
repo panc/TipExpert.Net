@@ -8,10 +8,12 @@ namespace TipExpert.Core.Strategy
     public class MatchFinalizer : IMatchFinalizer
     {
         private readonly IGameStore _gameStore;
+        private readonly IUserStore _userStore;
 
-        public MatchFinalizer(IGameStore gameStore)
+        public MatchFinalizer(IGameStore gameStore, IUserStore userStore)
         {
             _gameStore = gameStore;
+            _userStore = userStore;
         }
 
         public async Task UpdateGamesForMatch(Match match)
@@ -21,7 +23,7 @@ namespace TipExpert.Core.Strategy
             foreach (var game in games)
             {
                 _UpdateTipsOfGame(game, match);
-                _FinishGameAndUpdateTotalPoints(game);
+                await _FinishGameAndUpdateTotalPoints(game);
             }
 
             await _gameStore.SaveChangesAsync();
@@ -43,7 +45,7 @@ namespace TipExpert.Core.Strategy
             }
         }
 
-        private void _FinishGameAndUpdateTotalPoints(Game game)
+        private async Task _FinishGameAndUpdateTotalPoints(Game game)
         {
             var pointsForUser = new Dictionary<Guid, int>();
             var allMatchesFinished = true;
@@ -61,19 +63,18 @@ namespace TipExpert.Core.Strategy
             // update total points for all players
             game.IsFinished = allMatchesFinished;
 
-            if (allMatchesFinished)
-            {
-                foreach (var player in game.Players)
-                    player.TotalPoints = pointsForUser[player.UserId];
-            }
+            // set (or reset) total points
+            foreach (var player in game.Players)
+                player.TotalPoints = allMatchesFinished ? pointsForUser[player.UserId] : 0;
+            
+            // calulate profit for each user
+            // only 'The winner takes it all' mode is currently supported
+            var profitCalcualationStrategy = new TheWinneTakesItAllCalculationStrategy(_userStore);
 
-            // only 'The winner gets it all' mode is currently supported
-            var profitCalcualationStrategy = new TheWinneTakesItAllCalculationStrategy();
-
             if (allMatchesFinished)
-                profitCalcualationStrategy.CalcualteProfit(game);
+                await profitCalcualationStrategy.CalcualteProfit(game);
             else
-                profitCalcualationStrategy.ResetProfit(game);
+                await profitCalcualationStrategy.ResetProfit(game);
         }
 
         private void _SetPoints(Tip tip, Match match)
@@ -95,82 +96,5 @@ namespace TipExpert.Core.Strategy
         {
             tip.Points = null;
         }
-
-        /*
-        
-        var setProfit = function (players, userPoints, minStake) {
-
-            var totalStake = 0;
-
-            players.forEach( function ( player ) {
-                logger.debug( 'stake: ' + player.stake );
-                totalStake += player.stake || minStake;
-
-                var totalPoints = userPoints[player.user];
-                player.totalPoints = totalPoints;
-            });
-
-            players.sort( comparePlayer );
-
-            // only 'The winner gets it all' mode is currently supported
-            var winner = players[0];
-
-            players.forEach( function ( player ) {
-
-                if ( player == winner )
-                    player.profit = totalStake;
-                else
-                    player.profit = 0;
-
-                // update the users coins
-                var userModel = mongoose.model( 'User' );
-                userModel.load( player.user, function ( err, user ) {
-                    if ( err )
-                        return;
-
-                    user.coins += player.profit;
-                    user.save();
-                    logger.debug( 'user: ' + user.name + ' - cash: ' + user.coins );
-                });
-
-                logger.debug( 'player: ' + player.user + ' - profit: ' + player.profit );
-            });
-        };
-
-        var resetProfit = function ( players ) {
-
-            players.forEach( function ( player ) {
-                var oldProfit = player.profit;
-                player.totalPoints = null;
-                player.profit = null;
-
-                if ( oldProfit == 0 )
-                    return;
-
-                // reset the users coins
-                var userModel = mongoose.model( 'User' );
-                userModel.load( player.user, function ( err, user ) {
-                    if ( err )
-                        return;
-
-                    user.coins -= oldProfit;
-                    user.save();
-                    logger.debug( 'user: ' + user.name + ' - cash: ' + user.coins );
-                });
-            });
-        }
-
-        var comparePlayer = function ( a, b ) {
-            if ( !a.totalPoints && !b.totalPoints || a == b )
-                return 0;
-            if ( !a.totalPoints )
-                return 1;
-            if ( !b.totalPoints )
-                return -1;
-
-            return b.totalPoints - a.totalPoints;
-        };
-
-        */
     }
 }

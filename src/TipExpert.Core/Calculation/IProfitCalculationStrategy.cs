@@ -1,9 +1,11 @@
-﻿namespace TipExpert.Core.Strategy
+﻿using System.Threading.Tasks;
+
+namespace TipExpert.Core.Strategy
 {
     public interface IProfitCalculationStrategy
     {
-        void CalcualteProfit(Game game);
+        Task CalcualteProfit(Game game);
 
-        void ResetProfit(Game game);
+        Task ResetProfit(Game game);
     }
 }

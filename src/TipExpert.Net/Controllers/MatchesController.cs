@@ -12,12 +12,12 @@ namespace TipExpert.Net.Controllers
     public class MatchesController : Controller
     {
         private readonly IMatchStore _matchStore;
-        private readonly IMatchFinalizationStrategy _matchFinalizationStrategy;
+        private readonly IMatchFinalizer _matchFinalizer;
 
-        public MatchesController(IMatchStore matchStore, IMatchFinalizationStrategy matchFinalizationStrategy)
+        public MatchesController(IMatchStore matchStore, IMatchFinalizer matchFinalizer)
         {
             _matchStore = matchStore;
-            _matchFinalizationStrategy = matchFinalizationStrategy;
+            _matchFinalizer = matchFinalizer;
         }
 
         [HttpGet]
@@ -49,7 +49,7 @@ namespace TipExpert.Net.Controllers
             match.LeagueId = matchDto.leagueId;
             match.IsFinished = matchDto.isFinished;
 
-            await _matchFinalizationStrategy.UpdateGamesForMatch(match);
+            await _matchFinalizer.UpdateGamesForMatch(match);
 
             await _matchStore.SaveChangesAsync();
 
