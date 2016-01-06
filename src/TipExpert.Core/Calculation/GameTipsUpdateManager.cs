@@ -6,12 +6,12 @@ namespace TipExpert.Core.Strategy
     public class GameTipsUpdateManager : IGameTipsUpdateManager
     {
         private readonly IGameStore _gameStore;
-        private readonly IUserStore _userStore;
+        private readonly ICalculationResolver _calculationResolver;
 
-        public GameTipsUpdateManager(IGameStore gameStore, IUserStore userStore)
+        public GameTipsUpdateManager(IGameStore gameStore, ICalculationResolver calculationResolver)
         {
             _gameStore = gameStore;
-            _userStore = userStore;
+            _calculationResolver = calculationResolver;
         }
 
         public async Task UpdateGamesForMatch(Match match)
@@ -31,25 +31,27 @@ namespace TipExpert.Core.Strategy
 
             game.IsFinished = game.Matches.All(x => x.Match != null && x.Match.IsFinished);
 
-            _UpdateTipsForMatch(game, match);
+            await _UpdateTipsForMatch(game, match);
             _UpdateTotalPoints(game);
             _UpdateRanking(game);
             await _UpdateProfit(game);
         }
 
-        private void _UpdateTipsForMatch(Game game, Match match)
+        private async Task _UpdateTipsForMatch(Game game, Match match)
         {
             var mt = game.Matches.FirstOrDefault(x => x.MatchId == match.Id);
 
             if (mt == null)
                 return;
 
+            var pointsCalculationStrategy = _calculationResolver.GetPointsCalculationStrategy(game);
+
             foreach (var tip in mt.Tips)
             {
                 if (match.IsFinished)
-                    _SetPoints(tip, match);
+                    tip.Points = await pointsCalculationStrategy.CalculatePoints(tip, match);
                 else
-                    _ResetPoints(tip);
+                    tip.Points = null;
             }
         }
 
@@ -83,32 +85,12 @@ namespace TipExpert.Core.Strategy
         {
             // calulate profit for each user
             // only 'The winner takes it all' mode is currently supported
-            var profitCalcualationStrategy = new TheWinneTakesItAllCalculationStrategy(_userStore);
+            var profitCalcualationStrategy = _calculationResolver.GetProfitCalculationStrategy(game);
 
             if (game.IsFinished)
                 await profitCalcualationStrategy.CalcualteProfit(game);
             else
                 await profitCalcualationStrategy.ResetProfit(game);
-        }
-
-        private void _SetPoints(Tip tip, Match match)
-        {
-            var diffMatch = match.HomeScore - match.GuestScore;
-            var diffTip = tip.HomeScore - tip.GuestScore;
-
-            if (match.HomeScore == tip.HomeScore && match.GuestScore == tip.GuestScore)
-                tip.Points = 5;
-
-            else if ((diffMatch < 0 && diffTip < 0) || (diffMatch > 0 && diffTip > 0) || (diffMatch == 0 && diffTip == 0))
-                tip.Points = (diffMatch == diffTip) ? 3 : 1;
-
-            else
-                tip.Points = 0;
-        }
-
-        private void _ResetPoints(Tip tip)
-        {
-            tip.Points = null;
         }
     }
 }
