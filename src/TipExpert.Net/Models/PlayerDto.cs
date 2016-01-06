@@ -13,5 +13,7 @@ namespace TipExpert.Net.Models
         public double? profit { get; set; }
 
         public int? totalPoints { get; set; }
+
+        public int? ranking { get; set; }
     }
 }

@@ -31,13 +31,13 @@ namespace TipExpert.Core.Strategy
 
             game.IsFinished = game.Matches.All(x => x.Match != null && x.Match.IsFinished);
 
-            _UpdateTipsOfGame(game, match);
+            _UpdateTipsForMatch(game, match);
             _UpdateTotalPoints(game);
             _UpdateRanking(game);
             await _UpdateProfit(game);
         }
 
-        private void _UpdateTipsOfGame(Game game, Match match)
+        private void _UpdateTipsForMatch(Game game, Match match)
         {
             var mt = game.Matches.FirstOrDefault(x => x.MatchId == match.Id);
 
@@ -65,16 +65,16 @@ namespace TipExpert.Core.Strategy
 
             // set (or reset) total points for all players
             foreach (var player in game.Players)
-                player.TotalPoints = game.IsFinished ? pointsForUser[player.UserId] : 0;
+                player.TotalPoints = pointsForUser[player.UserId];
         }
 
         private void _UpdateRanking(Game game)
         {
             var players = game.Players.OrderByDescending(x => x.TotalPoints).ToArray();
 
-            for (int i = 1; i < players.Length; i++)
+            for (int i = 1; i <= players.Length; i++)
             {
-                var player = players[i];
+                var player = players[i - 1];
                 player.Ranking = i;
             }
         }
