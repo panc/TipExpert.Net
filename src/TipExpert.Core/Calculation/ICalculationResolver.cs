@@ -1,4 +1,4 @@
-﻿namespace TipExpert.Core.Strategy
+﻿namespace TipExpert.Core.Calculation
 {
     public interface ICalculationResolver
     {

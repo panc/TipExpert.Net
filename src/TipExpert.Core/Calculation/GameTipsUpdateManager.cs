@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace TipExpert.Core.Strategy
+namespace TipExpert.Core.Calculation
 {
     public class GameTipsUpdateManager : IGameTipsUpdateManager
     {
@@ -84,7 +84,6 @@ namespace TipExpert.Core.Strategy
         private async Task _UpdateProfit(Game game)
         {
             // calulate profit for each user
-            // only 'The winner takes it all' mode is currently supported
             var profitCalcualationStrategy = _calculationResolver.GetProfitCalculationStrategy(game);
 
             if (game.IsFinished)

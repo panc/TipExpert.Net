@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace TipExpert.Core.Strategy
+namespace TipExpert.Core.Calculation
 {
     public interface IPointsCalculationStrategy
     {

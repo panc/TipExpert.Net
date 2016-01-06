@@ -7,7 +7,7 @@ using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
 using TipExpert.Core;
 using TipExpert.Core.Configuration;
-using TipExpert.Core.Strategy;
+using TipExpert.Core.Calculation;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace TipExpert.Net
@@ -48,6 +48,10 @@ namespace TipExpert.Net
 
             services.AddTransient<IGameTipsUpdateManager, GameTipsUpdateManager>();
             services.AddTransient<IDataStoreConfiguration, DataStoreConfiguration>();
+
+            services.AddTransient<ICalculationResolver, CalculationResolver>();
+            services.AddTransient<FiveThreeOneZeroPointsCalculationStrategy>();
+            services.AddTransient<TheWinneTakesItAllCalculationStrategy>();
 
             services.AddSingleton<IUserStore, UserStore>();
             services.AddSingleton<ILeagueStore, LeagueStore>();

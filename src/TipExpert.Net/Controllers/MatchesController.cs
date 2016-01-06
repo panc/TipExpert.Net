@@ -3,7 +3,7 @@ using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
 using TipExpert.Core;
-using TipExpert.Core.Strategy;
+using TipExpert.Core.Calculation;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
