@@ -256,19 +256,46 @@ namespace TipExpert.Net.Controllers
 
             gameDto.player = gameDto.players?.FirstOrDefault(x => x.userId == userId);
 
-            var finishedMatches = gameDto.matches?.Where(x => x.match != null && x.match.isFinished).ToArray();
-            var notFinishedMatches = gameDto.matches?.Where(x => x.match != null && !x.match.isFinished).ToArray();
+            if (gameDto.matches != null)
+            {
+                gameDto.finishedMatches = _GetFinishedMatches(gameDto).ToList();
+                gameDto.matches = _GetNotFinishedMatches(gameDto, userId).ToList();
+            }
 
-            foreach (var match in notFinishedMatches ?? Enumerable.Empty<MatchTipsDto>())
+            return gameDto;
+        }
+
+        private IEnumerable<MatchTipsDto> _GetFinishedMatches(GameDto gameDto)
+        {
+            var finishedMatches = gameDto.matches.Where(x => x.match != null && x.match.isFinished);
+
+            foreach (var mt in finishedMatches)
+            {
+                // merge tips with the ranking of the user
+                var mergedTips = mt.tips
+                    .Select(t => new
+                    {
+                        Tip = t,
+                        Ranking = gameDto.players.FindIndex(p => p.userId == t.userId)
+                    });
+
+                // order tipps regarding the ranking of the user
+                var orderedTips = mergedTips.OrderBy(x => x.Ranking);
+                mt.tips = orderedTips.Select(x => x.Tip).ToList();
+
+                yield return mt;
+            }
+        }
+
+        private IEnumerable<MatchTipsDto> _GetNotFinishedMatches(GameDto gameDto, Guid userId)
+        {
+            foreach (var match in gameDto.matches.Where(x => x.match != null && !x.match.isFinished))
             {
                 match.tipOfPlayer = match.tips?.FirstOrDefault(x => x.userId == userId);
                 match.tips = null; // do not pass all tips to the client so that others can not see the tips of all players...
-            }
-            
-            gameDto.matches = notFinishedMatches?.ToList();
-            gameDto.finishedMatches = finishedMatches?.ToList();
 
-            return gameDto;
+                yield return match;
+            }
         }
 
         private IActionResult _CheckCurrentUserIsGameCreator(Game game)

@@ -14,7 +14,7 @@ namespace TipExpert.Core.Strategy
 
         public async Task CalcualteProfit(Game game)
         {
-            var players = game.Players.OrderByDescending(x => x.Ranking);
+            var players = game.Players.OrderBy(x => x.Ranking);
 
             var totalStake = players.Sum(x => x.Stake.GetValueOrDefault(game.MinStake));
             var winner = players.FirstOrDefault();
