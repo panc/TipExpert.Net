@@ -18,6 +18,9 @@ namespace TipExpert.Core
         {
             return Task.Run(() =>
             {
+                if (Entities.Count == 0)
+                    user.Role = (int)UserRoles.Admin;
+
                 user.Id = Guid.NewGuid();
                 Entities.Add(user);
             });

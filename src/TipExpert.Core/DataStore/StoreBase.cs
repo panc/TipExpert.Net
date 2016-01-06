@@ -16,6 +16,9 @@ namespace TipExpert.Core
         {
             _entities = new Lazy<List<TEntity>>(_ReadFromFile);
             _filePath = Path.Combine(configuration.AppDataPath, fileName);
+
+            if (!Directory.Exists(configuration.AppDataPath))
+                Directory.CreateDirectory(configuration.AppDataPath);
         }
 
         protected List<TEntity> Entities => _entities.Value;

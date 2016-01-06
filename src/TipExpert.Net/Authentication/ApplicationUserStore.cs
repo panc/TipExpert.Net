@@ -57,7 +57,7 @@ namespace TipExpert.Net.Authentication
                 Name = appUser.UserName,
                 Email = appUser.Email,
                 PasswordHash = appUser.PasswordHash,
-                Role = 2
+                Role = (int)UserRoles.User
             };
 
             await _userStore.AddUser(user);
