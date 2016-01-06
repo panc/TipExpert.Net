@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace TipExpert.Core.Strategy
 {
-    public class MatchFinalizer : IMatchFinalizer
+    public class GameTipsUpdateManager : IGameTipsUpdateManager
     {
         private readonly IGameStore _gameStore;
         private readonly IUserStore _userStore;
 
-        public MatchFinalizer(IGameStore gameStore, IUserStore userStore)
+        public GameTipsUpdateManager(IGameStore gameStore, IUserStore userStore)
         {
             _gameStore = gameStore;
             _userStore = userStore;
@@ -20,13 +18,23 @@ namespace TipExpert.Core.Strategy
         {
             var games = await _gameStore.GetGamesForMatch(match.Id);
 
-            foreach (var game in games)
-            {
-                _UpdateTipsOfGame(game, match);
-                await _FinishGameAndUpdateTotalPoints(game);
-            }
+            var tasks = games.Select(game => _UpdateGame(game, match));
+            await Task.WhenAll(tasks);
 
             await _gameStore.SaveChangesAsync();
+        }
+
+        private async Task _UpdateGame(Game game, Match match)
+        {
+            if (game == null || game.Matches == null)
+                return;
+
+            game.IsFinished = game.Matches.All(x => x.Match != null && x.Match.IsFinished);
+
+            _UpdateTipsOfGame(game, match);
+            _UpdateTotalPoints(game);
+            _UpdateRanking(game);
+            await _UpdateProfit(game);
         }
 
         private void _UpdateTipsOfGame(Game game, Match match)
@@ -45,32 +53,39 @@ namespace TipExpert.Core.Strategy
             }
         }
 
-        private async Task _FinishGameAndUpdateTotalPoints(Game game)
+        private void _UpdateTotalPoints(Game game)
         {
             var pointsForUser = game.Players.ToDictionary(x => x.UserId, x => 0);
-            var allMatchesFinished = true;
 
             foreach (var mt in game.Matches)
             {
-                allMatchesFinished = mt.Match.IsFinished;
-                if (allMatchesFinished == false)
-                    break;
-
                 foreach (var tip in mt.Tips)
                     pointsForUser[tip.UserId] += tip.Points.GetValueOrDefault(0);
             }
 
             // set (or reset) total points for all players
-            game.IsFinished = allMatchesFinished;
-
             foreach (var player in game.Players)
-                player.TotalPoints = allMatchesFinished ? pointsForUser[player.UserId] : 0;
-            
+                player.TotalPoints = game.IsFinished ? pointsForUser[player.UserId] : 0;
+        }
+
+        private void _UpdateRanking(Game game)
+        {
+            var players = game.Players.OrderByDescending(x => x.TotalPoints).ToArray();
+
+            for (int i = 1; i < players.Length; i++)
+            {
+                var player = players[i];
+                player.Ranking = i;
+            }
+        }
+
+        private async Task _UpdateProfit(Game game)
+        {
             // calulate profit for each user
             // only 'The winner takes it all' mode is currently supported
             var profitCalcualationStrategy = new TheWinneTakesItAllCalculationStrategy(_userStore);
 
-            if (allMatchesFinished)
+            if (game.IsFinished)
                 await profitCalcualationStrategy.CalcualteProfit(game);
             else
                 await profitCalcualationStrategy.ResetProfit(game);

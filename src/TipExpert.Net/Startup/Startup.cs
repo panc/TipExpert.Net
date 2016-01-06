@@ -46,7 +46,7 @@ namespace TipExpert.Net
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>();
 
-            services.AddTransient<IMatchFinalizer, MatchFinalizer>();
+            services.AddTransient<IGameTipsUpdateManager, GameTipsUpdateManager>();
             services.AddTransient<IDataStoreConfiguration, DataStoreConfiguration>();
 
             services.AddSingleton<IUserStore, UserStore>();

@@ -15,5 +15,7 @@ namespace TipExpert.Core
         public double? Profit { get; set; }
 
         public int? TotalPoints { get; set; }
+
+        public int? Ranking { get; set; }
     }
 }

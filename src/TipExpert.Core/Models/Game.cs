@@ -20,19 +20,5 @@ namespace TipExpert.Core
         public List<Player> Players { get; set; }
 
         public List<MatchTips> Matches { get; set; }
-
-        public void SortPlayers()
-        {
-            Players.Sort((a, b) =>
-            {
-                var pointsA = a.TotalPoints.GetValueOrDefault(0);
-                var pointsB = b.TotalPoints.GetValueOrDefault(0);
-
-                if (a == b)
-                    return 0;
-
-                return pointsB - pointsA;
-            });
-        }
     }
 }

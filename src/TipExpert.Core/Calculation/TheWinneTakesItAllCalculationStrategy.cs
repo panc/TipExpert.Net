@@ -14,15 +14,12 @@ namespace TipExpert.Core.Strategy
 
         public async Task CalcualteProfit(Game game)
         {
-            if (game.Players == null)
-                return;
+            var players = game.Players.OrderByDescending(x => x.Ranking);
 
-            game.SortPlayers();
+            var totalStake = players.Sum(x => x.Stake.GetValueOrDefault(game.MinStake));
+            var winner = players.FirstOrDefault();
 
-            var totalStake = game.Players.Sum(x => x.Stake.GetValueOrDefault(game.MinStake));
-            var winner = game.Players.FirstOrDefault();
-
-            foreach (var player in game.Players)
+            foreach (var player in players)
             {
                 player.Profit = player == winner ? totalStake : 0;
 
