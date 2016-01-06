@@ -47,7 +47,7 @@ namespace TipExpert.Core.Strategy
 
         private async Task _FinishGameAndUpdateTotalPoints(Game game)
         {
-            var pointsForUser = new Dictionary<Guid, int>();
+            var pointsForUser = game.Players.ToDictionary(x => x.UserId, x => 0);
             var allMatchesFinished = true;
 
             foreach (var mt in game.Matches)
@@ -60,10 +60,9 @@ namespace TipExpert.Core.Strategy
                     pointsForUser[tip.UserId] += tip.Points.GetValueOrDefault(0);
             }
 
-            // update total points for all players
+            // set (or reset) total points for all players
             game.IsFinished = allMatchesFinished;
 
-            // set (or reset) total points
             foreach (var player in game.Players)
                 player.TotalPoints = allMatchesFinished ? pointsForUser[player.UserId] : 0;
             
