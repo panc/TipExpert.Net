@@ -198,3 +198,4 @@ FakesAssemblies/
 
 # Application specific
 App_Data/
+src/TipExpert.Net/appsettings.local.json
