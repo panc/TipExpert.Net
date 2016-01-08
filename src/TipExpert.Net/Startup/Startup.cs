@@ -49,8 +49,6 @@ namespace TipExpert.Net
                 .AddRoleStore<ApplicationRoleStore>();
 
             services.AddTransient<IGameTipsUpdateManager, GameTipsUpdateManager>();
-            services.AddTransient<IDataStoreConfiguration, DataStoreConfiguration>();
-
             services.AddTransient<ICalculationResolver, CalculationResolver>();
             services.AddTransient<FiveThreeOneZeroPointsCalculationStrategy>();
             services.AddTransient<TheWinneTakesItAllCalculationStrategy>();
