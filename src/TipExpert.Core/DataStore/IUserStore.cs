@@ -15,7 +15,5 @@ namespace TipExpert.Core
         Task<User> GetById(Guid id);
 
         Task<User> FindUserByEmail(string email, CancellationToken cancellationToken);
-
-        Task SaveChangesAsync();
     }
 }

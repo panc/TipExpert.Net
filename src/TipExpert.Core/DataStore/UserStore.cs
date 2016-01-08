@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -8,9 +7,9 @@ namespace TipExpert.Core
 {
     public class UserStore : IUserStore
     {
-        private IMongoCollection<User> _collection;
+        private readonly IMongoCollection<User> _collection;
 
-        public UserStore(IDataStoreConfiguration configuration, MongoClient client)
+        public UserStore(MongoClient client)
         {
             var db = client.GetDatabase("TipExpert");
             _collection = db.GetCollection<User>("user");
@@ -18,18 +17,17 @@ namespace TipExpert.Core
 
         public async Task AddUser(User user)
         {
-//                if (Entities.Count == 0)
-                    user.Role = (int)UserRoles.Admin;
+            if (_collection.Count(FilterDefinition<User>.Empty) == 0)
+                user.Role = (int)UserRoles.Admin;
 
-                user.Id = Guid.NewGuid();
+            user.Id = Guid.NewGuid();
 
             await _collection.InsertOneAsync(user);
         }
 
-        public Task RemoveUser(User user)
+        public async Task RemoveUser(User user)
         {
-            return Task.CompletedTask;
-//            return Task.Run(() => Entities.Remove(user));
+            await _collection.DeleteOneAsync(x => x.Id == user.Id);
         }
 
         public async Task<User[]> GetAll()
@@ -51,11 +49,6 @@ namespace TipExpert.Core
 
             var result = await _collection.FindAsync(x => x.Email.ToUpper() == email, cancellationToken: cancellationToken);
             return await result.FirstOrDefaultAsync(cancellationToken);
-        }
-
-        public Task SaveChangesAsync()
-        {
-            return Task.CompletedTask;
         }
     }
 }
