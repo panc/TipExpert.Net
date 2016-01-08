@@ -1,99 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace TipExpert.Core
 {
-    public class GameStore : StoreBase<Game>, IGameStore
+    public class GameStore : IGameStore
     {
-        private const string FILE_NAME = "games.json";
-
         private readonly IUserStore _userStore;
         private readonly IMatchStore _matchStore;
+        private readonly IMongoCollection<Game> _collection;
 
-        public GameStore(IDataStoreConfiguration configuration, IUserStore userStore, IMatchStore matchStore)
-            : base(configuration, FILE_NAME)
+        public GameStore(MongoClient client, IUserStore userStore, IMatchStore matchStore)
         {
             _userStore = userStore;
             _matchStore = matchStore;
+
+            var db = client.GetDatabase("TipExpert");
+            _collection = db.GetCollection<Game>("games");
         }
 
-        public Task Add(Game game)
+        public async Task Add(Game game)
         {
-            return Task.Run(() =>
-            {
-                game.Id = Guid.NewGuid();
-                Entities.Add(game);
-            });
+            game.Id = Guid.NewGuid();
+            await _collection.InsertOneAsync(game);
         }
 
-        public Task Remove(Game game)
+        public async Task Remove(Game game)
         {
-            return Task.Run(() => Entities.Remove(game));
+            await _collection.DeleteOneAsync(x => x.Id == game.Id);
         }
 
-        public Task<Game[]> GetGamesCreatedByUser(Guid userId)
+        public async Task<Game[]> GetGamesCreatedByUser(Guid userId)
         {
-            return Task.Run(() => Entities
-                .Where(x => x.CreatorId == userId && x.IsFinished == false)
-                .ToArray());
+            var result = await _collection.FindAsync(x => x.CreatorId == userId && x.IsFinished == false);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<Game[]> GetGamesUserIsInvitedTo(Guid userId)
+        public async Task<Game[]> GetGamesUserIsInvitedTo(Guid userId)
         {
-            return Task.Run(() => Entities
-                .Where(x => !x.IsFinished && x.Players?.FirstOrDefault(p => p.UserId == userId) != null)
-                .ToArray());
+            var result = await _collection.FindAsync(x => !x.IsFinished && x.Players.FirstOrDefault(p => p.UserId == userId) != null);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<Game[]> GetFinishedGames(Guid userId)
+        public async Task<Game[]> GetFinishedGames(Guid userId)
         {
-            return Task.Run(() => Entities
-                .Where(x => x.IsFinished && x.Players?.FirstOrDefault(p => p.UserId == userId) != null)
-                .ToArray());
+            var result = await _collection.FindAsync(x => x.IsFinished && x.Players.FirstOrDefault(p => p.UserId == userId) != null);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<Game[]> GetGamesForMatch(Guid matchId)
+        public async Task<Game[]> GetGamesForMatch(Guid matchId)
         {
-            return Task.Run(() => Entities
-                .Where(x => x.Matches?.FirstOrDefault(m => m.MatchId == matchId) != null)
-                .ToArray());
+            var result = await _collection.FindAsync(x => x.Matches.FirstOrDefault(m => m.MatchId == matchId) != null);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<Game> GetById(Guid id)
+        public Task SaveChangesAsync()
         {
-            return Task.Run(() =>
-            {
-                return Entities.FirstOrDefault(x => x.Id == id);
-            });
+            // todo
+            return Task.CompletedTask;
         }
 
-        protected override async void OnEntitiesLoaded(List<Game> entities)
+        public async Task<Game> GetById(Guid id)
         {
-            foreach (var game in entities)
-                await _LoadRelations(game);
-        }
-
-        protected override async void OnEntitiesSaved(List<Game> entities)
-        {
-            foreach (var game in entities)
-                await _LoadRelations(game);
-        }
-
-        private async Task _LoadRelations(Game game)
-        {
-            if (game.Players != null)
-            {
-                foreach (var player in game.Players)
-                    player.User = await _userStore.GetById(player.UserId);
-            }
-
-            if (game.Matches != null)
-            {
-                foreach (var matchTips in game.Matches)
-                    matchTips.Match = await _matchStore.GetById(matchTips.MatchId);
-            }
+            var result = await _collection.FindAsync(x => x.Id == id);
+            return await result.FirstOrDefaultAsync();
         }
     }
 }

@@ -21,7 +21,6 @@ namespace TipExpert.Core
                 user.Role = (int)UserRoles.Admin;
 
             user.Id = Guid.NewGuid();
-
             await _collection.InsertOneAsync(user);
         }
 
@@ -49,6 +48,12 @@ namespace TipExpert.Core
 
             var result = await _collection.FindAsync(x => x.Email.ToUpper() == email, cancellationToken: cancellationToken);
             return await result.FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public Task SaveChangesAsync()
+        {
+            // TODO
+            return Task.CompletedTask;
         }
     }
 }

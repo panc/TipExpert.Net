@@ -1,51 +1,54 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace TipExpert.Core
 {
-    public class MatchStore : StoreBase<Match>, IMatchStore
+    public class MatchStore : IMatchStore
     {
-        private const string FILE_NAME = "matches.json";
+        private readonly IMongoCollection<Match> _collection;
 
-        public MatchStore(IDataStoreConfiguration configuration)
-            : base(configuration, FILE_NAME)
+        public MatchStore(MongoClient client)
         {
+            var db = client.GetDatabase("TipExpert");
+            _collection = db.GetCollection<Match>("matches");
         }
 
-        public Task Add(Match match)
+        public async Task Add(Match match)
         {
-            return Task.Run(() =>
-            {
-                match.Id = Guid.NewGuid();
-                Entities.Add(match);
-            });
+            match.Id = Guid.NewGuid();
+            await _collection.InsertOneAsync(match);
         }
 
-        public Task Remove(Match match)
+        public async Task Remove(Match match)
         {
-            return Task.Run(() => Entities.Remove(match));
+            await _collection.DeleteOneAsync(x => x.Id == match.Id);
         }
 
-        public Task<Match[]> GetAll()
+        public async Task<Match[]> GetAll()
         {
-            return Task.Run(() => Entities.ToArray());
+            var result = await _collection.FindAsync(FilterDefinition<Match>.Empty);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<Match> GetById(Guid id)
+        public async Task<Match[]> GetMatchesForLeague(Guid leagueId)
         {
-            return Task.Run(() =>
-            {
-                return Entities.FirstOrDefault(x => x.Id == id);
-            });
+            var result = await _collection.FindAsync(x => x.LeagueId == leagueId);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<Match[]> GetMatchesForLeague(Guid leagueId)
+        public async Task<Match> GetById(Guid id)
         {
-            return Task.Run(() =>
-            {
-                return Entities.Where(x => x.LeagueId == leagueId).ToArray();
-            });
+            var result = await _collection.FindAsync(x => x.Id == id);
+            return await result.FirstOrDefaultAsync();
+        }
+
+        public Task SaveChangesAsync()
+        {
+            // Todo
+            return Task.CompletedTask;
         }
     }
 }

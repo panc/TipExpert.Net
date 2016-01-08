@@ -1,43 +1,47 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace TipExpert.Core
 {
-    public class LeagueStore : StoreBase<League>, ILeagueStore
+    public class LeagueStore : ILeagueStore
     {
-        private const string FILE_NAME = "leagues.json";
+        private readonly IMongoCollection<League> _collection;
 
-        public LeagueStore(IDataStoreConfiguration configuration)
-            : base(configuration, FILE_NAME)
+        public LeagueStore(MongoClient client)
         {
+            var db = client.GetDatabase("TipExpert");
+            _collection = db.GetCollection<League>("leagues");
         }
 
-        public Task Add(League league)
+        public async Task Add(League league)
         {
-            return Task.Run(() =>
-            {
-                league.Id = Guid.NewGuid();
-                Entities.Add(league);
-            });
+            league.Id = Guid.NewGuid();
+            await _collection.InsertOneAsync(league);
         }
 
-        public Task Remove(League league)
+        public async Task Remove(League league)
         {
-            return Task.Run(() => Entities.Remove(league));
+            await _collection.DeleteOneAsync(x => x.Id == league.Id);
         }
 
-        public Task<League[]> GetAll()
+        public async Task<League[]> GetAll()
         {
-            return Task.Run(() => Entities.ToArray());
+            var result = await _collection.FindAsync(FilterDefinition<League>.Empty);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<League> GetById(Guid id)
+        public async Task<League> GetById(Guid id)
         {
-            return Task.Run(() =>
-            {
-                return Entities.FirstOrDefault(x => x.Id == id);
-            });
+            var result = await _collection.FindAsync(x => x.Id == id);
+            return await result.FirstOrDefaultAsync();
+        }
+
+        public Task SaveChangesAsync()
+        {
+            // TODO
+            return Task.CompletedTask;
         }
     }
 }
