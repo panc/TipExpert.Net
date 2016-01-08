@@ -1,4 +1,4 @@
-﻿{
+{
     "version": "0.1.0-*",
     "description": "TipExpert.Core Library",
     "authors": [ "Christoph Pangerl" ],
@@ -9,6 +9,7 @@
         "dnx46": { }
     },
     "dependencies": {
+        "MongoDB.Driver": "2.2.0",
         "Newtonsoft.Json": "8.0.1"
     }
 }

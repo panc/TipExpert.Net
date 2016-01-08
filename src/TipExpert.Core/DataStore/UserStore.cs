@@ -2,57 +2,60 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace TipExpert.Core
 {
-    public class UserStore : StoreBase<User>, IUserStore
+    public class UserStore : IUserStore
     {
-        private const string FILE_NAME = "user.json";
+        private IMongoCollection<User> _collection;
 
-        public UserStore(IDataStoreConfiguration configuration)
-            : base(configuration, FILE_NAME)
+        public UserStore(IDataStoreConfiguration configuration, MongoClient client)
         {
+            var db = client.GetDatabase("TipExpert");
+            _collection = db.GetCollection<User>("user");
         }
 
-        public Task AddUser(User user)
+        public async Task AddUser(User user)
         {
-            return Task.Run(() =>
-            {
-                if (Entities.Count == 0)
+//                if (Entities.Count == 0)
                     user.Role = (int)UserRoles.Admin;
 
                 user.Id = Guid.NewGuid();
-                Entities.Add(user);
-            });
+
+            await _collection.InsertOneAsync(user);
         }
 
         public Task RemoveUser(User user)
         {
-            return Task.Run(() => Entities.Remove(user));
+            return Task.CompletedTask;
+//            return Task.Run(() => Entities.Remove(user));
         }
 
-        public Task<User[]> GetAll()
+        public async Task<User[]> GetAll()
         {
-            return Task.Run(() => Entities.ToArray());
+            var result = await _collection.FindAsync(FilterDefinition<User>.Empty);
+            var list = await result.ToListAsync();
+            return list.ToArray();
         }
 
-        public Task<User> GetById(Guid id)
+        public async Task<User> GetById(Guid id)
         {
-            return Task.Run(() =>
-            {
-                return Entities.FirstOrDefault(x => x.Id == id);
-            });
+            var result = await _collection.FindAsync(x => x.Id == id);
+            return await result.FirstOrDefaultAsync();
         }
 
-        public Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
+        public async Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
         {
             email = email.ToUpper();
 
-            return Task.Run(() =>
-            {
-                return Entities.FirstOrDefault(x => x.Email.ToUpper() == email);
+            var result = await _collection.FindAsync(x => x.Email.ToUpper() == email, cancellationToken: cancellationToken);
+            return await result.FirstOrDefaultAsync(cancellationToken);
+        }
 
-            }, cancellationToken);
+        public Task SaveChangesAsync()
+        {
+            return Task.CompletedTask;
         }
     }
 }

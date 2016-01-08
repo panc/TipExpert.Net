@@ -3,6 +3,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
 using TipExpert.Core;
@@ -19,6 +20,7 @@ namespace TipExpert.Net
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.local.json", optional: true)
                 .AddEnvironmentVariables();
 
             // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
@@ -53,10 +55,11 @@ namespace TipExpert.Net
             services.AddTransient<FiveThreeOneZeroPointsCalculationStrategy>();
             services.AddTransient<TheWinneTakesItAllCalculationStrategy>();
 
-            services.AddSingleton<IUserStore, UserStore>();
-            services.AddSingleton<ILeagueStore, LeagueStore>();
-            services.AddSingleton<IMatchStore, MatchStore>();
-            services.AddSingleton<IGameStore, GameStore>();
+            services.AddSingleton(s => new MongoClient(Configuration["Data:ConnectionString"]));
+            services.AddTransient<IUserStore, UserStore>();
+            services.AddTransient<ILeagueStore, LeagueStore>();
+            services.AddTransient<IMatchStore, MatchStore>();
+            services.AddTransient<IGameStore, GameStore>();
 
             // Add MVC services to the services container.
             services.AddMvc();
