@@ -25,23 +25,20 @@ namespace TipExpert.Core
             await _collection.DeleteOneAsync(x => x.Id == league.Id);
         }
 
+        public async Task Update(League league)
+        {
+            await _collection.ReplaceOneAsync(x => x.Id == league.Id, league);
+        }
+
         public async Task<League[]> GetAll()
         {
-            var result = await _collection.FindAsync(FilterDefinition<League>.Empty);
-            var list = await result.ToListAsync();
+            var list = await _collection.Find(FilterDefinition<League>.Empty).ToListAsync();
             return list.ToArray();
         }
 
         public async Task<League> GetById(Guid id)
         {
-            var result = await _collection.FindAsync(x => x.Id == id);
-            return await result.FirstOrDefaultAsync();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            // TODO
-            return Task.CompletedTask;
+            return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
     }
 }

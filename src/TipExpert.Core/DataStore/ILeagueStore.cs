@@ -9,10 +9,10 @@ namespace TipExpert.Core
 
         Task Remove(League league);
 
+        Task Update(League league);
+
         Task<League[]> GetAll();
 
         Task<League> GetById(Guid id);
-
-        Task SaveChangesAsync();
     }
 }

@@ -31,23 +31,20 @@ namespace TipExpert.Core
 
         public async Task<User[]> GetAll()
         {
-            var result = await _collection.FindAsync(FilterDefinition<User>.Empty);
-            var list = await result.ToListAsync();
+            var list = await _collection.Find(FilterDefinition<User>.Empty).ToListAsync();
             return list.ToArray();
         }
 
         public async Task<User> GetById(Guid id)
         {
-            var result = await _collection.FindAsync(x => x.Id == id);
-            return await result.FirstOrDefaultAsync();
+            return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
         {
             email = email.ToUpper();
 
-            var result = await _collection.FindAsync(x => x.Email.ToUpper() == email, cancellationToken: cancellationToken);
-            return await result.FirstOrDefaultAsync(cancellationToken);
+            return await _collection.Find(x => x.Email.ToUpper() == email).FirstOrDefaultAsync(cancellationToken);
         }
 
         public Task SaveChangesAsync()

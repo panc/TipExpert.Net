@@ -47,7 +47,6 @@ namespace TipExpert.Net.Controllers
         {
             var league = Mapper.Map<League>(newLeague);
             await _leagueStore.Add(league);
-            await _leagueStore.SaveChangesAsync();
 
             return Mapper.Map<LeagueDto>(league);
         }
@@ -58,7 +57,7 @@ namespace TipExpert.Net.Controllers
             var league = await _leagueStore.GetById(id);
             league.Name = leagueDto.name;
 
-            await _leagueStore.SaveChangesAsync();
+            await _leagueStore.Update(league);
 
             return Mapper.Map<LeagueDto>(league);
         }
@@ -66,9 +65,11 @@ namespace TipExpert.Net.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(Guid id)
         {
+            // todo:
+            // what happens with exisiting matches???
+
             var league = await _leagueStore.GetById(id);
             await _leagueStore.Remove(league);
-            await _leagueStore.SaveChangesAsync();
         }
     }
 }
