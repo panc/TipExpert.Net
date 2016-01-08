@@ -7,5 +7,8 @@ Tipexpert is a betting game of the next generation. Customizable, personal and s
 
 ## Status
 
-At the very moment we are poriting the existing code from the (outdated) nodejs backend (https://github.com/panc/TipExpert) to ASP.NET vNext.
-The AngularJs frontend should not be changed at the moment.
+Poriting the existing code from the (outdated) nodejs backend (https://github.com/panc/TipExpert) to ASP.NET vNext is finished now.
+The next steps are
+
+- Use a real database to store the data instead of simple files. Therefor we have choosen MongoDb.
+- Add support for importing matches from OpenLigaDb.
