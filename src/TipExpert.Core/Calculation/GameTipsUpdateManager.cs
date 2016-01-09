@@ -20,8 +20,6 @@ namespace TipExpert.Core.Calculation
 
             var tasks = games.Select(game => _UpdateGame(game, match));
             await Task.WhenAll(tasks);
-
-            await _gameStore.SaveChangesAsync();
         }
 
         private async Task _UpdateGame(Game game, Match match)
@@ -35,6 +33,7 @@ namespace TipExpert.Core.Calculation
             _UpdateTotalPoints(game);
             _UpdateRanking(game);
             await _UpdateProfit(game);
+            await _gameStore.Update(game);
         }
 
         private async Task _UpdateTipsForMatch(Game game, Match match)

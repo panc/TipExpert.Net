@@ -81,7 +81,6 @@ namespace TipExpert.Net.Controllers
             };
 
             await _gameStore.Add(game);
-            await _gameStore.SaveChangesAsync();
 
             return Mapper.Map<GameDto>(game);
         }
@@ -105,7 +104,7 @@ namespace TipExpert.Net.Controllers
                 return HttpBadRequest("The user is not defined as a player of that game!");
 
             player.Stake = stake;
-            await _gameStore.SaveChangesAsync();
+            await _gameStore.Update(game);
 
             return Json(_PrepareGameForUser(game));
         }
@@ -142,7 +141,7 @@ namespace TipExpert.Net.Controllers
             tip.HomeScore = matchTipDto.tipOfPlayer.homeScore;
             tip.GuestScore = matchTipDto.tipOfPlayer.guestScore;
 
-            await _gameStore.SaveChangesAsync();
+            await _gameStore.Update(game);
 
             return Json(_PrepareGameForUser(game));
         }
@@ -164,7 +163,7 @@ namespace TipExpert.Net.Controllers
             game.Description = gameDto.description;
             game.MinStake = gameDto.minStake;
 
-            await _gameStore.SaveChangesAsync();
+            await _gameStore.Update(game);
 
             return Json(Mapper.Map<GameDto>(game));
         }
@@ -191,7 +190,7 @@ namespace TipExpert.Net.Controllers
                 game.Players.Add(new Player { UserId = creatorId });
             }
 
-            await _gameStore.SaveChangesAsync();
+            await _gameStore.Update(game);
 
             return Json(Mapper.Map<GameDto>(game));
         }
@@ -223,7 +222,7 @@ namespace TipExpert.Net.Controllers
             }
 
             game.Matches = list;
-            await _gameStore.SaveChangesAsync();
+            await _gameStore.Update(game);
 
             return Json(Mapper.Map<GameDto>(game));
         }
@@ -244,7 +243,6 @@ namespace TipExpert.Net.Controllers
             // todo: check whether the game is already running
 
             await _gameStore.Remove(game);
-            await _gameStore.SaveChangesAsync();
 
             return Json(new { success = true });
         }

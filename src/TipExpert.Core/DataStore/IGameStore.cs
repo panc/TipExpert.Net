@@ -9,6 +9,8 @@ namespace TipExpert.Core
 
         Task Remove(Game game);
 
+        Task Update(Game game);
+
         Task<Game> GetById(Guid id);
 
         Task<Game[]> GetGamesCreatedByUser(Guid userId);
@@ -18,7 +20,5 @@ namespace TipExpert.Core
         Task<Game[]> GetFinishedGames(Guid userId);
 
         Task<Game[]> GetGamesForMatch(Guid matchId);
-
-        Task SaveChangesAsync();
     }
 }

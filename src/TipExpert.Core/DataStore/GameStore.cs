@@ -31,6 +31,11 @@ namespace TipExpert.Core
             await _collection.DeleteOneAsync(x => x.Id == game.Id);
         }
 
+        public async Task Update(Game game)
+        {
+            await _collection.ReplaceOneAsync(x => x.Id == game.Id, game);
+        }
+
         public async Task<Game[]> GetGamesCreatedByUser(Guid userId)
         {
             var result = await _collection.FindAsync(x => x.CreatorId == userId && x.IsFinished == false);
@@ -57,12 +62,6 @@ namespace TipExpert.Core
             var result = await _collection.FindAsync(x => x.Matches.FirstOrDefault(m => m.MatchId == matchId) != null);
             var list = await result.ToListAsync();
             return list.ToArray();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            // todo
-            return Task.CompletedTask;
         }
 
         public async Task<Game> GetById(Guid id)
