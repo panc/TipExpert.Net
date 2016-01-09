@@ -20,13 +20,6 @@ namespace TipExpert.Net.Controllers
             _gameTipsUpdateManager = gameTipsUpdateManager;
         }
 
-        [HttpGet]
-        public async Task<MatchDto[]> Get()
-        {
-            var leagues = await _matchStore.GetAll();
-            return Mapper.Map<MatchDto[]>(leagues);
-        }
-
         [HttpPost]
         public async Task<MatchDto> Post([FromBody]MatchDto newMatch)
         {

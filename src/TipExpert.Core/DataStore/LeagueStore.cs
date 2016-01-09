@@ -32,13 +32,16 @@ namespace TipExpert.Core
 
         public async Task<League[]> GetAll()
         {
-            var list = await _collection.Find(FilterDefinition<League>.Empty).ToListAsync();
-            return list.ToArray();
+            return await _collection
+                .Find(FilterDefinition<League>.Empty)
+                .ToArrayAsync();
         }
 
         public async Task<League> GetById(Guid id)
         {
-            return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            return await _collection
+                .Find(x => x.Id == id)
+                .SingleOrDefaultAsync();
         }
     }
 }

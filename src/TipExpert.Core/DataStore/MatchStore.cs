@@ -30,24 +30,18 @@ namespace TipExpert.Core
             await _collection.ReplaceOneAsync(x => x.Id == match.Id, match);
         }
 
-        public async Task<Match[]> GetAll()
-        {
-            var result = await _collection.FindAsync(FilterDefinition<Match>.Empty);
-            var list = await result.ToListAsync();
-            return list.ToArray();
-        }
-
         public async Task<Match[]> GetMatchesForLeague(Guid leagueId)
         {
-            var result = await _collection.FindAsync(x => x.LeagueId == leagueId);
-            var list = await result.ToListAsync();
-            return list.ToArray();
+            return await _collection
+                .Find(x => x.LeagueId == leagueId)
+                .ToArrayAsync();
         }
 
         public async Task<Match> GetById(Guid id)
         {
-            var result = await _collection.FindAsync(x => x.Id == id);
-            return await result.FirstOrDefaultAsync();
+            return await _collection
+                .Find(x => x.Id == id)
+                .SingleOrDefaultAsync();
         }
     }
 }

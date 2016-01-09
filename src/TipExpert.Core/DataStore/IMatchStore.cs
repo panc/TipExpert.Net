@@ -11,8 +11,6 @@ namespace TipExpert.Core
 
         Task Update(Match match);
 
-        Task<Match[]> GetAll();
-
         Task<Match> GetById(Guid id);
 
         Task<Match[]> GetMatchesForLeague(Guid leagueId);

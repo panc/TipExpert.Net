@@ -38,36 +38,37 @@ namespace TipExpert.Core
 
         public async Task<Game[]> GetGamesCreatedByUser(Guid userId)
         {
-            var result = await _collection.FindAsync(x => x.CreatorId == userId && x.IsFinished == false);
-            var list = await result.ToListAsync();
-            return list.ToArray();
+            return await _collection
+                .Find(x => x.CreatorId == userId && x.IsFinished == false)
+                .ToArrayAsync();
         }
 
         public async Task<Game[]> GetGamesUserIsInvitedTo(Guid userId)
         {
-            var result = await _collection.FindAsync(x => !x.IsFinished && x.Players.FirstOrDefault(p => p.UserId == userId) != null);
-            var list = await result.ToListAsync();
-            return list.ToArray();
+            return await _collection
+                .Find(x => !x.IsFinished && x.Players.Any(p => p.UserId == userId))
+                .ToArrayAsync();
         }
 
         public async Task<Game[]> GetFinishedGames(Guid userId)
         {
-            var result = await _collection.FindAsync(x => x.IsFinished && x.Players.FirstOrDefault(p => p.UserId == userId) != null);
-            var list = await result.ToListAsync();
-            return list.ToArray();
+            return await _collection
+                .Find(x => x.IsFinished && x.Players.Any(p => p.UserId == userId))
+                .ToArrayAsync();
         }
 
         public async Task<Game[]> GetGamesForMatch(Guid matchId)
         {
-            var result = await _collection.FindAsync(x => x.Matches.FirstOrDefault(m => m.MatchId == matchId) != null);
-            var list = await result.ToListAsync();
-            return list.ToArray();
+            return await _collection
+                .Find(x => x.Matches.Any(m => m.MatchId == matchId))
+                .ToArrayAsync();
         }
 
         public async Task<Game> GetById(Guid id)
         {
-            var result = await _collection.FindAsync(x => x.Id == id);
-            return await result.FirstOrDefaultAsync();
+            return await _collection
+                .Find(x => x.Id == id)
+                .SingleOrDefaultAsync();
         }
     }
 }
