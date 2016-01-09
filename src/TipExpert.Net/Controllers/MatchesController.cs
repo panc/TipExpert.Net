@@ -32,8 +32,7 @@ namespace TipExpert.Net.Controllers
         {
             var match = Mapper.Map<Match>(newMatch);
             await _matchStore.Add(match);
-            await _matchStore.SaveChangesAsync();
-
+            
             return Mapper.Map<MatchDto>(match);
         }
 
@@ -49,9 +48,9 @@ namespace TipExpert.Net.Controllers
             match.LeagueId = matchDto.leagueId;
             match.IsFinished = matchDto.isFinished;
 
+            // Todo: Error handing
+            await _matchStore.Update(match);
             await _gameTipsUpdateManager.UpdateGamesForMatch(match);
-
-            await _matchStore.SaveChangesAsync();
 
             return Mapper.Map<MatchDto>(match);
         }
@@ -61,7 +60,6 @@ namespace TipExpert.Net.Controllers
         {
             var match = await _matchStore.GetById(id);
             await _matchStore.Remove(match);
-            await _matchStore.SaveChangesAsync();
         }
     }
 }

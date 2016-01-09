@@ -9,11 +9,11 @@ namespace TipExpert.Core
 
         Task Remove(Match match);
 
+        Task Update(Match match);
+
         Task<Match[]> GetAll();
 
         Task<Match> GetById(Guid id);
-
-        Task SaveChangesAsync();
 
         Task<Match[]> GetMatchesForLeague(Guid leagueId);
     }

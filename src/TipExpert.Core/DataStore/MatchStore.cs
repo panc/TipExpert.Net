@@ -25,6 +25,11 @@ namespace TipExpert.Core
             await _collection.DeleteOneAsync(x => x.Id == match.Id);
         }
 
+        public async Task Update(Match match)
+        {
+            await _collection.ReplaceOneAsync(x => x.Id == match.Id, match);
+        }
+
         public async Task<Match[]> GetAll()
         {
             var result = await _collection.FindAsync(FilterDefinition<Match>.Empty);
@@ -43,12 +48,6 @@ namespace TipExpert.Core
         {
             var result = await _collection.FindAsync(x => x.Id == id);
             return await result.FirstOrDefaultAsync();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            // Todo
-            return Task.CompletedTask;
         }
     }
 }
