@@ -26,7 +26,7 @@ namespace TipExpert.Core.Calculation
                 // update the users coins
                 var user = await _userStore.GetById(player.UserId);
                 user.Coins += player.Profit.GetValueOrDefault(0);
-                await _userStore.SaveChangesAsync();
+                await _userStore.Update(user);
             }
         }
 
@@ -36,7 +36,7 @@ namespace TipExpert.Core.Calculation
             {
                 var user = await _userStore.GetById(player.UserId);
                 user.Coins -= player.Profit.GetValueOrDefault(0);
-                await _userStore.SaveChangesAsync();
+                await _userStore.Update(user);
 
                 player.Profit = 0;
             }

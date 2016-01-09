@@ -29,6 +29,11 @@ namespace TipExpert.Core
             await _collection.DeleteOneAsync(x => x.Id == user.Id);
         }
 
+        public async Task Update(User user)
+        {
+            await _collection.ReplaceOneAsync(x => x.Id == user.Id, user);
+        }
+
         public async Task<User[]> GetAll()
         {
             var list = await _collection.Find(FilterDefinition<User>.Empty).ToListAsync();
@@ -45,12 +50,6 @@ namespace TipExpert.Core
             email = email.ToUpper();
 
             return await _collection.Find(x => x.Email.ToUpper() == email).FirstOrDefaultAsync(cancellationToken);
-        }
-
-        public Task SaveChangesAsync()
-        {
-            // TODO
-            return Task.CompletedTask;
         }
     }
 }

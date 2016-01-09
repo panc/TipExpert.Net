@@ -61,7 +61,6 @@ namespace TipExpert.Net.Authentication
             };
 
             await _userStore.AddUser(user);
-            await _userStore.SaveChangesAsync();
 
             appUser.Id = user.Id;
 

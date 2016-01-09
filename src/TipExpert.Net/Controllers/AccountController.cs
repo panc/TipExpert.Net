@@ -120,7 +120,7 @@ namespace TipExpert.Net.Controllers
             user.Email = userDto.email;
             user.Role = userDto.role;
 
-            await _userStore.SaveChangesAsync();
+            await _userStore.Update(user);
 
             return Mapper.Map<UserDto>(user);
         }

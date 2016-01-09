@@ -10,12 +10,12 @@ namespace TipExpert.Core
 
         Task RemoveUser(User user);
 
+        Task Update(User user);
+
         Task<User[]> GetAll();
 
         Task<User> GetById(Guid id);
 
         Task<User> FindUserByEmail(string email, CancellationToken cancellationToken);
-
-        Task SaveChangesAsync();
     }
 }
