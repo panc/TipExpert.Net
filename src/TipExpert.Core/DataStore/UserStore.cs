@@ -9,10 +9,9 @@ namespace TipExpert.Core
     {
         private readonly IMongoCollection<User> _collection;
 
-        public UserStore(MongoClient client)
+        public UserStore(IMongoDatabase database)
         {
-            var db = client.GetDatabase("TipExpert");
-            _collection = db.GetCollection<User>("user");
+            _collection = database.GetCollection<User>("user");
         }
 
         public async Task AddUser(User user)

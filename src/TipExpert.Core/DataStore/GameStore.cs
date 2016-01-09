@@ -7,17 +7,11 @@ namespace TipExpert.Core
 {
     public class GameStore : IGameStore
     {
-        private readonly IUserStore _userStore;
-        private readonly IMatchStore _matchStore;
         private readonly IMongoCollection<Game> _collection;
 
-        public GameStore(MongoClient client, IUserStore userStore, IMatchStore matchStore)
+        public GameStore(IMongoDatabase database)
         {
-            _userStore = userStore;
-            _matchStore = matchStore;
-
-            var db = client.GetDatabase("TipExpert");
-            _collection = db.GetCollection<Game>("games");
+            _collection = database.GetCollection<Game>("games");
         }
 
         public async Task Add(Game game)

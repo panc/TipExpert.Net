@@ -8,10 +8,9 @@ namespace TipExpert.Core
     {
         private readonly IMongoCollection<Match> _collection;
 
-        public MatchStore(MongoClient client)
+        public MatchStore(IMongoDatabase database)
         {
-            var db = client.GetDatabase("TipExpert");
-            _collection = db.GetCollection<Match>("matches");
+            _collection = database.GetCollection<Match>("matches");
         }
 
         public async Task Add(Match match)

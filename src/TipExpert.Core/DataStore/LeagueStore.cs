@@ -8,10 +8,9 @@ namespace TipExpert.Core
     {
         private readonly IMongoCollection<League> _collection;
 
-        public LeagueStore(MongoClient client)
+        public LeagueStore(IMongoDatabase database)
         {
-            var db = client.GetDatabase("TipExpert");
-            _collection = db.GetCollection<League>("leagues");
+            _collection = database.GetCollection<League>("leagues");
         }
 
         public async Task Add(League league)

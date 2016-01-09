@@ -53,7 +53,10 @@ namespace TipExpert.Net
             services.AddTransient<FiveThreeOneZeroPointsCalculationStrategy>();
             services.AddTransient<TheWinneTakesItAllCalculationStrategy>();
 
-            services.AddSingleton(s => new MongoClient(Configuration["Data:ConnectionString"]));
+            services.AddSingleton(s => 
+                new MongoClient(Configuration["Data:ConnectionString"])
+                    .GetDatabase(Configuration["Data:DataBaseName"]));
+
             services.AddTransient<IUserStore, UserStore>();
             services.AddTransient<ILeagueStore, LeagueStore>();
             services.AddTransient<IMatchStore, MatchStore>();
