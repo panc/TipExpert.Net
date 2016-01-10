@@ -1,13 +1,13 @@
-using System;
-using Newtonsoft.Json;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TipExpert.Core
 {
     public class Player
     {
-        public Guid UserId { get; set; }
+        public ObjectId UserId { get; set; }
 
-        [JsonIgnore]
+        [BsonIgnore]
         public User User { get; set; }
 
         public double? Stake { get; set; }

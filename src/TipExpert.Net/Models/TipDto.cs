@@ -1,10 +1,8 @@
-using System;
-
 namespace TipExpert.Net.Models
 {
     public class TipDto
     {
-        public Guid userId { get; set; }
+        public string userId { get; set; }
 
         public int homeScore { get; set; }
 

@@ -1,14 +1,14 @@
-using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TipExpert.Core
 {
     public class MatchTips
     {
-        public Guid MatchId { get; set; }
+        public ObjectId MatchId { get; set; }
 
-        [JsonIgnore]
+        [BsonIgnore]
         public Match Match { get; set; }
 
         public List<Tip> Tips { get; set; }

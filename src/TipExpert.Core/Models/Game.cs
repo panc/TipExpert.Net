@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace TipExpert.Core
 {
     public class Game
     {
-        public Guid Id { get; set; }
+        public ObjectId Id { get; set; }
 
         public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public Guid CreatorId { get; set; }
+        public ObjectId CreatorId { get; set; }
 
         public double MinStake { get; set; }
 

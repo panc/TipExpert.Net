@@ -1,12 +1,12 @@
-using System;
+using MongoDB.Bson;
 
 namespace TipExpert.Core
 {
     public class Match
     {
-        public Guid Id { get; set; }
+        public ObjectId Id { get; set; }
 
-        public Guid LeagueId { get; set; }
+        public ObjectId LeagueId { get; set; }
 
         public string HomeTeam { get; set; }
 

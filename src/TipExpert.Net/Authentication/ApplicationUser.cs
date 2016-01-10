@@ -1,10 +1,8 @@
-using System;
-
 namespace TipExpert.Net
 {
     public class ApplicationUser
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string UserName { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
 using TipExpert.Core;
@@ -29,17 +28,18 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<MatchDto>(match);
         }
 
-        [HttpPut("{id}")]
-        public async Task<MatchDto> Put(Guid id, [FromBody]MatchDto matchDto)
+        [HttpPut("{matchId}")]
+        public async Task<MatchDto> Put(string matchId, [FromBody]MatchDto matchDto)
         {
+            var id = matchId.ToObjectId();
             var match = await _matchStore.GetById(id);
             match.DueDate = matchDto.dueDate;
             match.GuestScore = matchDto.guestScore;
             match.HomeScore = matchDto.homeScore;
             match.GuestTeam = matchDto.guestTeam;
             match.HomeTeam = matchDto.homeTeam;
-            match.LeagueId = matchDto.leagueId;
             match.IsFinished = matchDto.isFinished;
+            match.LeagueId = matchDto.leagueId.ToObjectId();
 
             // Todo: Error handing
             await _matchStore.Update(match);
@@ -48,9 +48,10 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<MatchDto>(match);
         }
 
-        [HttpDelete("{id}")]
-        public async Task Delete(Guid id)
+        [HttpDelete("{matchId}")]
+        public async Task Delete(string matchId)
         {
+            var id = matchId.ToObjectId();
             var match = await _matchStore.GetById(id);
             await _matchStore.Remove(match);
         }

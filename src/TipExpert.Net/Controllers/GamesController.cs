@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
+using MongoDB.Bson;
 using TipExpert.Core;
-using TipExpert.Net.Authentication;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
@@ -21,11 +22,12 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet("{gameId}")]
-        public async Task<IActionResult> GetGameForUser(Guid gameId)
+        public async Task<IActionResult> GetGameForUser(string gameId)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
-            IActionResult errorResult = _CheckGameIsNotNull(game, gameId);
+            IActionResult errorResult = _CheckGameIsNotNull(game, id);
             if (errorResult != null)
                 return errorResult;
 
@@ -33,11 +35,12 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet("{gameId}/edit")]
-        public async Task<IActionResult> GetGameForEdit(Guid gameId)
+        public async Task<IActionResult> GetGameForEdit(string gameId)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
-            IActionResult errorResult = _CheckGameIsNotNull(game, gameId);
+            IActionResult errorResult = _CheckGameIsNotNull(game, id);
             if (errorResult != null)
                 return errorResult;
             
@@ -47,7 +50,7 @@ namespace TipExpert.Net.Controllers
         [HttpGet("created")]
         public async Task<GameDto[]> GetCreatedGames()
         {
-            var userId = User.GetUserIdAsGuid();
+            var userId = User.GetUserIdAsObjectId();
 
             var games = await _gameStore.GetGamesCreatedByUser(userId);
             return Mapper.Map<GameDto[]>(games);
@@ -56,7 +59,7 @@ namespace TipExpert.Net.Controllers
         [HttpGet("invited")]
         public async Task<GameDto[]> GetInvitedGames()
         {
-            var userId = User.GetUserIdAsGuid();
+            var userId = User.GetUserIdAsObjectId();
 
             var games = await _gameStore.GetGamesUserIsInvitedTo(userId);
             return Mapper.Map<GameDto[]>(games);
@@ -65,7 +68,7 @@ namespace TipExpert.Net.Controllers
         [HttpGet("finished")]
         public async Task<GameDto[]> GetFinishedGames()
         {
-            var userId = User.GetUserIdAsGuid();
+            var userId = User.GetUserIdAsObjectId();
 
             var games = await _gameStore.GetFinishedGames(userId);
             return Mapper.Map<GameDto[]>(games);
@@ -77,7 +80,7 @@ namespace TipExpert.Net.Controllers
             var game = new Game
             {
                 Title = newGame.title,
-                CreatorId = User.GetUserIdAsGuid()
+                CreatorId = User.GetUserIdAsObjectId()
             };
 
             await _gameStore.Add(game);
@@ -86,18 +89,19 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/stake")]
-        public async Task<IActionResult> UpdateStake(Guid gameId, [FromBody]int stake)
+        public async Task<IActionResult> UpdateStake(string gameId, [FromBody]int stake)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
             IActionResult errorResult =
-                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotNull(game, id) ??
                 _CheckGameIsNotFinished(game);
 
             if (errorResult != null)
                 return errorResult;
 
-            var userId = User.GetUserIdAsGuid();
+            var userId = User.GetUserIdAsObjectId();
             var player = game.Players.FirstOrDefault(x => x.UserId == userId);
 
             if (player == null)
@@ -110,19 +114,21 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/tip")]
-        public async Task<IActionResult> UpdateTip(Guid gameId, [FromBody]MatchTipsDto matchTipDto)
+        public async Task<IActionResult> UpdateTip(string gameId, [FromBody]MatchTipsDto matchTipDto)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
             IActionResult errorResult =
-                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotNull(game, id) ??
                 _CheckGameIsNotFinished(game);
 
             if (errorResult != null)
                 return errorResult;
 
-            var userId = User.GetUserIdAsGuid();
-            var match = game.Matches.FirstOrDefault(x => x.MatchId == matchTipDto.matchId);
+            var userId = User.GetUserIdAsObjectId();
+            var matchId = matchTipDto.matchId.ToObjectId();
+            var match = game.Matches.FirstOrDefault(x => x.MatchId == matchId);
 
             if (match == null)
                 return HttpBadRequest("The match is not defined for that game!");
@@ -147,12 +153,13 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/edit/data")]
-        public async Task<IActionResult> UpdateGame(Guid gameId, [FromBody]GameDto gameDto)
+        public async Task<IActionResult> UpdateGame(string gameId, [FromBody]GameDto gameDto)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
             IActionResult errorResult =
-                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotNull(game, id) ??
                 _CheckCurrentUserIsGameCreator(game) ??
                 _CheckGameIsNotFinished(game);
 
@@ -169,12 +176,13 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/edit/players")]
-        public async Task<IActionResult> UpdatePlayers(Guid gameId, [FromBody]PlayerDto[] playerDtos)
+        public async Task<IActionResult> UpdatePlayers(string gameId, [FromBody]PlayerDto[] playerDtos)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
             IActionResult errorResult =
-                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotNull(game, id) ??
                 _CheckCurrentUserIsGameCreator(game) ??
                 _CheckGameIsNotFinished(game);
 
@@ -184,7 +192,7 @@ namespace TipExpert.Net.Controllers
             game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
 
             // game creator always has to be part of the players list
-            var creatorId = User.GetUserIdAsGuid();
+            var creatorId = User.GetUserIdAsObjectId();
             if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
             {
                 game.Players.Add(new Player { UserId = creatorId });
@@ -196,27 +204,28 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpPut("{gameId}/edit/matches")]
-        public async Task<IActionResult> UpdateMatches(Guid gameId, [FromBody]MatchTipsDto[] matchDtos)
+        public async Task<IActionResult> UpdateMatches(string gameId, [FromBody]MatchTipsDto[] matchDtos)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
             IActionResult errorResult =
-                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotNull(game, id) ??
                 _CheckCurrentUserIsGameCreator(game) ??
                 _CheckGameIsNotFinished(game);
 
             if (errorResult != null)
                 return errorResult;
                 
-            var ids = matchDtos.Select(x => x.matchId).ToList();
+            var ids = matchDtos.Select(x => x.matchId.ToObjectId()).ToList();
             var list = new List<MatchTips>();
 
-            foreach (var id in ids)
+            foreach (var matchId in ids)
             {
-                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == id);
+                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == matchId);
 
                 if (entry == null)
-                    entry = new MatchTips { MatchId = id };
+                    entry = new MatchTips { MatchId = matchId };
 
                 list.Add(entry);
             }
@@ -228,12 +237,13 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpDelete("{gameId}/edit")]
-        public async Task<IActionResult> DeleteGame(Guid gameId)
+        public async Task<IActionResult> DeleteGame(string gameId)
         {
-            var game = await _gameStore.GetById(gameId);
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
 
             IActionResult errorResult =
-                _CheckGameIsNotNull(game, gameId) ??
+                _CheckGameIsNotNull(game, id) ??
                 _CheckCurrentUserIsGameCreator(game) ?? 
                 _CheckGameIsNotFinished(game);
 
@@ -249,7 +259,7 @@ namespace TipExpert.Net.Controllers
 
         private GameDto _PrepareGameForUser(Game game)
         {
-            var userId = User.GetUserIdAsGuid();
+            var userId = User.GetUserId();
             var gameDto = Mapper.Map<GameDto>(game);
 
             gameDto.player = gameDto.players?.FirstOrDefault(x => x.userId == userId);
@@ -285,7 +295,7 @@ namespace TipExpert.Net.Controllers
             }
         }
 
-        private IEnumerable<MatchTipsDto> _GetNotFinishedMatches(GameDto gameDto, Guid userId)
+        private IEnumerable<MatchTipsDto> _GetNotFinishedMatches(GameDto gameDto, string userId)
         {
             foreach (var match in gameDto.matches.Where(x => x.match != null && !x.match.isFinished))
             {
@@ -298,7 +308,7 @@ namespace TipExpert.Net.Controllers
 
         private IActionResult _CheckCurrentUserIsGameCreator(Game game)
         {
-            var userId = User.GetUserIdAsGuid();
+            var userId = User.GetUserIdAsObjectId();
 
             return game.CreatorId == userId
                 ? null
@@ -312,7 +322,7 @@ namespace TipExpert.Net.Controllers
                 : null;
         }
 
-        private IActionResult _CheckGameIsNotNull(Game game, Guid gameId)
+        private IActionResult _CheckGameIsNotNull(Game game, ObjectId gameId)
         {
             return (game == null)
                 ? HttpBadRequest($"Game with id '{gameId}' not found!")

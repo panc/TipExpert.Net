@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace TipExpert.Net.Models
+﻿namespace TipExpert.Net.Models
 {
     public class LeagueDto
     {
-        public Guid id { get; set; }
+        public string id { get; set; }
 
         public string name { get; set; } 
     }

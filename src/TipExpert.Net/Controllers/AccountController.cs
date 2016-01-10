@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +7,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using TipExpert.Core;
 using TipExpert.Net.Models;
 
@@ -91,9 +91,10 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<UserDto> GetUserProfile(Guid userId)
+        public async Task<UserDto> GetUserProfile(string userId)
         {
-            var user = await _userStore.GetById(userId);
+            var id = userId.ToObjectId();
+            var user = await _userStore.GetById(id);
             return Mapper.Map<UserDto>(user);
         }
 
@@ -106,15 +107,16 @@ namespace TipExpert.Net.Controllers
             var user = await _userStore.GetAll();
             return user.Select(x => new PlayerDto
                 {
-                    userId = x.Id,
+                    userId = x.Id.ToString(),
                     name = x.Name
                 })
                 .ToArray(); 
         }
 
-        [HttpPut("{id}")]
-        public async Task<UserDto> Put(Guid id, [FromBody]UserDto userDto)
+        [HttpPut("{userId}")]
+        public async Task<UserDto> Put(string userId, [FromBody]UserDto userDto)
         {
+            var id = userId.ToObjectId();
             var user = await _userStore.GetById(id);
             user.Name = userDto.name;
             user.Email = userDto.email;
@@ -175,7 +177,7 @@ namespace TipExpert.Net.Controllers
                 // If the user does not have an account, then ask the user to create an account.
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
+                //var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
                 //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
                 return View("Error");
             }

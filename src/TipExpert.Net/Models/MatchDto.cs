@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace TipExpert.Net.Models
+﻿namespace TipExpert.Net.Models
 {
     public class MatchDto
     {
-        public Guid id { get; set; }
+        public string id { get; set; }
         
-        public Guid leagueId { get; set; }
+        public string leagueId { get; set; }
 
         public string homeTeam { get; set; }
 

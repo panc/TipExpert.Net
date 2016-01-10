@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace TipExpert.Core
@@ -20,7 +21,6 @@ namespace TipExpert.Core
 
         public async Task Add(Game game)
         {
-            game.Id = Guid.NewGuid();
             await _collection.InsertOneAsync(game);
             await _PopulateRelations(game);
         }
@@ -36,7 +36,7 @@ namespace TipExpert.Core
             await _PopulateRelations(game);
         }
 
-        public async Task<Game[]> GetGamesCreatedByUser(Guid userId)
+        public async Task<Game[]> GetGamesCreatedByUser(ObjectId userId)
         {
             var games = await _collection
                 .Find(x => x.CreatorId == userId && x.IsFinished == false)
@@ -47,7 +47,7 @@ namespace TipExpert.Core
             return games;
         }
 
-        public async Task<Game[]> GetGamesUserIsInvitedTo(Guid userId)
+        public async Task<Game[]> GetGamesUserIsInvitedTo(ObjectId userId)
         {
             var games = await _collection
                 .Find(x => !x.IsFinished && x.Players.Any(p => p.UserId == userId))
@@ -58,7 +58,7 @@ namespace TipExpert.Core
             return games;
         }
 
-        public async Task<Game[]> GetFinishedGames(Guid userId)
+        public async Task<Game[]> GetFinishedGames(ObjectId userId)
         {
             var games = await _collection
                 .Find(x => x.IsFinished && x.Players.Any(p => p.UserId == userId))
@@ -69,7 +69,7 @@ namespace TipExpert.Core
             return games;
         }
 
-        public async Task<Game[]> GetGamesForMatch(Guid matchId)
+        public async Task<Game[]> GetGamesForMatch(ObjectId matchId)
         {
             var games = await _collection
                 .Find(x => x.Matches.Any(m => m.MatchId == matchId))
@@ -80,7 +80,7 @@ namespace TipExpert.Core
             return games;
         }
 
-        public async Task<Game> GetById(Guid id)
+        public async Task<Game> GetById(ObjectId id)
         {
             var game = await _collection
                 .Find(x => x.Id == id)

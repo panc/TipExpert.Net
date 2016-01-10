@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -28,16 +27,18 @@ namespace TipExpert.Net.Controllers
         }
 
         [HttpGet("{leagueId}/matches")]
-        public async Task<MatchDto[]> GetMatches(Guid leagueId)
+        public async Task<MatchDto[]> GetMatches(string leagueId)
         {
-            var matches = await _matchStore.GetMatchesForLeague(leagueId);
+            var id = leagueId.ToObjectId();
+            var matches = await _matchStore.GetMatchesForLeague(id);
             return Mapper.Map<MatchDto[]>(matches);
         }
 
         [HttpGet("{leagueId}/matches/notfinished")]
-        public async Task<MatchDto[]> GetNotFinishedMatches(Guid leagueId)
+        public async Task<MatchDto[]> GetNotFinishedMatches(string leagueId)
         {
-            var matches = await _matchStore.GetMatchesForLeague(leagueId);
+            var id = leagueId.ToObjectId();
+            var matches = await _matchStore.GetMatchesForLeague(id);
 
             return Mapper.Map<MatchDto[]>(matches.Where(x => !x.IsFinished));
         }
@@ -51,9 +52,10 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<LeagueDto>(league);
         }
 
-        [HttpPut("{id}")]
-        public async Task<LeagueDto> Put(Guid id, [FromBody]LeagueDto leagueDto)
+        [HttpPut("{leagueId}")]
+        public async Task<LeagueDto> Put(string leagueId, [FromBody]LeagueDto leagueDto)
         {
+            var id = leagueId.ToObjectId();
             var league = await _leagueStore.GetById(id);
             league.Name = leagueDto.name;
 
@@ -62,12 +64,13 @@ namespace TipExpert.Net.Controllers
             return Mapper.Map<LeagueDto>(league);
         }
 
-        [HttpDelete("{id}")]
-        public async Task Delete(Guid id)
+        [HttpDelete("{leagueId}")]
+        public async Task Delete(string leagueId)
         {
             // todo:
             // what happens with exisiting matches???
 
+            var id = leagueId.ToObjectId();
             var league = await _leagueStore.GetById(id);
             await _leagueStore.Remove(league);
         }

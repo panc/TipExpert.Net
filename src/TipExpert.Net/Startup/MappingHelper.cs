@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using TipExpert.Core;
 using TipExpert.Net.Models;
 
@@ -29,6 +30,8 @@ namespace TipExpert.Net
                 c.CreateMap<PlayerDto, Player>();
                 c.CreateMap<Player, PlayerDto>()
                     .ForMember(x => x.name, x => x.MapFrom(u => u.User.Name));
+
+                c.CreateMap<string, ObjectId>().ConvertUsing(x => x.ToObjectId());
             });
         }
     }

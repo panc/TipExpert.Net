@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace TipExpert.Core
@@ -15,7 +15,6 @@ namespace TipExpert.Core
 
         public async Task Add(Match match)
         {
-            match.Id = Guid.NewGuid();
             await _collection.InsertOneAsync(match);
         }
 
@@ -29,14 +28,14 @@ namespace TipExpert.Core
             await _collection.ReplaceOneAsync(x => x.Id == match.Id, match);
         }
 
-        public async Task<Match[]> GetMatchesForLeague(Guid leagueId)
+        public async Task<Match[]> GetMatchesForLeague(ObjectId leagueId)
         {
             return await _collection
                 .Find(x => x.LeagueId == leagueId)
                 .ToArrayAsync();
         }
 
-        public async Task<Match> GetById(Guid id)
+        public async Task<Match> GetById(ObjectId id)
         {
             return await _collection
                 .Find(x => x.Id == id)

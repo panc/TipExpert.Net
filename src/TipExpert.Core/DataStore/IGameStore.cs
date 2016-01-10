@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace TipExpert.Core
 {
@@ -11,14 +11,14 @@ namespace TipExpert.Core
 
         Task Update(Game game);
 
-        Task<Game> GetById(Guid id);
+        Task<Game> GetById(ObjectId id);
 
-        Task<Game[]> GetGamesCreatedByUser(Guid userId);
+        Task<Game[]> GetGamesCreatedByUser(ObjectId userId);
 
-        Task<Game[]> GetGamesUserIsInvitedTo(Guid userId);
+        Task<Game[]> GetGamesUserIsInvitedTo(ObjectId userId);
 
-        Task<Game[]> GetFinishedGames(Guid userId);
+        Task<Game[]> GetFinishedGames(ObjectId userId);
 
-        Task<Game[]> GetGamesForMatch(Guid matchId);
+        Task<Game[]> GetGamesForMatch(ObjectId matchId);
     }
 }

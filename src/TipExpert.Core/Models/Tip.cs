@@ -1,10 +1,10 @@
-using System;
+using MongoDB.Bson;
 
 namespace TipExpert.Core
 {
     public class Tip
     {
-        public Guid UserId { get; set; }
+        public ObjectId UserId { get; set; }
 
         public int HomeScore { get; set; }
 

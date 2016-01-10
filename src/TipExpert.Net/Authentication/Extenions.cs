@@ -1,19 +1,23 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using MongoDB.Bson;
 
-namespace TipExpert.Net.Authentication
+namespace TipExpert.Net
 {
     public static class Extenions
     {
-        public static Guid GetUserIdAsGuid(this ClaimsPrincipal principal)
+        public static ObjectId GetUserIdAsObjectId(this ClaimsPrincipal principal)
         {
             var userId = principal.GetUserId();
-            Guid id;
+            return userId.ToObjectId();
+        }
 
-            if (Guid.TryParse(userId, out id))
+        public static ObjectId ToObjectId(this string value)
+        {
+            ObjectId id;
+            if (ObjectId.TryParse(value, out id))
                 return id;
 
-            return Guid.Empty;
+            return ObjectId.Empty;
         }
     }
 }

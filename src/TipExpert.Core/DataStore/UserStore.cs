@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace TipExpert.Core
@@ -19,7 +19,6 @@ namespace TipExpert.Core
             if (_collection.Count(FilterDefinition<User>.Empty) == 0)
                 user.Role = (int)UserRoles.Admin;
 
-            user.Id = Guid.NewGuid();
             await _collection.InsertOneAsync(user);
         }
 
@@ -40,7 +39,7 @@ namespace TipExpert.Core
                 .ToArrayAsync();
         }
 
-        public async Task<User> GetById(Guid id)
+        public async Task<User> GetById(ObjectId id)
         {
             return await _collection
                 .Find(x => x.Id == id)
@@ -49,10 +48,8 @@ namespace TipExpert.Core
 
         public async Task<User> FindUserByEmail(string email, CancellationToken cancellationToken)
         {
-            email = email.ToUpper();
-
             return await _collection
-                .Find(x => x.Email.ToUpper() == email)
+                .Find(x => x.Email.ToUpper() == email.ToUpper())
                 .SingleOrDefaultAsync(cancellationToken);
         }
     }

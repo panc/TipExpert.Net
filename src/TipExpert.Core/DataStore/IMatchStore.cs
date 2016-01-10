@@ -1,5 +1,5 @@
-using System;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace TipExpert.Core
 {
@@ -11,8 +11,8 @@ namespace TipExpert.Core
 
         Task Update(Match match);
 
-        Task<Match> GetById(Guid id);
+        Task<Match> GetById(ObjectId id);
 
-        Task<Match[]> GetMatchesForLeague(Guid leagueId);
+        Task<Match[]> GetMatchesForLeague(ObjectId leagueId);
     }
 }

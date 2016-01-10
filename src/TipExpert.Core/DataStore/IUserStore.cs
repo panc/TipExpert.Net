@@ -1,6 +1,6 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace TipExpert.Core
 {
@@ -14,7 +14,7 @@ namespace TipExpert.Core
 
         Task<User[]> GetAll();
 
-        Task<User> GetById(Guid id);
+        Task<User> GetById(ObjectId id);
 
         Task<User> FindUserByEmail(string email, CancellationToken cancellationToken);
     }

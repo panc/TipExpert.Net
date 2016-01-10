@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TipExpert.Net.Models
 {
     public class MatchTipsDto
     {
-        public Guid matchId { get; set; }
+        public string matchId { get; set; }
 
         public MatchDto match { get; set; }
 
