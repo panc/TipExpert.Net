@@ -26,6 +26,77 @@
 
 
 /* HOME */
+.home-container .bg {
+    /* see here for more info about layouting a background image:
+        https://css-tricks.com/perfect-full-page-background-image/
+    */
+    background-size: cover;
+    
+    /* Set rules to fill background */
+    min-height: 100%;
+    min-width: 1024px;
+    
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: auto;
+    
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/*@media screen and (max-width: 1024px) { /* Specific to this particular image */
+    /*.home-container .bg {
+        left: 50%;
+        margin-left: -512px; /* 50% */
+    /*}
+}*/
+
+
+/* every screen larger than 1200 */
+@media only screen and (min-width : 1200px) {
+    .home-container .bg {
+        background: url(../images/LandingBG1200gr.jpg) no-repeat;
+    }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) and (min-width : 996px) {
+    .home-container .bg {
+        background: url(../images/LandingBG1200.jpg) no-repeat;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 996px) and (min-width : 768px) {
+    .home-container .bg {
+        background: url(../images/LandingBG996.jpg) no-repeat;
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) and (min-width : 480px) {
+    .home-container .bg {
+        background: url(../images/LandingBG768.jpg) no-repeat;
+    }
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 480px) and (min-width : 320px) {
+    .home-container .bg {
+        background: url(../images/LandingBG480.jpg) no-repeat;
+    }
+}
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+    .home-container .bg {
+        background: url(../images/LandingBG320.jpg) no-repeat;
+    }
+}
+
+
 .home-content {
     margin-top: 100px;
 }
