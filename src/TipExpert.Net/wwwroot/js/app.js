@@ -9,7 +9,9 @@ angular.module('tipExpert.home', [ ]);
 var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user', 'tipExpert.match', 'tipExpert.game', 'ui.bootstrap', 'ui.router', 'pascalprecht.translate', 'ngCookies']);
 
 // configure the main module
-tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+tipExpert.config([
+    '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 
+    function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
     var accessLevels = userConfig.accessLevels;
     var abstractView = {
@@ -149,54 +151,57 @@ tipExpert.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '
     }]);
 }]);
 
-tipExpert.config(['$translateProvider', function($translateProvider) {
+tipExpert.config([
+    '$translateProvider', function($translateProvider) {
 
-    $translateProvider
-        .fallbackLanguage('en')
-        .registerAvailableLanguageKeys(['en', 'de'], {
-            'en_US': 'en',
-            'en_UK': 'en',
-            'de_DE': 'de',
-            'de_CH': 'de',
-            'de_AT': 'de'
+        $translateProvider
+            .fallbackLanguage('en')
+            .registerAvailableLanguageKeys(['en', 'de'], {
+                'en_US': 'en',
+                'en_UK': 'en',
+                'de_DE': 'de',
+                'de_CH': 'de',
+                'de_AT': 'de'
+            });
+
+        $translateProvider.useCookieStorage();
+        $translateProvider.determinePreferredLanguage();
+
+        var origin = window.location.origin || window.location.protocol + '//' + window.location.host;
+
+        $translateProvider.useStaticFilesLoader({
+            prefix: origin + '/locales/',
+            suffix: '.json'
         });
+    }
+]);
 
-    $translateProvider.useCookieStorage();
-    $translateProvider.determinePreferredLanguage();
+tipExpert.run([
+    '$rootScope', '$location', '$state', 'authService', 'alertService', 
+    function($rootScope, $location, $state, authService, alertService) {
 
-    var origin = window.location.origin || window.location.protocol + '//' + window.location.host;
+        $rootScope.$state = $state;
 
-    $translateProvider.useStaticFilesLoader({
-        prefix:  origin + '/locales/',
-        suffix: '.json'
-    });
-}]);
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-tipExpert.run(['$rootScope', '$location', '$state', 'authService', 'alertService', function($rootScope, $location, $state, authService, alertService) {
+            var isLoggedIn = authService.user.isLoggedIn;
 
-    $rootScope.$state = $state;
+            if (!authService.authorize(toState.access)) {
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                event.preventDefault();
+                if (!isLoggedIn) {
+                    $state.go('home');
+                } else {
+                    if (!fromState.controller)
+                        $state.go('games.overview');
 
-        var isLoggedIn = authService.user.isLoggedIn;
+                    alertService.error('You are not allowed to access this page');
+                }
+            } else if (toState.name == 'home' && isLoggedIn) {
 
-        if (!authService.authorize(toState.access)) {
-
-            event.preventDefault();
-            if (!isLoggedIn) {
-                $state.go('home');
+                event.preventDefault();
+                $state.go('games.overview');
             }
-            else {
-                if (!fromState.controller)
-                    $state.go('games.overview');
-
-                alertService.error('You are not allowed to access this page');
-            }
-        }
-        else if (toState.name == 'home' && isLoggedIn) {
-
-            event.preventDefault();
-            $state.go('games.overview');
-        }
-    });
-}]);
+        });
+    }
+]);
