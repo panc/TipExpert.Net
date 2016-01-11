@@ -10,146 +10,148 @@ var tipExpert = angular.module('tipExpert', ['tipExpert.home', 'tipExpert.user',
 
 // configure the main module
 tipExpert.config([
-    '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 
-    function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+    '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
-    var accessLevels = userConfig.accessLevels;
-    var abstractView = {
-        'header': {
-            templateUrl: '/js/home/views/header.html',
-            controller: 'navigationController'
-        },
-        'main': {
-            // Note: abstract still needs a ui-view for its children to populate.
-            // We can simply add it inline here.
-            template: '<ui-view/>'
-        }
-    };
-
-    $stateProvider
-    
-        // routes for user module
-        .state('user', {
-            url: '/user',
-            views: abstractView,
-            abstract: true
-        })
-        .state('user.overview', {
-            title: 'Users',
-            url: '',
-            templateUrl: '/js/user/views/user.html',
-            controller: 'userController',
-            access: accessLevels.user
-        })
-        .state('user.profile', {
-            title: 'User profile',
-            url: '/:userId',
-            templateUrl: '/js/user/views/profile.html',
-            controller: 'userProfileController',
-            access: accessLevels.user
-        })
-    
-        // routes for match module
-        .state('matches', {
-            url: '/matches',
-            views: abstractView,
-            abstract: true
-        })
-        .state('matches.overview', {
-            title: 'Matches',
-            url: '',
-            templateUrl: '/js/match/views/matches.html',
-            controller: 'matchController',
-            access: accessLevels.admin
-        })
-        .state('matches.finished', {
-            title: 'Not implemented yet!',
-            url: '/finished',
-            templateUrl: 'todo',
-            controller: 'finishedMatchesController',
-            access: accessLevels.admin
-        })
-    
-        // routes for game module
-        .state('games', {
-            url: '/games',
-            views: abstractView,
-            abstract: true
-        })
-        .state('games.overview', {
-            title: 'Games',
-            url: '',
-            templateUrl: '/js/game/views/myGames.html',
-            controller: 'myGamesController',
-            access: accessLevels.user // todo
-        })
-        .state('games.history', {
-            title: 'Games History',
-            url: '/history',
-            templateUrl: '/js/game/views/gamesHistory.html',
-            controller: 'gamesHistoryController',
-            access: accessLevels.user // todo
-        })
-        .state('games.create', {
-            title: 'Create game',
-            url: '/create',
-            templateUrl: '/js/game/views/editGame.html',
-            controller: 'editGameController',
-            access: accessLevels.user // todo
-        })
-        .state('games.edit', {
-            title: 'Edit game',
-            url: '/:gameId/edit',
-            templateUrl: '/js/game/views/editGame.html',
-            controller: 'editGameController',
-            access: accessLevels.user // todo
-        })
-        .state('games.show', {
-            title: 'Game',
-            url: '/:gameId',
-            templateUrl: '/js/game/views/game.html',
-            controller: 'gameController',
-            access: accessLevels.user // todo
-        })
-    
-        // routes for home module
-        .state('home', {
-            title: 'Home',
-            url: '/',
-            views: {
-                'header': {
-                    templateUrl: '/js/home/views/loginHeader.html',
-                    controller: 'navigationController',
-                },
-                'main': {
-                    templateUrl: '/js/home/views/index.html',
-                    controller: 'homeController'
-                }
+        var accessLevels = userConfig.accessLevels;
+        var abstractView = {
+            'header': {
+                templateUrl: '/js/home/views/header.html',
+                controller: 'navigationController'
             },
-            access: accessLevels.public
-        });
-
-    $urlRouterProvider.otherwise('/');
-
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
-
-    $httpProvider.interceptors.push(['$q', '$location', function($q, $location) {
-        return {
-            'responseError': function(response) {
-                if (response.status === 401 || response.status === 403) {
-                    $location.path('/');
-                    return $q.reject(response);
-                }
-                else {
-                    return $q.reject(response);
-                }
+            'main': {
+                // Note: abstract still needs a ui-view for its children to populate.
+                // We can simply add it inline here.
+                template: '<ui-view/>'
             }
         };
-    }]);
-}]);
+
+        $stateProvider
+
+            // routes for user module
+            .state('user', {
+                url: '/user',
+                views: abstractView,
+                abstract: true
+            })
+            .state('user.overview', {
+                title: 'Users',
+                url: '',
+                templateUrl: '/js/user/views/user.html',
+                controller: 'userController',
+                access: accessLevels.user
+            })
+            .state('user.profile', {
+                title: 'User profile',
+                url: '/:userId',
+                templateUrl: '/js/user/views/profile.html',
+                controller: 'userProfileController',
+                access: accessLevels.user
+            })
+
+            // routes for match module
+            .state('matches', {
+                url: '/matches',
+                views: abstractView,
+                abstract: true
+            })
+            .state('matches.overview', {
+                title: 'Matches',
+                url: '',
+                templateUrl: '/js/match/views/matches.html',
+                controller: 'matchController',
+                access: accessLevels.admin
+            })
+            .state('matches.finished', {
+                title: 'Not implemented yet!',
+                url: '/finished',
+                templateUrl: 'todo',
+                controller: 'finishedMatchesController',
+                access: accessLevels.admin
+            })
+
+            // routes for game module
+            .state('games', {
+                url: '/games',
+                views: abstractView,
+                abstract: true
+            })
+            .state('games.overview', {
+                title: 'Games',
+                url: '',
+                templateUrl: '/js/game/views/myGames.html',
+                controller: 'myGamesController',
+                access: accessLevels.user // todo
+            })
+            .state('games.history', {
+                title: 'Games History',
+                url: '/history',
+                templateUrl: '/js/game/views/gamesHistory.html',
+                controller: 'gamesHistoryController',
+                access: accessLevels.user // todo
+            })
+            .state('games.create', {
+                title: 'Create game',
+                url: '/create',
+                templateUrl: '/js/game/views/editGame.html',
+                controller: 'editGameController',
+                access: accessLevels.user // todo
+            })
+            .state('games.edit', {
+                title: 'Edit game',
+                url: '/:gameId/edit',
+                templateUrl: '/js/game/views/editGame.html',
+                controller: 'editGameController',
+                access: accessLevels.user // todo
+            })
+            .state('games.show', {
+                title: 'Game',
+                url: '/:gameId',
+                templateUrl: '/js/game/views/game.html',
+                controller: 'gameController',
+                access: accessLevels.user // todo
+            })
+
+            // routes for home module
+            .state('home', {
+                title: 'Home',
+                url: '/',
+                views: {
+                    'header': {
+                        templateUrl: '/js/home/views/loginHeader.html',
+                        controller: 'navigationController',
+                    },
+                    'main': {
+                        templateUrl: '/js/home/views/index.html',
+                        controller: 'homeController'
+                    }
+                },
+                access: accessLevels.public
+            });
+
+        $urlRouterProvider.otherwise('/');
+
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
+
+        $httpProvider.interceptors.push([
+            '$q', '$location', function($q, $location) {
+                return {
+                    'responseError': function(response) {
+                        if (response.status === 401 || response.status === 403) {
+                            $location.path('/');
+                            return $q.reject(response);
+                        } else {
+                            return $q.reject(response);
+                        }
+                    }
+                };
+            }
+        ]);
+    }
+]);
 
 tipExpert.config([
     '$translateProvider', function($translateProvider) {
