@@ -1,62 +1,64 @@
-<div class="left left-area">
-    <h2>Leagues</h2>
-    <p>Select a league in order to show all available matches for this league.</p>
+<div class="container">
+    <div class="left left-area">
+        <h2>Leagues</h2>
+        <p>Select a league in order to show all available matches for this league.</p>
 
-    <ul class="league-list">
-        <li ng-repeat="league in leagues">
-            <div ng-click="loadMatches(league)">
-                
-                <div ng-hide="league.editorEnabled" class="league-item" ng-class="league == selectedLeague ? 'selected' : ''">
-                    <div class="left">{{ league.name }}</div>
-                    <div class="league-edit-buttons">
-                        <span ng-click="editLeague(league)" class="edit-button glyphicon glyphicon-pencil"></span>
-                        <span ng-click="removeLeague(league)" class="edit-button glyphicon glyphicon-trash"></span>
+        <ul class="league-list">
+            <li ng-repeat="league in leagues">
+                <div ng-click="loadMatches(league)">
+
+                    <div ng-hide="league.editorEnabled" class="league-item" ng-class="league == selectedLeague ? 'selected' : ''">
+                        <div class="left">{{ league.name }}</div>
+                        <div class="league-edit-buttons">
+                            <span ng-click="editLeague(league)" class="edit-button glyphicon glyphicon-pencil"></span>
+                            <span ng-click="removeLeague(league)" class="edit-button glyphicon glyphicon-trash"></span>
+                        </div>
+                        <div class="clear"></div>
                     </div>
-                    <div class="clear"></div>
-                </div>
-                
-                <div ng-show="league.editorEnabled" class="input-group league-item-editor">
-                    <input type="text" class="form-control" ng-model="league.editableName">
-                    
-                    <span class="input-group-btn">
+
+                    <div ng-show="league.editorEnabled" class="input-group league-item-editor">
+                        <input type="text" class="form-control" ng-model="league.editableName">
+
+                        <span class="input-group-btn">
                         <button class="btn btn-default" type="button" ng-click="saveLeague(league)"><span class="glyphicon glyphicon-ok"></span></button>
                         <button class="btn btn-default" type="button" ng-click="cancelEditLeague(league)"><span class="glyphicon glyphicon-remove"></span></button>
                     </span>
+                    </div>
+
                 </div>
+            </li>
 
-            </div>
-        </li>
+            <li class="new-item">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="new-league-name" placeholder="Add a new league" ng-model="newLeague.name">
 
-        <li class="new-item">
-            <div class="input-group">
-                <input type="text" class="form-control" id="new-league-name" placeholder="Add a new league" ng-model="newLeague.name">
-                
-                <span class="input-group-btn">
+                    <span class="input-group-btn">
                     <button class="btn btn-default" type="button" ng-click="addLeague()"><span class="glyphicon glyphicon-ok"></span>
                     </button>
                 </span>
-            </div>
-        </li>
-    </ul>
-</div>
+                </div>
+            </li>
+        </ul>
+    </div>
 
-<div class="left match-content">
-    <h2>{{ selectedLeague.name }}</h2>
-    
-    <table>
-        <tr ng-repeat="match in matches | orderBy:dueDate" 
-            ng-click="editMatch(match)" class="match-table-row">
-            
-            <td class="match-team-col">{{ match.homeTeam }}</td>
-            <td>&nbsp; - &nbsp;</td>
-            <td class="match-team-col">{{ match.guestTeam }}</td>
-            <td class="match-score-left-col">{{ match.homeScore }}</td>
-            <td>&nbsp; : &nbsp;</td>
-            <td>{{ match.guestScore }}</td>
-            <td class="match-team-col">{{ match.isFinished ? 'Finished' : 'Not Finished' }}</td>
+    <div class="left match-content">
+        <h2>{{ selectedLeague.name }}</h2>
 
-        </tr>
-    </table>
+        <table>
+            <tr ng-repeat="match in matches | orderBy:dueDate"
+                ng-click="editMatch(match)" class="match-table-row">
 
-    <button ng-click='addMatch()'>Add match...</button>
+                <td class="match-team-col">{{ match.homeTeam }}</td>
+                <td>&nbsp; - &nbsp;</td>
+                <td class="match-team-col">{{ match.guestTeam }}</td>
+                <td class="match-score-left-col">{{ match.homeScore }}</td>
+                <td>&nbsp; : &nbsp;</td>
+                <td>{{ match.guestScore }}</td>
+                <td class="match-team-col">{{ match.isFinished ? 'Finished' : 'Not Finished' }}</td>
+
+            </tr>
+        </table>
+
+        <button ng-click='addMatch()'>Add match...</button>
+    </div>
 </div>

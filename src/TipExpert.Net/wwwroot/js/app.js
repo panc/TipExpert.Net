@@ -23,6 +23,10 @@ tipExpert.config([
                 // Note: abstract still needs a ui-view for its children to populate.
                 // We can simply add it inline here.
                 template: '<ui-view/>'
+            },
+            'footer': {
+                templateUrl: '/js/home/views/footer.html',
+                controller: 'languageController'
             }
         };
 
@@ -118,12 +122,16 @@ tipExpert.config([
                 url: '/',
                 views: {
                     'header': {
-                        templateUrl: '/js/home/views/loginHeader.html',
+                        templateUrl: '/js/home/views/landingPageHeader.html',
                         controller: 'navigationController',
                     },
                     'main': {
-                        templateUrl: '/js/home/views/index.html',
+                        templateUrl: '/js/home/views/landingPage.html',
                         controller: 'homeController'
+                    },
+                    'footer': {
+                        templateUrl: '/js/home/views/footer.html',
+                        controller: 'languageController'
                     }
                 },
                 access: accessLevels.public
