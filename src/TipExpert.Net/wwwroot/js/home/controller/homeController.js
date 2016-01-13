@@ -19,17 +19,11 @@ homeModule.controller('homeController', [
             });
         };
 
-        $scope.signup = function() {
-            $scope.submitted = true;
-
-            if ($scope.submitForm.$invalid)
-                return;
-
-            authService.signup($scope.user)
-				.then(function() {
-					$state.go('games.overview');
-				})
-				.catch(alertService.error);
+        $scope.openSignup = function() {
+            $modal.open({
+                templateUrl: '/js/home/views/signUpDialog.html',
+                controller: 'signUpController'
+            });
         };
 
         $scope.loginOauth = function(provider) {

@@ -40,12 +40,26 @@
 }
 
 .login-button a {
+    margin-top: 10px;
     color: #fff;
 }
 
 li.login-button > a:hover, li.login-button > a:focus {
     color: #fff;
     background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+.signup-button a {
+    color: #fff;
+    background-color: #B1C901;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+li.signup-button > a:hover, li.signup-button > a:focus {
+    color: #fff;
+    background-color: #90A20A;
     background-color: rgba(255, 255, 255, 0.22);
 }
 

@@ -2,7 +2,7 @@
 
 var homeModule = angular.module('tipExpert.home');
 
-homeModule.controller('loginController', [
+homeModule.controller('signUpController', [
     '$scope', '$state', '$modalInstance', 'authService', 'alertService',
     function ($scope, $state, $modalInstance, authService, alertService) {
 
@@ -12,18 +12,18 @@ homeModule.controller('loginController', [
             password: ''
         };
 
-        $scope.login = function() {
+        $scope.signup = function() {
             $scope.submitted = true;
 
-            if ($scope.loginForm.$invalid)
+            if ($scope.signUpForm.$invalid)
                 return;
 
-            authService.login($scope.user)
-                .then(function () {
+            authService.signup($scope.user)
+				.then(function () {
                     $scope.cancel();
-                    $state.go('games.overview');
-                })
-                .catch(alertService.error);
+					$state.go('games.overview');
+				})
+				.catch(alertService.error);
         };
 
         $scope.cancel = function () {

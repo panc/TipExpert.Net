@@ -13,6 +13,7 @@
 /// <reference path="js/home/controller/languageController.js" />
 /// <reference path="js/home/controller/logincontroller.js" />
 /// <reference path="js/home/controller/navigationController.js" />
+/// <reference path="js/home/controller/signupcontroller.js" />
 /// <reference path="js/home/services/alertService.js" />
 /// <reference path="js/match/controller/editMatchController.js" />
 /// <reference path="js/match/controller/matchController.js" />
