@@ -39,17 +39,14 @@
     background-image: url(../images/LandingBG1920.jpg);
 }
 
-
-.home-content {
-    margin-top: 100px;
+.login-button a {
+    color: #fff;
 }
 
-.home-left {
-    padding-right: 70px;
-}
-
-.home-right {
-    padding-left: 70px;
+li.login-button > a:hover, li.login-button > a:focus {
+    color: #fff;
+    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.22);
 }
 
 
