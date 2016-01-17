@@ -3,8 +3,18 @@ body {
 }
 
 .navbar-default {
-  background-color: #52646E;
-  border-bottom: 5px #B1C901 solid;
+    background-color: #52646E;
+    border-bottom: 5px #B1C901 solid;
+}
+
+.navbar-inverse {
+    background-color: transparent;
+    border-color: #080808;
+    background-image: inherit;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: transparent;
 }
 
 .alert-container {
@@ -52,7 +62,7 @@ body {
 
 
 .modal {
-  display: block; 
+    display: block;
 }
 
 .modal-description {

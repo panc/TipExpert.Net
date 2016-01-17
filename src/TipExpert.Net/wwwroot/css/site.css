@@ -6,6 +6,12 @@
     margin-top: 10px;
 }
 
+@media(max-width:767px) {
+    .header-logo {
+        background-size: 150px 35px;
+    }
+}
+
 .header-logo-small {
     background: url(../images/tipexpert_v4_2_white.png) no-repeat;
     background-size: 125px 20px;
@@ -33,6 +39,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
