@@ -32,16 +32,16 @@
 
 <body>
     <!-- Page Content-->
-    <header ui-view="header"></header>
+    <div id="root-container">
+        <header id="header" ui-view="header"></header>
 
-    <section role="main" ui-view="main"></section>
+        <section id="body" role="main" ui-view="main"></section>
 
-    <footer ui-view="footer"></footer>
+        <footer id="footer" ui-view="footer"></footer>
+    </div>
     <!-- Page Content -->
 
     <environment names="Development">
-        <script src="~/lib/hammer.js/hammer.js"></script>
-
         <script src="~/lib/angular/angular.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
         <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>

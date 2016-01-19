@@ -2,13 +2,40 @@ body {
     background-color: #ECECEC;
 }
 
-.navbar-default {
-    background-color: #52646E;
-    border-bottom: 5px #B1C901 solid;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#root-container {
+    min-height: 100%;
+    position: relative;
+}
+
+#header {
+    padding: 0;
+}
+
+#body {
+    padding-bottom: 2.5em; /* Height of the footer */
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5em; /* Height of the footer */
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.24);
+}
+
+#footer .container {
+    margin-bottom: auto;
+    margin-top: auto;
 }
 
 .navbar-inverse {
-    background-color: transparent;
     border-color: #080808;
     background-image: inherit;
 }
