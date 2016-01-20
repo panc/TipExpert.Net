@@ -1,25 +1,4 @@
-﻿.header-logo {
-    background: url(../images/tipexpert_v4_2_white.png) no-repeat;
-    background-size: 230px;
-    width: 300px;
-    height: 70px;
-    margin-top: 10px;
-}
-
-@media(max-width:767px) {
-    .header-logo {
-        background-size: 150px 35px;
-    }
-}
-
-.header-logo-small {
-    background: url(../images/tipexpert_v4_2_white.png) no-repeat;
-    background-size: 125px 20px;
-    width: 160px;
-    height: 25px;
-    margin-top: 10px;
-}
-
+﻿
 .login-info {
     margin: 10px 0 10px 40px;
 }
@@ -50,7 +29,11 @@
     background-image: url(../images/LandingBG1920.jpg);
 }
 
-.home-container .home-buttons-top > ul > li > a {
+.home-buttons-top .header-logo {
+    margin-top: 10px;
+}
+
+.home-buttons-top > ul > li > a {
     display: block;
     padding: 10px 15px;
 }
@@ -96,8 +79,8 @@ li.login-button > a:hover, li.login-button > a:focus {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin-top: -30px;
+    margin-bottom: -30px;
 }
 
 .home-main-content a {
@@ -112,9 +95,14 @@ li.login-button > a:hover, li.login-button > a:focus {
 }
 
 .home-features {
-    margin-top: 100px;
-    background-color: #d2d2d2;
-    height: 100px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-height: 60%;
+    overflow: hidden;
+    height: 100%;
+    background-color: #beb9b9;
 }
 
 
@@ -130,14 +118,14 @@ li.login-button > a:hover, li.login-button > a:focus {
     padding: 0px 5px 0px 5px;
 }
 
-.league-item:hover, .league-item.selected:hover {
-    background-color: #fff;
-    cursor: pointer;
-}
+    .league-item:hover, .league-item.selected:hover {
+        background-color: #fff;
+        cursor: pointer;
+    }
 
-.league-item.selected {
-    background-color: #c0c3ce;
-}
+    .league-item.selected {
+        background-color: #c0c3ce;
+    }
 
 .new-item {
     margin-top: 10px;
@@ -147,13 +135,13 @@ li.login-button > a:hover, li.login-button > a:focus {
     border-bottom: 1px #fff solid;
 }
 
-.league-list li:first-child {
-    border-top: 1px #fff solid;
-}
+    .league-list li:first-child {
+        border-top: 1px #fff solid;
+    }
 
-.league-list li:last-child {
-    border-bottom: 0;
-}
+    .league-list li:last-child {
+        border-bottom: 0;
+    }
 
 .league-item > .league-edit-buttons {
     display: none;
@@ -184,9 +172,9 @@ li.login-button > a:hover, li.login-button > a:focus {
     margin: 10px 20px;
 }
 
-.save-match-buttons .input-group-btn {
-    width: 100px;
-}
+    .save-match-buttons .input-group-btn {
+        width: 100px;
+    }
 
 .match-team-col {
     padding: 0 10px 0 10px;
@@ -241,29 +229,29 @@ li.login-button > a:hover, li.login-button > a:focus {
 }
 
 .game-tip-result-caption-col {
-	text-align: center;
+    text-align: center;
 }
 
 .game-tip-sumrow-col, .game-tip-sumrow-value-col {
-	font-weight: bold;
-	padding-top: 15px;
+    font-weight: bold;
+    padding-top: 15px;
 }
 
 .game-tip-rankingrow-col, .game-tip-rankingrow-value-col {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .game-tip-sumrow-value-col, .game-tip-rankingrow-value-col {
-	text-align: center;
-	padding-left: 50px;
+    text-align: center;
+    padding-left: 50px;
 }
 
 .game-tip-sumrow-col, .game-tip-rankingrow-col {
-	text-align: right;
+    text-align: right;
 }
 
 .game-finished-statistics {
-	padding-left: 15px;
+    padding-left: 15px;
 }
 
 .game-stake {

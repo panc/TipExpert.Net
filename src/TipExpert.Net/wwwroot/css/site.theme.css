@@ -35,6 +35,13 @@ html, body {
     margin-top: auto;
 }
 
+.header-logo {
+    background: url(../images/tipexpert_v4_2_white.png) no-repeat;
+    background-size: 130px;
+    width: 160px;
+    height: 25px;
+}
+
 .navbar-inverse {
     border-color: #080808;
     background-image: inherit;
