@@ -75,12 +75,14 @@ li.login-button > a:hover, li.login-button > a:focus {
     height: 100%;
 }
 
-.home-main-content img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.home-main-content > .image-wrapper {
     margin-top: -30px;
     margin-bottom: -30px;
+    height: 50%;
+}
+
+.home-main-content > .image-wrapper > img {
+    max-height: 100%;
 }
 
 .home-main-content a {
@@ -94,19 +96,31 @@ li.login-button > a:hover, li.login-button > a:focus {
     font-size: 0.7em;
 }
 
-.home-features {
+#home-slogan {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.home-top {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 70%;
+    width: 100%;
+}
+
+.home-bottom {
     box-sizing: border-box;
     position: absolute;
     bottom: 0;
-    width: 100%;
-    max-height: 60%;
-    overflow: hidden;
-    height: 100%;
-    background-color: #beb9b9;
-}
+    left: 0;
 
-#home-slogan {
-    font-family: 'Open Sans', sans-serif;
+    height: 30%;
+    width: 100%;
+    
+    overflow: hidden;
+    background-color: #EFEFEF;
 }
 
 
