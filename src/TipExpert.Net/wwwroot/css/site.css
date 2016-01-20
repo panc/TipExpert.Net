@@ -105,6 +105,10 @@ li.login-button > a:hover, li.login-button > a:focus {
     background-color: #beb9b9;
 }
 
+#home-slogan {
+    font-family: 'Open Sans', sans-serif;
+}
+
 
 /* MATCH  */
 .league-list {
