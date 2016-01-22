@@ -56,6 +56,10 @@ li.login-button > a:hover, li.login-button > a:focus {
     background-color: rgba(255, 255, 255, 0.22) !important;
 }
 
+.login-button, .signup-button {
+    margin-right: 10px;
+}
+
 .signup-button a {
     background-color: #8cbe39;
     border-radius: 5px;

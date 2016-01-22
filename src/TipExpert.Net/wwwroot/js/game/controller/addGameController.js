@@ -3,7 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('addGameController', [
-    '$scope', '$modalInstance', '$state', 'gameService', 'alertService', function($scope, $modalInstance, $state, gameService, alertService) {
+    '$scope', '$modalInstance', '$state', 'gameService', 'alertService',
+    function($scope, $modalInstance, $state, gameService, alertService) {
 
         $scope.game = {};
 
