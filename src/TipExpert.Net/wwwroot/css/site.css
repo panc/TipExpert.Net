@@ -303,6 +303,11 @@ li.login-button > a:hover, li.login-button > a:focus {
 
 
 /* EDIT GAME */
+.edit-game-modal-window .modal-dialog {
+    width: auto;
+    margin: 20px;
+}
+
 .players-container {
     margin-top: 40px;
 }

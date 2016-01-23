@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('addOrEditGameController', [
-    '$scope', '$modalInstance', '$state', 'gameService', 'alertService', 'game',
-    function($scope, $modalInstance, $state, gameService, alertService, game) {
+    '$scope', '$uibModalInstance', '$state', 'gameService', 'alertService', 'game',
+    function($scope, $uibModalInstance, $state, gameService, alertService, game) {
 
         $scope.game = game;
         $scope.isNewGame = game.isNew === true;
@@ -28,13 +28,13 @@ game.controller('addOrEditGameController', [
                 : gameService.updateGameData($scope.game);
 
             result.success(function(newGame) {
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 })
                 .error(alertService.error);
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
     }
 ]);

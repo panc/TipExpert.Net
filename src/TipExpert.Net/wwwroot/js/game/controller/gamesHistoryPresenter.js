@@ -2,7 +2,7 @@
 
 var game = angular.module('tipExpert.game');
 
-game.controller('gamesHistoryController', ['$scope', '$modal', 'gameService', 'alertService', function($scope, $modal, gameService, alertService) {
+game.controller('gamesHistoryController', ['$scope', '$uibModal', 'gameService', 'alertService', function($scope, $uibModal, gameService, alertService) {
     $scope.games = [];
 
     gameService.loadFinishedGamesForCurrentUser()

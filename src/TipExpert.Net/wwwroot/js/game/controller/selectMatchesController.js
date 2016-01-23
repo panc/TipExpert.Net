@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('selectMatchesController', [
-    '$scope', '$modalInstance', 'leagueService', 'matchService', 'gameService', 'alertService', 'game',
-    function ($scope, $modalInstance, leagueService, matchService, gameService, alertService, game) {
+    '$scope', '$uibModalInstance', 'leagueService', 'matchService', 'gameService', 'alertService', 'game',
+    function ($scope, $uibModalInstance, leagueService, matchService, gameService, alertService, game) {
 
         var selectedMatches = game.matches.slice(0);
 
@@ -48,13 +48,13 @@ game.controller('selectMatchesController', [
 
             gameService.updateMatches(game.id, selectedMatches)
                 .success(function (updatedGame) {
-                    $modalInstance.close(updatedGame);
+                    $uibModalInstance.close(updatedGame);
                 })
                 .error(alertService.error);
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
         leagueService.load()

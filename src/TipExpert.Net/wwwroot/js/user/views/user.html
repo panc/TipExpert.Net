@@ -7,7 +7,7 @@
             <th>E-Mail</th>
             <th>Is Admin</th>
         </tr>
-        <tr ng-repeat="user in users">
+        <tr ng-repeat="user in users track by user.id">
             <td>{{user.name}}</td>
             <td>{{user.email}}</td>
             <td>

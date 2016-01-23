@@ -3,8 +3,8 @@
 var homeModule = angular.module('tipExpert.home');
 
 homeModule.controller('signUpController', [
-    '$scope', '$state', '$modalInstance', 'authService', 'alertService',
-    function ($scope, $state, $modalInstance, authService, alertService) {
+    '$scope', '$state', '$uibModalInstance', 'authService', 'alertService',
+    function ($scope, $state, $uibModalInstance, authService, alertService) {
 
         $scope.user = {
             name: '',
@@ -27,7 +27,7 @@ homeModule.controller('signUpController', [
         };
 
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
     }
 ]);

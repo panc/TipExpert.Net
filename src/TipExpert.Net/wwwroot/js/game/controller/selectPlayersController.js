@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('selectPlayersController', [
-    '$scope', '$modalInstance', 'authService', 'userService', 'gameService', 'alertService', 'game',
-    function($scope, $modalInstance, authService, userService, gameService, alertService, game) {
+    '$scope', '$uibModalInstance', 'authService', 'userService', 'gameService', 'alertService', 'game',
+    function($scope, $uibModalInstance, authService, userService, gameService, alertService, game) {
 
         var selectedplayers = game.players.slice(0);
         
@@ -35,13 +35,13 @@ game.controller('selectPlayersController', [
 
             gameService.updatePlayers(game.id, selectedplayers)
                 .success(function (updatedGame) {
-                    $modalInstance.close(updatedGame);
+                    $uibModalInstance.close(updatedGame);
                 })
                 .error(alertService.error);
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
         userService.loadFriendsForUser(authService.currentUser)

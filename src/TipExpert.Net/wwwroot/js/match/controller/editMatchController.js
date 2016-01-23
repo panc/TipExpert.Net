@@ -5,7 +5,7 @@
 var match = angular.module('tipExpert.match');
 
 match.controller('editMatchController', [
-    '$scope', '$modalInstance', 'matchService', 'alertService', 'match', function($scope, $modalInstance, matchService, alertService, match) {
+    '$scope', '$uibModalInstance', 'matchService', 'alertService', 'match', function($scope, $uibModalInstance, matchService, alertService, match) {
 
         $scope.match = match;
 
@@ -16,13 +16,13 @@ match.controller('editMatchController', [
                 : matchService.create(match);
 
             promise.success(function (newOrUpdatedMatch) {
-                    $modalInstance.close(newOrUpdatedMatch);
+                    $uibModalInstance.close(newOrUpdatedMatch);
                 })
                 .error(alertService.error);
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
     }
 ]);

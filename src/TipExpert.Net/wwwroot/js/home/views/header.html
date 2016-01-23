@@ -16,9 +16,9 @@
                 <li><a ui-sref="games.overview">My Games</a></li>
                 <li><a ui-sref="games.history">History</a></li>
 
-                <li class="dropdown" ng-show="user.isAdmin">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Administration <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
+                <li ng-show="user.isAdmin" uib-dropdown dropdown-append-to-body>
+                    <a href="" class="dropdown-toggle" uib-dropdown-toggle>Administration <b class="caret"></b></a>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
                         <li><a ui-sref="matches.overview">Matches</a></li>
                         <li><a ui-sref="user.overview">User</a></li>
                     </ul>

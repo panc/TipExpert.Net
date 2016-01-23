@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('gameController', [
-    '$scope', '$modal', '$stateParams', 'gameService', 'alertService',
-    function ($scope, $modal, $stateParams, gameService, alertService) {
+    '$scope', '$uibModal', '$stateParams', 'gameService', 'alertService',
+    function ($scope, $uibModal, $stateParams, gameService, alertService) {
 
         $scope.game = {};
         $scope.submitted = true;

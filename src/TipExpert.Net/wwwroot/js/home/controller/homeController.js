@@ -3,8 +3,8 @@
 var homeModule = angular.module('tipExpert.home');
 
 homeModule.controller('homeController', [
-    '$scope', '$state', '$window', '$modal', 'authService', 'alertService',
-    function ($scope, $state, $window, $modal, authService, alertService) {
+    '$scope', '$state', '$window', '$uibModal',
+    function ($scope, $state, $window, $uibModal) {
 
         $scope.user = {
             name: '',
@@ -13,14 +13,14 @@ homeModule.controller('homeController', [
         };
 
         $scope.openLogin = function () {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: '/js/home/views/loginDialog.html',
                 controller: 'loginController'
             });
         };
 
         $scope.openSignup = function() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: '/js/home/views/signUpDialog.html',
                 controller: 'signUpController'
             });

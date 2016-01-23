@@ -6,11 +6,6 @@ user.factory('alertService', ['$timeout', function($timeout) {
 
     var alerts = [];
 
-    addAlert("tst", "success");
-    addAlert("tst", "success");
-    addAlert("tst", "success");
-    addAlert("tst", "success");
-
     function addAlert(message, type) {
         var text = 'An error occoured';
 		

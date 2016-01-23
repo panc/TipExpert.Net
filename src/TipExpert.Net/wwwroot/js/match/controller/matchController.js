@@ -3,7 +3,8 @@
 var match = angular.module('tipExpert.match');
 
 match.controller('matchController', [
-    '$scope', '$modal', 'leagueService', 'matchService', 'alertService', function($scope, $modal, leagueService, matchService, alertService) {
+    '$scope', '$uibModal', 'leagueService', 'matchService', 'alertService', 
+    function($scope, $uibModal, leagueService, matchService, alertService) {
 
         $scope.selectedMatch = { homeTeam: '', guestTeam: '', dueDate: new Date() };
         $scope.leagues = [];
@@ -87,7 +88,7 @@ match.controller('matchController', [
         };
 
         $scope.editMatch = function(match) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: '/js/match/views/editMatchDialog.html',
                 controller: 'editMatchController',
                 resolve: {

@@ -20,6 +20,7 @@ game.controller('myGamesController', [
             var modalInstance = $uibModal.open({
                 templateUrl: '/js/game/views/addOrEditGameDialog.html',
                 controller: 'addOrEditGameController',
+                windowClass: 'edit-game-modal-window',
                 resolve: {
                     game: function () {
                         return game;

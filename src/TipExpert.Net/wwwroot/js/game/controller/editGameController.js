@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('editGameController', [
-    '$scope', '$state', '$stateParams', '$modal', 'gameService', 'alertService',
-    function($scope, $state, $stateParams, $modal, gameService, alertService) {
+    '$scope', '$state', '$stateParams', '$uibModal', 'gameService', 'alertService',
+    function($scope, $state, $stateParams, $uibModal, gameService, alertService) {
 
         $scope.game = {};
 
@@ -47,7 +47,7 @@ game.controller('editGameController', [
         };
 
         $scope.addMatch = function() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: '/js/game/views/selectMatchesDialog.html',
                 controller: 'selectMatchesController',
                 resolve: {
@@ -67,7 +67,7 @@ game.controller('editGameController', [
         };
 
         $scope.addPlayer = function() {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: '/js/game/views/selectPlayersDialog.html',
                 controller: 'selectPlayersController',
                 resolve: {
