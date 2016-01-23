@@ -8,6 +8,7 @@ game.controller('addOrEditGameController', [
 
         $scope.game = game;
         $scope.isNewGame = game.isNew === true;
+        $scope.selectedTab = 1;
 
         if (!$scope.isNewGame) {
             gameService.loadForEdit(game.id)

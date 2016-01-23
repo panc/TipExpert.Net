@@ -8,7 +8,7 @@ game.controller('myGamesController', [
         $scope.invitedGames = [];
 
         $scope.createGame = function () {
-            var game = { isNew: true };
+            var game = { isNew: true, title: '<NEW>' };
             openEditDialog(game);
         };
 

@@ -13,11 +13,19 @@
     "HOME-LOGIN-FORM-TITLE": "LOGIN",
     "HOME-LOGIN-BUTTON": "LOGIN",
 
-    "GAME-STAKEAREA": "General",
-    "GAME-STAKEAREA-SUB": "Set name, stakes and game mode",
-    "GAME-MATCHAREA": "Games",
-    "GAME-MATCHAREA-SUB": "Select Stuff to bet on",
-    "GAME-PLAYERSAREA": "3. Select Friends",
+    "GAME-GENERAL": "General",
+    "GAME-GENERAL-SUB": "Set name, stakes and game mode",
+    "GAME-MATCH": "Games",
+    "GAME-MATCH-SUB": "Select Stuff to bet on",
+    "GAME-PLAYERS": "Players",
+    "GAME-PLAYERS-SUB": "Invite friends to bet with",
+
+    "GAME-TITLE": "Title",
+    "GAME-STAKE": "Stake",
+    "GAME-LOGO": "Logo",
+    "GAME-MODE": "Mode",
+
+
     "GAME-PARTICIPANTS": "Participants",
     "GAME-TIPS": "My Tips",
     "GAME-TIPS-DESCRIPTION": "Set your tips for all unfinished games.",
