@@ -29,6 +29,23 @@ game.controller('addOrEditGameController', [
                 : gameService.updateGameData($scope.game);
 
             result.success(function(newGame) {
+                    alertService.info('Changes successfully saved!');
+                    $uibModalInstance.close();
+                })
+                .error(alertService.error);
+        };
+
+        $scope.delete = function () {
+            if ($scope.game.isFinished) {
+                alertService.error('Can not delete a finished game!');
+                return;
+            }
+
+            // todo: ask whether the game should realy be deleted
+
+            gameService.delete($scope.game.id)
+                .success(function () {
+                    alertService.info('Successfully deleted!');
                     $uibModalInstance.close();
                 })
                 .error(alertService.error);

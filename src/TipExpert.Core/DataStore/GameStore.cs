@@ -93,12 +93,18 @@ namespace TipExpert.Core
 
         private async Task _PopulateRelations(Game[] games)
         {
+            if (games == null)
+                return;
+
             foreach (var game in games)
                 await _PopulateRelations(game);
         }
 
         private async Task _PopulateRelations(Game game)
         {
+            if (game == null)
+                return;
+
             if (game.Players != null)
             {
                 foreach (var player in game.Players)
