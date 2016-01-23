@@ -37,7 +37,7 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
                 minStake: game.minStake
             }
 
-            return $http.put('/api/games/' + game.id + '/edit/data', gameData);
+            return $http.put('/api/games/' + game.id + '/edit/data', game);
         },
 
         updatePlayers: function (gameId, players) {

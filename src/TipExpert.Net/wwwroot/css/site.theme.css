@@ -45,6 +45,7 @@ html, body {
 .navbar-inverse {
     border-color: #080808;
     background-image: inherit;
+    border-radius: 0;
 }
 
 .navbar-inverse .navbar-toggle {

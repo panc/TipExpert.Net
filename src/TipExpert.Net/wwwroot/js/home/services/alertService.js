@@ -6,9 +6,13 @@ user.factory('alertService', ['$timeout', function($timeout) {
 
     var alerts = [];
 
-    var addAlert = function(message, type) {
+    addAlert("tst", "success");
+    addAlert("tst", "success");
+    addAlert("tst", "success");
+    addAlert("tst", "success");
 
-		var text = 'An error occoured';
+    function addAlert(message, type) {
+        var text = 'An error occoured';
 		
 		if (message != undefined) {
 			if (message.msg != undefined)
@@ -20,15 +24,12 @@ user.factory('alertService', ['$timeout', function($timeout) {
 		}
 			
         var item = { msg: text, type: type };
-
-        item.timeout = $timeout(function() {
-            closeAlert(item);
-        }, 5000);  
-
         alerts.push(item);
     };
 
-    var closeAlert = function(item) {
+    function closeAlert(item) {
+        if (!item)
+            return;
 
         if (item.timeout)
             $timeout.cancel(item.timeout);
@@ -48,8 +49,8 @@ user.factory('alertService', ['$timeout', function($timeout) {
             addAlert(message, 'success');
         },
 
-        closeAlert: function(index) {
-            closeAlert(alerts[index]);
+        closeAlert: function (item) {
+            closeAlert(item);
         }
     };
 }]);

@@ -6,7 +6,7 @@
                 <span>
                     {{game.title}}
                     <a ui-sref="games.show({ gameId: game.id })">Show</a>
-                    <a ui-sref="games.edit({ gameId: game.id })">Edit</a>
+                    <a href="#" ng-click="editGame(game)">Edit</a>
                 </span>
             </li>
         </ul>

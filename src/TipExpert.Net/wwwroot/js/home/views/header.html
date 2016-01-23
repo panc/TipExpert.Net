@@ -37,7 +37,7 @@
 
     <div class="alert-container container">
         <div class="inner-alert-container">
-            <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{ alert.msg }}</alert>
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
         </div>
     </div>
 </div>
