@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
@@ -166,71 +165,10 @@ namespace TipExpert.Net.Controllers
             if (errorResult != null)
                 return errorResult;
 
-            game.Title = gameDto.title;
-            game.Description = gameDto.description;
-            game.MinStake = gameDto.minStake;
+            _UpdateGameData(gameDto, game);
+            _UpdatePlayers(game, gameDto.players);
+            _UpdateMatches(game, gameDto.matches);
 
-            await _gameStore.Update(game);
-
-            return Json(Mapper.Map<GameDto>(game));
-        }
-
-        [HttpPut("{gameId}/edit/players")]
-        public async Task<IActionResult> UpdatePlayers(string gameId, [FromBody]PlayerDto[] playerDtos)
-        {
-            var id = gameId.ToObjectId();
-            var game = await _gameStore.GetById(id);
-
-            IActionResult errorResult =
-                _CheckGameIsNotNull(game, id) ??
-                _CheckCurrentUserIsGameCreator(game) ??
-                _CheckGameIsNotFinished(game);
-
-            if (errorResult != null)
-                return errorResult;
-
-            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
-
-            // game creator always has to be part of the players list
-            var creatorId = User.GetUserIdAsObjectId();
-            if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
-            {
-                game.Players.Add(new Player { UserId = creatorId });
-            }
-
-            await _gameStore.Update(game);
-
-            return Json(Mapper.Map<GameDto>(game));
-        }
-
-        [HttpPut("{gameId}/edit/matches")]
-        public async Task<IActionResult> UpdateMatches(string gameId, [FromBody]MatchTipsDto[] matchDtos)
-        {
-            var id = gameId.ToObjectId();
-            var game = await _gameStore.GetById(id);
-
-            IActionResult errorResult =
-                _CheckGameIsNotNull(game, id) ??
-                _CheckCurrentUserIsGameCreator(game) ??
-                _CheckGameIsNotFinished(game);
-
-            if (errorResult != null)
-                return errorResult;
-                
-            var ids = matchDtos.Select(x => x.matchId.ToObjectId()).ToList();
-            var list = new List<MatchTips>();
-
-            foreach (var matchId in ids)
-            {
-                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == matchId);
-
-                if (entry == null)
-                    entry = new MatchTips { MatchId = matchId };
-
-                list.Add(entry);
-            }
-
-            game.Matches = list;
             await _gameStore.Update(game);
 
             return Json(Mapper.Map<GameDto>(game));
@@ -255,6 +193,43 @@ namespace TipExpert.Net.Controllers
             await _gameStore.Remove(game);
 
             return Json(new { success = true });
+        }
+
+        private static void _UpdateGameData(GameDto gameDto, Game game)
+        {
+            game.Title = gameDto.title;
+            game.Description = gameDto.description;
+            game.MinStake = gameDto.minStake;
+        }
+
+        private void _UpdatePlayers(Game game, List<PlayerDto> playerDtos)
+        {
+            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
+
+            // game creator always has to be part of the players list
+            var creatorId = User.GetUserIdAsObjectId();
+            if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
+            {
+                game.Players.Add(new Player { UserId = creatorId });
+            }
+        }
+
+        private void _UpdateMatches(Game game, List<MatchTipsDto> matchDtos)
+        {
+            var ids = matchDtos.Select(x => x.matchId.ToObjectId()).ToList();
+            var list = new List<MatchTips>();
+
+            foreach (var matchId in ids)
+            {
+                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == matchId);
+
+                if (entry == null)
+                    entry = new MatchTips { MatchId = matchId };
+
+                list.Add(entry);
+            }
+
+            game.Matches = list;
         }
 
         private GameDto _PrepareGameForUser(Game game)
