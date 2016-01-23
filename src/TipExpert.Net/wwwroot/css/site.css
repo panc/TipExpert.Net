@@ -304,8 +304,29 @@ li.login-button > a:hover, li.login-button > a:focus {
 
 /* EDIT GAME */
 .edit-game-modal-window .modal-dialog {
-    width: auto;
-    margin: 20px;
+    height: 90%;
+    width: 95%;
+}
+
+.edit-game-modal-window .modal-dialog .modal-content, 
+.edit-game-modal-window .modal-dialog .modal-content .container-fluid,
+.edit-game-modal-window .modal-dialog .modal-content .container-fluid .col-sm-8 {
+    height: 100%
+}
+
+.edit-game-left-side {
+    background-color: #8cbe39;
+}
+
+#edit-game-content {
+    background-color: #dedede;
+    position: absolute;
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .players-container {
