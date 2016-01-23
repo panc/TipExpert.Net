@@ -1,39 +1,49 @@
-<div class="container-fluid">
+<div class="container-fluid edit-game-container">
 
-    <div class="col-sm-4 edit-game-left-side">
-        Genearl
-    </div>
+<!--    <div class="col-sm-4 edit-game-left-side">-->
+<!--        Genearl-->
+<!--    </div>-->
+<!--    <div class="col-sm-8"> -->
 
-    <div class="col-sm-8">
+    <div class="">
         <div id="edit-game-content">
             <form role="form" name="submitForm" class="form-horizontal" novalidate>
-                <!-- TITLE -->
-                <div class="form-group" ng-class="{ 'has-error' : submitForm.name.$invalid && submitted }">
-                    <div class="col-lg-8">
-                        <input class="form-control game-title" type="text" name="title" ng-model="game.title" placeholder="Enter title of the game" required>
-                        <p ng-show="submitForm.name.$invalid && submitted" class="help-block">Title is required.</p>
-                    </div>
-                </div>
 
-                <!-- DESCRIPTION -->
-                <div class="form-group" ng-class="{ 'has-error' : submitForm.description.$invalid && submitted }">
-                    <div class="col-lg-8">
-                        <textarea class="form-control game-description" type="text" name="description" ng-model="game.description"
-                                  placeholder="Enter a optional description for your game"></textarea>
-                        <p ng-show="submitForm.description.$invalid && submitted" class="help-block">Title is required.</p>
-                    </div>
-                </div>
-
-                <!-- MIN-STAKE -->
+                <!-- GENERAL -->
                 <div class="container row">
-                    <h4 translate="GAME-MINSTAKEAREA"></h4>
+                    <div class="col-sm-4">
+                        <div class="section-header">
+                            <h1 translate="GAME-STAKEAREA"></h1>
+                            <p translate="GAME-STAKEAREA-SUB"></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        
+                        <!-- TITLE -->
+                        <div class="form-group" ng-class="{ 'has-error' : submitForm.name.$invalid && submitted }">
+                            <div class="col-lg-8">
+                                <input class="form-control game-title" type="text" name="title" ng-model="game.title" placeholder="Enter title of the game" required>
+                                <p ng-show="submitForm.name.$invalid && submitted" class="help-block">Title is required.</p>
+                            </div>
+                        </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : submitForm.minStake.$invalid && submitted }">
-                        <div class="col-lg-8">
-                            <label class="left control-label">Minimum Stake:</label>
-                            <div class="left">
-                                <input class="form-control game-min-stake" type="text" name="minStake" ng-model="game.minStake" placeholder="Minimum stake">
-                                <p ng-show="submitForm.minStake.$invalid && submitted" class="help-block">Min stake is required.</p>
+                        <!-- IMAGE -->
+                        <!--                <div class="form-group" ng-class="{ 'has-error' : submitForm.description.$invalid && submitted }">-->
+                        <!--                    <div class="col-lg-8">-->
+                        <!--                        <textarea class="form-control game-description" type="text" name="description" ng-model="game.description"-->
+                        <!--                                  placeholder="Enter a optional description for your game"></textarea>-->
+                        <!--                        <p ng-show="submitForm.description.$invalid && submitted" class="help-block">Title is required.</p>-->
+                        <!--                    </div>-->
+                        <!--                </div>-->
+                        
+                            <!-- STAKE -->
+                        <div class="form-group" ng-class="{ 'has-error' : submitForm.minStake.$invalid && submitted }">
+                            <div class="col-lg-8">
+                                <label class="left control-label">Minimum Stake:</label>
+                                <div class="left">
+                                    <input class="form-control game-min-stake" type="text" name="minStake" ng-model="game.minStake" placeholder="Minimum stake">
+                                    <p ng-show="submitForm.minStake.$invalid && submitted" class="help-block">Min stake is required.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -42,13 +52,10 @@
                 <!-- MATCHES -->
                 <div class="container row matches-container">
 
-                    <h4 translate="GAME-MATCHAREA"></h4>
-
-                    <p>Choose the matches on which you and your friends should tip.</p>
-                    <p>
-                        The matches can be of any league so you can select e.g. a Premier League match
-                        as well as any Champions League matche and add it to your tip game.
-                    </p>
+                    <div class="section-header">
+                        <h1 translate="GAME-MATCHAREA"></h1>
+                        <p translate="GAME-MATCHAREA-SUB"></p>
+                    </div>
 
                     <span class="input-group-btn">
                         <button ng-click="addMatch()" class="btn">Add Match</button>

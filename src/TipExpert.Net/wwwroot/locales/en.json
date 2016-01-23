@@ -13,8 +13,10 @@
     "HOME-LOGIN-FORM-TITLE": "LOGIN",
     "HOME-LOGIN-BUTTON": "LOGIN",
 
-    "GAME-MINSTAKEAREA": "1. Define Minimum Stake",
-    "GAME-MATCHAREA": "2. Select Matches",
+    "GAME-STAKEAREA": "General",
+    "GAME-STAKEAREA-SUB": "Set name, stakes and game mode",
+    "GAME-MATCHAREA": "Games",
+    "GAME-MATCHAREA-SUB": "Select Stuff to bet on",
     "GAME-PLAYERSAREA": "3. Select Friends",
     "GAME-PARTICIPANTS": "Participants",
     "GAME-TIPS": "My Tips",
