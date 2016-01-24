@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('addOrEditGameController', [
-    '$scope', '$uibModalInstance', '$state', 'gameService', 'alertService', 'game',
-    function($scope, $uibModalInstance, $state, gameService, alertService, game) {
+    '$scope', '$uibModalInstance', '$state', '$location', 'gameService', 'alertService', 'game',
+    function ($scope, $uibModalInstance, $state, $location, gameService, alertService, game) {
 
         $scope.game = game;
         $scope.isNewGame = game.isNew === true;

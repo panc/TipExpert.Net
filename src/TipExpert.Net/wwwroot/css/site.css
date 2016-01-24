@@ -217,11 +217,6 @@ li.login-button > a:hover, li.login-button > a:focus {
 
 
 /* GAME */
-.game-title,
-.game-min-stake {
-    margin-left: 10px;
-}
-
 .game-description {
     margin-left: 5px;
 }

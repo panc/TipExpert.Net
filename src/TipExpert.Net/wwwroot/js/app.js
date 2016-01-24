@@ -85,6 +85,11 @@ tipExpert.config([
                 url: '',
                 templateUrl: '/js/game/views/myGames.html',
                 controller: 'myGamesController',
+                resolve: {
+                    gameIdToEdit: function () {
+                        return null;
+                    }
+                },
                 access: accessLevels.user // todo
             })
             .state('games.history', {
@@ -104,8 +109,13 @@ tipExpert.config([
             .state('games.edit', {
                 title: 'Edit game',
                 url: '/:gameId/edit',
-                templateUrl: '/js/game/views/editGame.html',
-                controller: 'editGameController',
+                templateUrl: '/js/game/views/myGames.html',
+                controller: 'myGamesController',
+                resolve: {
+                    gameIdToEdit: ['$stateParams', function ($stateParams) {
+                        return $stateParams.gameId;
+                    }]
+                },
                 access: accessLevels.user // todo
             })
             .state('games.show', {

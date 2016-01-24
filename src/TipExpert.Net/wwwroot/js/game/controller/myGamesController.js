@@ -3,12 +3,20 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('myGamesController', [
-    '$scope', '$uibModal', 'gameService', 'alertService', function ($scope, $uibModal, gameService, alertService) {
+    '$scope', '$uibModal', '$location', 'gameService', 'alertService', 'gameIdToEdit',
+    function ($scope, $uibModal, $location, gameService, alertService, gameIdToEdit) {
         $scope.createdGames = [];
         $scope.invitedGames = [];
 
+        if (gameIdToEdit !== null) {
+
+            gameService.load(gameIdToEdit)
+                .success(openEditDialog)
+                .error(alertService.error);
+        }
+
         $scope.createGame = function () {
-            var game = { isNew: true, title: '<NEW>' };
+            var game = { isNew: true, title: '<NEW>', id: '000000' };
             openEditDialog(game);
         };
 
@@ -17,6 +25,10 @@ game.controller('myGamesController', [
         };
 
         function openEditDialog(game) {
+
+//            var url = $location.path();
+//            $location.path(url + '/' + game.id + '/edit');
+
             var modalInstance = $uibModal.open({
                 templateUrl: '/js/game/views/addOrEditGameDialog.html',
                 controller: 'addOrEditGameController',
@@ -29,7 +41,6 @@ game.controller('myGamesController', [
             });
 
             modalInstance.result.then(function () {
-                alertService.info('Changes successfully saved!');
                 reload();
             }, function () {
                 // canceld -> nothing to do
