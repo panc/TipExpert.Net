@@ -16,8 +16,10 @@ namespace TipExpert.Net.Models
 
         public bool isFinished { get; set; }
 
-        public PlayerDto player { get; set; }
+        public string matchesMetadata { get; set; }
 
+        public PlayerDto player { get; set; }
+        
         public List<PlayerDto> players { get; set; }
 
         public List<MatchTipsDto> matches { get; set; }

@@ -6,10 +6,14 @@ game.controller('addOrEditGameController', [
     '$scope', '$uibModalInstance', '$state', '$location', 'gameService', 'alertService', 'game',
     function ($scope, $uibModalInstance, $state, $location, gameService, alertService, game) {
 
+        game.matchSelectionMode = 'em2016';
+
         $scope.game = game;
         $scope.isNewGame = game.isNew === true;
         $scope.selectedTab = 1;
-        $scope.matchSelectionMode = 'em2016';
+        $scope.matchSelectionMode = game.matchSelectionMode;
+
+        var matchSelections = {};
 
         if (!$scope.isNewGame) {
             gameService.loadForEdit(game.id)
@@ -19,11 +23,21 @@ game.controller('addOrEditGameController', [
                 .error(alertService.error);
         }
 
+        $scope.registerMatchSelection = function (name, getMetadataCallback) {
+            matchSelections[name] = {
+                getMetadata: getMetadataCallback
+            }
+        }
+
         $scope.save = function() {
             $scope.submitted = true;
 
             if (this.submitForm.$invalid)
                 return;
+
+            var ms = matchSelections[$scope.matchSelectionMode];
+            if (ms && ms.getMetadata)
+                $scope.game.matchesMetadata = ms.getMetadata();
 
             var result = $scope.isNewGame
                 ? gameService.create($scope.game)

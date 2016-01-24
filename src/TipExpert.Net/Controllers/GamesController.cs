@@ -42,8 +42,11 @@ namespace TipExpert.Net.Controllers
             IActionResult errorResult = _CheckGameIsNotNull(game, id);
             if (errorResult != null)
                 return errorResult;
+
             
-            return Json(Mapper.Map<GameDto>(game));
+            var g = Mapper.Map<GameDto>(game);
+            g.matchesMetadata = "{\"groupA\":true,\"groupB\":false,\"groupC\":false,\"groupD\":false,\"groupE\":false,\"groupF\":false,\"roundOfLast16\":false,\"quaterFinal\":false,\"semiFinal\":false,\"final\":false}";
+            return Json(g);
         }
 
         [HttpGet("created")]
