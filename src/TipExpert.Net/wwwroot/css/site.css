@@ -365,6 +365,10 @@ li.login-button > a:hover, li.login-button > a:focus {
 }
 
 
+.match-selection-row {
+    margin-top: 30px;
+}
+
 .league-dropdown {
     margin-left: 10px;
     color: inherit;

@@ -25,6 +25,18 @@
     "GAME-LOGO": "Logo",
     "GAME-MODE": "Mode",
 
+    "GAME-MATCH-EM-GROUPSTAGE": "Games at group stage",
+    "GAME-MATCH-EM-KNOCKOUTSTAGE": "Games at knockout stage",
+    "GAME-MATCH-EM_GROUP-A": "Group A",
+    "GAME-MATCH-EM_GROUP-B": "Group B",
+    "GAME-MATCH-EM_GROUP-C": "Group C",
+    "GAME-MATCH-EM_GROUP-D": "Group D",
+    "GAME-MATCH-EM_GROUP-E": "Group E",
+    "GAME-MATCH-EM_GROUP-F": "Group F",
+    "GAME-MATCH-EM_ROUND-OF-LAST-16": "Round Of Last 16",
+    "GAME-MATCH-EM_QUARTER-FINAL": "Quarter Final",
+    "GAME-MATCH-EM_SEMI-FINAL": "Semi Final",
+    "GAME-MATCH-EM_FINAL": "Final",
 
     "GAME-PARTICIPANTS": "Participants",
     "GAME-TIPS": "My Tips",
