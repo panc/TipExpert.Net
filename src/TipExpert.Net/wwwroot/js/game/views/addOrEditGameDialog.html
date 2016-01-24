@@ -94,15 +94,8 @@
                         <span class="sub" translate="GAME-MATCH-SUB"></span>
                     </div>
 
-                    <span class="input-group-btn">
-                        <button ng-click="addMatch()" class="btn">Add Match</button>
-                    </span>
-
-                    <ul>
-                        <li ng-repeat="matchContainer in game.matches">
-                            <div>{{ matchContainer.match.homeTeam }} : {{ matchContainer.match.guestTeam }} ({{ matchContainer.match.dueDate }})</div>
-                        </li>
-                    </ul>
+                    <te-match-selection-em-2016 game="game" ng-show="matchSelectionMode == 'em2016'"></te-match-selection-em-2016>
+                    <te-match-selection-leagues game="game" ng-show="matchSelectionMode == 'leagues'"></te-match-selection-leagues>
 
                 </div>
 
