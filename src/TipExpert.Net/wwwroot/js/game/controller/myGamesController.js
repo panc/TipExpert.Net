@@ -8,24 +8,27 @@ game.controller('myGamesController', [
         $scope.createdGames = [];
         $scope.invitedGames = [];
 
-        if (gameIdToEdit !== null) {
-
-            gameService.load(gameIdToEdit)
-                .success(openEditDialog, false)
-                .error(function (e) {
-                    alertService.error(e);
-                    changeUrlToOverview();
-                });
-        }
-
+        if (gameIdToEdit !== null)
+            loadGameForEdit(gameIdToEdit, false);
+        
         $scope.createGame = function () {
             var game = { isNew: true, title: '<NEW>', id: '000000' };
             openEditDialog(game, true);
         };
 
         $scope.editGame = function (game) {
-            openEditDialog(game, true);
+            loadGameForEdit(game.id, true);
         };
+
+        function loadGameForEdit(gameId, updateUrl) {
+
+            gameService.loadForEdit(gameId)
+                .success(openEditDialog, updateUrl)
+                .error(function (e) {
+                    alertService.error(e);
+                    changeUrlToOverview();
+                });
+        }
 
         function openEditDialog(game, updateUrl) {
 

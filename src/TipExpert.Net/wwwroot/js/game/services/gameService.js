@@ -30,22 +30,7 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         },
 
         updateGameData: function (game) {
-            var gameData = {
-                id: game.id,
-                title: game.title,
-                description: game.description,
-                minStake: game.minStake
-            }
-
             return $http.put('/api/games/' + game.id + '/edit/data', game);
-        },
-
-        updatePlayers: function (gameId, players) {
-            return $http.put('/api/games/' + gameId + '/edit/players', players);
-        },
-
-        updateMatches: function(gameId, matches) {
-            return $http.put('/api/games/' + gameId + '/edit/matches', matches);
         },
 
         updateStake: function(gameId, newStake) {
