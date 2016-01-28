@@ -18,6 +18,8 @@ namespace TipExpert.Core
 
         public bool IsFinished { get; set; }
 
+        public string MatchesMetadata { get; set; }
+
         public List<Player> Players { get; set; }
 
         public List<MatchTips> Matches { get; set; }

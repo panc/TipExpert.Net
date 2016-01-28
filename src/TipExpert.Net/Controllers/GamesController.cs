@@ -43,10 +43,7 @@ namespace TipExpert.Net.Controllers
             if (errorResult != null)
                 return errorResult;
 
-            
-            var g = Mapper.Map<GameDto>(game);
-            g.matchesMetadata = "{\"groupA\":true,\"groupB\":false,\"groupC\":false,\"groupD\":false,\"groupE\":false,\"groupF\":false,\"roundOfLast16\":false,\"quaterFinal\":false,\"semiFinal\":false,\"final\":false}";
-            return Json(g);
+            return Json(Mapper.Map<GameDto>(game));
         }
 
         [HttpGet("created")]
@@ -81,9 +78,12 @@ namespace TipExpert.Net.Controllers
         {
             var game = new Game
             {
-                Title = newGame.title,
                 CreatorId = User.GetUserIdAsObjectId()
             };
+
+            _UpdateGameData(game, newGame);
+            _UpdatePlayers(game, newGame.players);
+            _UpdateMatches(game, newGame.matches, newGame.matchesMetadata);
 
             await _gameStore.Add(game);
 
@@ -168,9 +168,9 @@ namespace TipExpert.Net.Controllers
             if (errorResult != null)
                 return errorResult;
 
-            _UpdateGameData(gameDto, game);
+            _UpdateGameData(game, gameDto);
             _UpdatePlayers(game, gameDto.players);
-            _UpdateMatches(game, gameDto.matches);
+            _UpdateMatches(game, gameDto.matches, gameDto.matchesMetadata);
 
             await _gameStore.Update(game);
 
@@ -198,7 +198,7 @@ namespace TipExpert.Net.Controllers
             return Json(new { success = true });
         }
 
-        private static void _UpdateGameData(GameDto gameDto, Game game)
+        private static void _UpdateGameData(Game game, GameDto gameDto)
         {
             game.Title = gameDto.title;
             game.Description = gameDto.description;
@@ -217,7 +217,7 @@ namespace TipExpert.Net.Controllers
             }
         }
 
-        private void _UpdateMatches(Game game, List<MatchTipsDto> matchDtos)
+        private void _UpdateMatches(Game game, List<MatchTipsDto> matchDtos, string gameMetadata)
         {
             var ids = matchDtos.Select(x => x.matchId.ToObjectId()).ToList();
             var list = new List<MatchTips>();
@@ -233,6 +233,7 @@ namespace TipExpert.Net.Controllers
             }
 
             game.Matches = list;
+            game.MatchesMetadata = gameMetadata;
         }
 
         private GameDto _PrepareGameForUser(Game game)
