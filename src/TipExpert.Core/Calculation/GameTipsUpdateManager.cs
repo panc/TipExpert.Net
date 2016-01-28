@@ -6,12 +6,12 @@ namespace TipExpert.Core.Calculation
     public class GameTipsUpdateManager : IGameTipsUpdateManager
     {
         private readonly IGameStore _gameStore;
-        private readonly ICalculationResolver _calculationResolver;
+        private readonly ICalculationFactory _calculationFactory;
 
-        public GameTipsUpdateManager(IGameStore gameStore, ICalculationResolver calculationResolver)
+        public GameTipsUpdateManager(IGameStore gameStore, ICalculationFactory calculationFactory)
         {
             _gameStore = gameStore;
-            _calculationResolver = calculationResolver;
+            _calculationFactory = calculationFactory;
         }
 
         public async Task UpdateGamesForMatch(Match match)
@@ -43,7 +43,7 @@ namespace TipExpert.Core.Calculation
             if (mt == null)
                 return;
 
-            var pointsCalculationStrategy = _calculationResolver.GetPointsCalculationStrategy(game);
+            var pointsCalculationStrategy = _calculationFactory.GetPointsCalculationStrategy(game);
 
             foreach (var tip in mt.Tips)
             {
@@ -83,7 +83,7 @@ namespace TipExpert.Core.Calculation
         private async Task _UpdateProfit(Game game)
         {
             // calulate profit for each user
-            var profitCalcualationStrategy = _calculationResolver.GetProfitCalculationStrategy(game);
+            var profitCalcualationStrategy = _calculationFactory.GetProfitCalculationStrategy(game);
 
             if (game.IsFinished)
                 await profitCalcualationStrategy.CalcualteProfit(game);

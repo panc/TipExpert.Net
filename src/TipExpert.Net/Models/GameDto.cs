@@ -16,6 +16,8 @@ namespace TipExpert.Net.Models
 
         public bool isFinished { get; set; }
 
+        public string  matchSelectionMode { get; set; }
+
         public string matchesMetadata { get; set; }
 
         public PlayerDto player { get; set; }

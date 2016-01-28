@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 
@@ -18,8 +17,10 @@ namespace TipExpert.Core
 
         public bool IsFinished { get; set; }
 
-        public string MatchesMetadata { get; set; }
+        public MatchSelectionMode MatchSelectionMode { get; set; }
 
+        public string MatchesMetadata { get; set; }
+        
         public List<Player> Players { get; set; }
 
         public List<MatchTips> Matches { get; set; }

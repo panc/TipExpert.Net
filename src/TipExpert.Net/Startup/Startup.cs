@@ -7,8 +7,9 @@ using MongoDB.Driver;
 using TipExpert.Net.Authentication;
 using TipExpert.Net.Middleware;
 using TipExpert.Core;
-using TipExpert.Core.Configuration;
+using TipExpert.Net.Implementation;
 using TipExpert.Core.Calculation;
+using TipExpert.Core.MatchSelection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace TipExpert.Net
@@ -49,9 +50,13 @@ namespace TipExpert.Net
                 .AddRoleStore<ApplicationRoleStore>();
 
             services.AddTransient<IGameTipsUpdateManager, GameTipsUpdateManager>();
-            services.AddTransient<ICalculationResolver, CalculationResolver>();
+            services.AddTransient<ICalculationFactory, CalculationFactory>();
             services.AddTransient<FiveThreeOneZeroPointsCalculationStrategy>();
             services.AddTransient<TheWinneTakesItAllCalculationStrategy>();
+
+            services.AddTransient<IMatchSelectorFactory, MatchSelectorFactory>();
+            services.AddTransient<LeagueMatchSelector, LeagueMatchSelector>();
+            services.AddTransient<Em2016MatchSelector, Em2016MatchSelector>();
 
             services.AddSingleton(s => 
                 new MongoClient(Configuration["Data:ConnectionString"])

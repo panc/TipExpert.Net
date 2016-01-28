@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MongoDB.Bson;
 using TipExpert.Core;
+using TipExpert.Core.MatchSelection;
 using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
@@ -14,10 +16,12 @@ namespace TipExpert.Net.Controllers
     public class GamesController : Controller
     {
         private readonly IGameStore _gameStore;
+        private readonly IMatchSelectorFactory _matchSelectorFactory;
 
-        public GamesController(IGameStore gameStore)
+        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory)
         {
             _gameStore = gameStore;
+            _matchSelectorFactory = matchSelectorFactory;
         }
 
         [HttpGet("{gameId}")]
@@ -82,8 +86,8 @@ namespace TipExpert.Net.Controllers
             };
 
             _UpdateGameData(game, newGame);
-            _UpdatePlayers(game, newGame.players);
-            _UpdateMatches(game, newGame.matches, newGame.matchesMetadata);
+            _UpdatePlayers(game, newGame);
+            await _UpdateMatches(game, newGame);
 
             await _gameStore.Add(game);
 
@@ -169,8 +173,8 @@ namespace TipExpert.Net.Controllers
                 return errorResult;
 
             _UpdateGameData(game, gameDto);
-            _UpdatePlayers(game, gameDto.players);
-            _UpdateMatches(game, gameDto.matches, gameDto.matchesMetadata);
+            _UpdatePlayers(game, gameDto);
+            await _UpdateMatches(game, gameDto);
 
             await _gameStore.Update(game);
 
@@ -205,9 +209,9 @@ namespace TipExpert.Net.Controllers
             game.MinStake = gameDto.minStake;
         }
 
-        private void _UpdatePlayers(Game game, List<PlayerDto> playerDtos)
+        private void _UpdatePlayers(Game game, GameDto gameDto)
         {
-            game.Players = Mapper.Map<Player[]>(playerDtos).ToList();
+            game.Players = Mapper.Map<Player[]>(gameDto.players).ToList();
 
             // game creator always has to be part of the players list
             var creatorId = User.GetUserIdAsObjectId();
@@ -217,23 +221,42 @@ namespace TipExpert.Net.Controllers
             }
         }
 
-        private void _UpdateMatches(Game game, List<MatchTipsDto> matchDtos, string gameMetadata)
+        private async Task _UpdateMatches(Game game, GameDto gameDto)
         {
-            var ids = matchDtos.Select(x => x.matchId.ToObjectId()).ToList();
+            game.MatchesMetadata = gameDto.matchesMetadata;
+            game.MatchSelectionMode = _MapMatchSelectionMode(gameDto.matchSelectionMode);
+
+            var matchSelector = _matchSelectorFactory.GetMatchSelector(game.MatchSelectionMode);
+            var newMatches = await matchSelector.GetMatches(game.MatchesMetadata);
+
             var list = new List<MatchTips>();
 
-            foreach (var matchId in ids)
+            foreach (var match in newMatches)
             {
-                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == matchId);
+                var entry = game.Matches?.FirstOrDefault(x => x.MatchId == match.Id);
 
                 if (entry == null)
-                    entry = new MatchTips { MatchId = matchId };
+                    entry = new MatchTips { MatchId = match.Id };
 
                 list.Add(entry);
             }
 
             game.Matches = list;
-            game.MatchesMetadata = gameMetadata;
+        }
+
+        private MatchSelectionMode _MapMatchSelectionMode(string matchSelectionMode)
+        {
+            switch (matchSelectionMode)
+            {
+                case "em2016":
+                    return MatchSelectionMode.EM2016;
+
+                case "league":
+                    return MatchSelectionMode.League;
+
+                default:
+                    throw new NotSupportedException(string.Format("MatchSelectionMode '{0}' is not supported!", matchSelectionMode));
+            }
         }
 
         private GameDto _PrepareGameForUser(Game game)

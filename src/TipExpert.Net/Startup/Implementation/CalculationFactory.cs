@@ -1,13 +1,14 @@
 ﻿using System;
+using TipExpert.Core;
 using TipExpert.Core.Calculation;
 
-namespace TipExpert.Core.Configuration
+namespace TipExpert.Net.Implementation
 {
-    public class CalculationResolver : ICalculationResolver
+    public class CalculationFactory : ICalculationFactory
     {
         private readonly IServiceProvider _hostingEnvironment;
 
-        public CalculationResolver(IServiceProvider hostingEnvironment)
+        public CalculationFactory(IServiceProvider hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
@@ -28,7 +29,7 @@ namespace TipExpert.Core.Configuration
         public IProfitCalculationStrategy GetProfitCalculationStrategy(Game game)
         {
             // only 'The winner takes it all' mode is currently supported
-            var type = typeof (TheWinneTakesItAllCalculationStrategy);
+            var type = typeof(TheWinneTakesItAllCalculationStrategy);
 
             var strategy = _hostingEnvironment.GetService(type) as IProfitCalculationStrategy;
 

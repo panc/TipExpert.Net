@@ -1,6 +1,6 @@
 ﻿namespace TipExpert.Core.Calculation
 {
-    public interface ICalculationResolver
+    public interface ICalculationFactory
     {
         IPointsCalculationStrategy GetPointsCalculationStrategy(Game game);
 

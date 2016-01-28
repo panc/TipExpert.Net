@@ -12,7 +12,7 @@ game.controller('addOrEditGameController', [
         $scope.isNewGame = game.isNew === true;
         $scope.selectedTab = 1;
         $scope.matchSelectionMode = game.matchSelectionMode;
-
+        
         var matchSelections = {};
 
         if (!$scope.isNewGame) {
@@ -34,8 +34,10 @@ game.controller('addOrEditGameController', [
 
             if (this.submitForm.$invalid)
                 return;
+            
+            $scope.game.matchSelectionMode = $scope.matchSelectionMode;
 
-            var ms = matchSelections[$scope.matchSelectionMode];
+            var ms = matchSelections[$scope.game.matchSelectionMode];
             if (ms && ms.getMetadata)
                 $scope.game.matchesMetadata = ms.getMetadata();
 
