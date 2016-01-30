@@ -226,13 +226,15 @@ namespace TipExpert.Net.Controllers
 
             foreach (var invitedPlayer in gameDto.invitedPlayers)
             {
-                var userId = invitedPlayer.userId.ToObjectId();
-                var player = game.InvitedPlayers.FirstOrDefault(x => x.UserId == userId);
+                var email = invitedPlayer.email;
+                var player = game.InvitedPlayers.FirstOrDefault(x => x.Email == email);
 
                 if (player == null)
                 {
                     player = Mapper.Map<InvitedPlayer>(invitedPlayer);
                     _mailService.SendInvitation(player);
+
+                    if (!string.IsNullOrEmpty(invitedPlayer.userId)) { /* Do something for known user*/ } 
                 }
 
                 invitedPlayers.Add(player);

@@ -1,5 +1,4 @@
-﻿
-.login-info {
+﻿.login-info {
     margin: 10px 0 10px 40px;
 }
 
@@ -372,6 +371,11 @@ li.login-button > a:hover, li.login-button > a:focus {
 
 #edit-players .recent-players {
     margin-top: 50px;
+}
+
+#edit-players .delete-button {
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 

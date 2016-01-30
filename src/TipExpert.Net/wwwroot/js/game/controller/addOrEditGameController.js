@@ -40,6 +40,11 @@ game.controller('addOrEditGameController', [
             $scope.game.invitedPlayers.push(user);
         };
 
+        $scope.removeInvitedPlayer = function(player) {
+            var index = $scope.game.invitedPlayers.indexOf(player);
+            $scope.game.invitedPlayers.splice(index, 1);
+        };
+
         $scope.save = function() {
             $scope.submitted = true;
 
