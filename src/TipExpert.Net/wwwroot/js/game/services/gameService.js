@@ -46,7 +46,7 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         },
 
         acceptInvitation: function(token) {
-            return $http.post('/api/invitation/accept', token);
+            return $http.post('/api/invitation/accept', { value: token });
         }
     };
 }]);

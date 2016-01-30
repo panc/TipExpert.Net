@@ -1,9 +1,12 @@
-﻿namespace TipExpert.Core.Invitation
+﻿using System.Threading.Tasks;
+using MongoDB.Bson;
+
+namespace TipExpert.Core.Invitation
 {
     public interface IInvitationTokeService
     {
         string GetNewInvitaionToken();
 
-        void UpdatePlayerForToken(string token);
+        Task UpdatePlayerForToken(string token, ObjectId userId);
     }
 }

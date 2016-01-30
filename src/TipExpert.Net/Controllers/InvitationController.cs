@@ -17,7 +17,8 @@ namespace TipExpert.Net.Controllers
         [HttpPost("accept")]
         public async Task<IActionResult> Post([FromBody]string token)
         {
-            _tokeService.UpdatePlayerForToken(token);
+            var userId = User.GetUserIdAsObjectId();
+            await _tokeService.UpdatePlayerForToken(token, userId);
 
             return Json(new {success = true});
         }
