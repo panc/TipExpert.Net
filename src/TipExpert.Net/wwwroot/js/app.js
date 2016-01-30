@@ -126,6 +126,20 @@ tipExpert.config([
                 access: accessLevels.user // todo
             })
 
+            // routes for invitation module
+            .state('invitation', {
+                url: '/invitation',
+                views: abstractView,
+                abstract: true
+            })
+            .state('invitation.token', {
+                title: 'Invitation',
+                url: '/:token',
+                templateUrl: '/js/game/views/invitation.html',
+                controller: 'invitationController',
+                access: accessLevels.user // todo
+            })
+
             // routes for home module
             .state('home', {
                 title: 'Home',
