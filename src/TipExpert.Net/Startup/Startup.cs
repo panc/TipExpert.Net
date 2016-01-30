@@ -9,6 +9,7 @@ using TipExpert.Net.Middleware;
 using TipExpert.Core;
 using TipExpert.Net.Implementation;
 using TipExpert.Core.Calculation;
+using TipExpert.Core.Invitation;
 using TipExpert.Core.MatchSelection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -57,6 +58,8 @@ namespace TipExpert.Net
             services.AddTransient<IMatchSelectorFactory, MatchSelectorFactory>();
             services.AddTransient<LeagueMatchSelector, LeagueMatchSelector>();
             services.AddTransient<Em2016MatchSelector, Em2016MatchSelector>();
+
+            services.AddTransient<IMailInvitationService, MailInvitationService>();
 
             services.AddSingleton(s => 
                 new MongoClient(Configuration["Data:ConnectionString"])

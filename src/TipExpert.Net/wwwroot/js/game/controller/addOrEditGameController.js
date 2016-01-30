@@ -30,7 +30,14 @@ game.controller('addOrEditGameController', [
         }
 
         $scope.invitePlayer = function(userNameOrEmail) {
-            var p = userNameOrEmail;
+            var user = {
+                email: userNameOrEmail
+            };
+
+            if (!$scope.game.invitedPlayers)
+                $scope.game.invitedPlayers = [];
+
+            $scope.game.invitedPlayers.push(user);
         };
 
         $scope.save = function() {

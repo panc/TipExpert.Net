@@ -39,8 +39,9 @@
     "GAME-MATCH-EM_FINAL": "Final",
 
     "GAME-PLAYER-INVITE": "Invite Player",
-    "GAME-PLAYER-RECENT": "Recent Players",
-    "GAME-PLAYER-SELECTED": "Selected Players",
+    "GAME-PLAYERS-RECENT": "Recent Players",
+    "GAME-PLAYERS-SELECTED": "Invited Players",
+    "GAME-PLAYERS-ACCEPTED": "Accepted Players",
 
     "GAME-PARTICIPANTS": "Participants",
     "GAME-TIPS": "My Tips",

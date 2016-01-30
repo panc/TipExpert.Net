@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MongoDB.Bson;
 using TipExpert.Core;
+using TipExpert.Core.Invitation;
 using TipExpert.Core.MatchSelection;
 using TipExpert.Net.Models;
 
@@ -17,11 +18,13 @@ namespace TipExpert.Net.Controllers
     {
         private readonly IGameStore _gameStore;
         private readonly IMatchSelectorFactory _matchSelectorFactory;
+        private readonly IMailInvitationService _mailService;
 
-        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory)
+        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory, IMailInvitationService mailService)
         {
             _gameStore = gameStore;
             _matchSelectorFactory = matchSelectorFactory;
+            _mailService = mailService;
         }
 
         [HttpGet("{gameId}")]
@@ -216,6 +219,8 @@ namespace TipExpert.Net.Controllers
 
         private void _UpdatePlayers(Game game, GameDto gameDto)
         {
+            if (game.InvitedPlayers == null)
+                game.InvitedPlayers = new List<InvitedPlayer>();
 
             var invitedPlayers = new List<InvitedPlayer>();
 
@@ -225,7 +230,10 @@ namespace TipExpert.Net.Controllers
                 var player = game.InvitedPlayers.FirstOrDefault(x => x.UserId == userId);
 
                 if (player == null)
-                    player = new InvitedPlayer();
+                {
+                    player = Mapper.Map<InvitedPlayer>(invitedPlayer);
+                    _mailService.SendInvitation(player);
+                }
 
                 invitedPlayers.Add(player);
             }
