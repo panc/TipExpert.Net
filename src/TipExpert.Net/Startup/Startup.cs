@@ -59,7 +59,12 @@ namespace TipExpert.Net
             services.AddTransient<LeagueMatchSelector, LeagueMatchSelector>();
             services.AddTransient<Em2016MatchSelector, Em2016MatchSelector>();
 
-            services.AddTransient<IMailInvitationService, MailInvitationService>();
+            services.AddTransient<IMailInvitationService, MailInvitationService>(x => 
+                new MailInvitationService(Configuration["MailSettings:UserName"],
+                        Configuration["MailSettings:Passwort"],
+                        Configuration["MailSettings:Host"],
+                        Configuration.Get<int>("MailSettings:Port")
+                    ));
 
             services.AddSingleton(s => 
                 new MongoClient(Configuration["Data:ConnectionString"])
