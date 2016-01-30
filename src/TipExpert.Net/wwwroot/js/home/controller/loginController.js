@@ -3,8 +3,8 @@
 var homeModule = angular.module('tipExpert.home');
 
 homeModule.controller('loginController', [
-    '$scope', '$state', '$uibModalInstance', 'authService', 'alertService',
-    function ($scope, $state, $uibModalInstance, authService, alertService) {
+    '$rootScope', '$scope', '$state', '$uibModalInstance', 'authService', 'alertService',
+    function ($rootScope, $scope, $state, $uibModalInstance, authService, alertService) {
 
         $scope.user = {
             name: '',
@@ -21,7 +21,13 @@ homeModule.controller('loginController', [
             authService.login($scope.user)
                 .then(function () {
                     $scope.cancel();
-                    $state.go('games.overview');
+
+                    if ($rootScope.returnTo) 
+                        $state.go($rootScope.returnTo.state, $rootScope.returnTo.params);
+                    else 
+                        $state.go('games.overview');
+
+                    $rootScope.returnTo = null;
                 })
                 .catch(alertService.error);
         };

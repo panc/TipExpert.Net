@@ -221,9 +221,14 @@ tipExpert.run([
             var isLoggedIn = authService.user.isLoggedIn;
 
             if (!authService.authorize(toState.access)) {
-
                 event.preventDefault();
+
                 if (!isLoggedIn) {
+                    $rootScope.returnTo = {
+                        state: toState.name,
+                        params: toParams
+                    };
+
                     $state.go('home');
                 } else {
                     if (!fromState.controller)
