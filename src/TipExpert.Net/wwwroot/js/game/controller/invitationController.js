@@ -3,14 +3,20 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('invitationController', [
-    '$scope', '$stateParams', 'gameService', 'alertService', function($scope, $stateParams, gameService, alertService) {
+    '$scope', '$stateParams', '$state', 'gameService', function ($scope, $stateParams, $state, gameService) {
 
         $scope.user = {};
         $scope.hideRole = true;
 
-        if ($stateParams.token) {
+        var token = "";
+        if ($stateParams.token)
+            token = $stateParams.token;
 
-            $scope.token = $stateParams.token;
-        }
+        $scope.acceptInvitation = function() {
+            gameService.acceptInvitation(token)
+                .then(function() {
+                    $state.go('games.overview');
+                });
+        };
     }
 ]);
