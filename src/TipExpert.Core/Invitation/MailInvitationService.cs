@@ -12,6 +12,7 @@ namespace TipExpert.Core.Invitation
             message.Body = "Hello world";
             message.Subject = "First test";
             message.To.Add(email);
+            message.From = new MailAddress("invitation@tipexpert.net");
 
             SmtpClient client = new SmtpClient();
             client.Port = 587;
@@ -20,7 +21,7 @@ namespace TipExpert.Core.Invitation
             client.Timeout = 10000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("christoph.pangerl@gmail.com", "panwild!\"2244");
+            client.Credentials = new System.Net.NetworkCredential("dummy", "dummy");
 
             client.Send(message);
         } 

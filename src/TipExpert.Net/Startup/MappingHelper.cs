@@ -32,6 +32,7 @@ namespace TipExpert.Net
                     .ForMember(x => x.name, x => x.MapFrom(p => p.User.Name))
                     .ForMember(x => x.email, x => x.MapFrom(p => p.User.Email));
 
+                c.CreateMap<InvitedPlayerDto, InvitedPlayer>();
                 c.CreateMap<InvitedPlayer, InvitedPlayerDto>()
                     .ForMember(x => x.name, x => x.MapFrom(p => p.User.Name))
                     .ForMember(x => x.email, x => x.ResolveUsing(p => p.User == null ? p.Email : p.User.Email));
