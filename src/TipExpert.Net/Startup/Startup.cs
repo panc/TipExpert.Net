@@ -59,8 +59,11 @@ namespace TipExpert.Net
             services.AddTransient<LeagueMatchSelector, LeagueMatchSelector>();
             services.AddTransient<Em2016MatchSelector, Em2016MatchSelector>();
 
+            services.AddTransient<IInvitationTokeService, InvitationTokeService>(); 
             services.AddTransient<IMailInvitationService, MailInvitationService>(x => 
-                new MailInvitationService(Configuration["MailSettings:UserName"],
+                new MailInvitationService(
+                        x.GetService<IInvitationTokeService>(),
+                        Configuration["MailSettings:UserName"],
                         Configuration["MailSettings:Passwort"],
                         Configuration["MailSettings:Host"],
                         Configuration.Get<int>("MailSettings:Port")
