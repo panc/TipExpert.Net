@@ -85,6 +85,11 @@ namespace TipExpert.Net.Controllers
                 CreatorId = User.GetUserIdAsObjectId()
             };
 
+            // game creator always has to be part of the players list
+            var creatorId = User.GetUserIdAsObjectId();
+            game.Players = new List<Player>();
+            game.Players.Add(new Player { UserId = creatorId });
+
             _UpdateGameData(game, newGame);
             _UpdatePlayers(game, newGame);
             await _UpdateMatches(game, newGame);
@@ -211,14 +216,21 @@ namespace TipExpert.Net.Controllers
 
         private void _UpdatePlayers(Game game, GameDto gameDto)
         {
-            game.Players = Mapper.Map<Player[]>(gameDto.players).ToList();
 
-            // game creator always has to be part of the players list
-            var creatorId = User.GetUserIdAsObjectId();
-            if (game.Players.FirstOrDefault(x => x.UserId == creatorId) == null)
+            var invitedPlayers = new List<InvitedPlayer>();
+
+            foreach (var invitedPlayer in gameDto.invitedPlayers)
             {
-                game.Players.Add(new Player { UserId = creatorId });
+                var userId = invitedPlayer.userId.ToObjectId();
+                var player = game.InvitedPlayers.FirstOrDefault(x => x.UserId == userId);
+
+                if (player == null)
+                    player = new InvitedPlayer();
+
+                invitedPlayers.Add(player);
             }
+
+            game.InvitedPlayers = invitedPlayers;
         }
 
         private async Task _UpdateMatches(Game game, GameDto gameDto)

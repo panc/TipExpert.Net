@@ -29,6 +29,10 @@ game.controller('addOrEditGameController', [
             }
         }
 
+        $scope.invitePlayer = function(userNameOrEmail) {
+            var p = userNameOrEmail;
+        };
+
         $scope.save = function() {
             $scope.submitted = true;
 

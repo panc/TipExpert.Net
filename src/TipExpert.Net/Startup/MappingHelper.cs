@@ -29,7 +29,12 @@ namespace TipExpert.Net
 
                 c.CreateMap<PlayerDto, Player>();
                 c.CreateMap<Player, PlayerDto>()
-                    .ForMember(x => x.name, x => x.MapFrom(u => u.User.Name));
+                    .ForMember(x => x.name, x => x.MapFrom(p => p.User.Name))
+                    .ForMember(x => x.email, x => x.MapFrom(p => p.User.Email));
+
+                c.CreateMap<InvitedPlayer, InvitedPlayerDto>()
+                    .ForMember(x => x.name, x => x.MapFrom(p => p.User.Name))
+                    .ForMember(x => x.email, x => x.ResolveUsing(p => p.User == null ? p.Email : p.User.Email));
 
                 c.CreateMap<string, ObjectId>().ConvertUsing(x => x.ToObjectId());
             });

@@ -6,6 +6,8 @@
 
         public string name { get; set; }
 
+        public string email { get; set; }
+
         public double? stake { get; set; }
 
         public double? profit { get; set; }

@@ -23,6 +23,8 @@ namespace TipExpert.Core
         
         public List<Player> Players { get; set; }
 
+        public List<InvitedPlayer> InvitedPlayers { get; set; }
+
         public List<MatchTips> Matches { get; set; }
     }
 }

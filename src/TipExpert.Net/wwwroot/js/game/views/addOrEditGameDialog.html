@@ -117,11 +117,11 @@
 
                             <div class="form-group">
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" name="username" ng-model="searchUserName" placeholder="Mail or Username" required>
+                                    <input class="form-control" type="text" name="username" ng-model="userNameOrEmail" placeholder="Mail or Username" required>
                                 </div>
                             </div>
 
-                            <button ng-click="addPlayer()" class="btn">Add Player</button>
+                            <button ng-click="invitePlayer(userNameOrEmail)" class="btn">Add Player</button>
                         </div>
 
                         <div class="recent-players row">
