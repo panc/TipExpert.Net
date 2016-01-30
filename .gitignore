@@ -200,3 +200,5 @@ FakesAssemblies/
 App_Data/
 src/TipExpert.Net/appsettings.local.json
 _startmongodb.cmd
+**/app.min.js
+**/site.min.css
