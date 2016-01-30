@@ -38,6 +38,10 @@
     "GAME-MATCH-EM_SEMI-FINAL": "Semi Final",
     "GAME-MATCH-EM_FINAL": "Final",
 
+    "GAME-PLAYER-INVITE": "Invite Player",
+    "GAME-PLAYER-RECENT": "Recent Players",
+    "GAME-PLAYER-SELECTED": "Selected Players",
+
     "GAME-PARTICIPANTS": "Participants",
     "GAME-TIPS": "My Tips",
     "GAME-TIPS-DESCRIPTION": "Set your tips for all unfinished games.",

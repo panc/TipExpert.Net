@@ -365,40 +365,15 @@ li.login-button > a:hover, li.login-button > a:focus {
 }
 
 
-.match-selection-row {
+#edit-matches .match-selection-row {
     margin-top: 30px;
 }
 
-.league-dropdown {
-    margin-left: 10px;
-    color: inherit;
+
+#edit-players .recent-players {
+    margin-top: 50px;
 }
 
-.match-selection {
-    margin-top: 40px;
-}
-
-.selected-match {
-    background-color: #a8eba5;
-}
-
-.match-selection-item:hover {
-    cursor: pointer;
-    background-color: #a5d2eb;
-}
-
-.user-selection {
-    margin-top: 40px;
-}
-
-.selected-user {
-    background-color: #a8eba5;
-}
-
-.user-selection-item:hover {
-    cursor: pointer;
-    background-color: #a5d2eb;
-}
 
 /* User Profile */
 .profile-row {

@@ -87,38 +87,59 @@
                 </div>
 
                 <!-- MATCHES -->
-                <div class="container row matches-container" ng-show="selectedTab == 2">
+                <div id="edit-matches"class="container row" ng-show="selectedTab == 2">
 
                     <div class="section-header">
                         <span class="head" translate="GAME-MATCH"></span>
                         <span class="sub" translate="GAME-MATCH-SUB"></span>
                     </div>
 
-                    <te-match-selection-em-2016 ng-show="game.matchSelectionMode == 'em2016'"
+                    <te-match-selection-em-2016 ng-show="matchSelectionMode == 'em2016'"
                                                 game="game" register-match-selection="registerMatchSelection"></te-match-selection-em-2016>
 
-                    <te-match-selection-leagues game="game" ng-show="game.matchSelectionMode == 'leagues'"></te-match-selection-leagues>
+                    <te-match-selection-leagues game="game" ng-show="matchSelectionMode == 'leagues'"></te-match-selection-leagues>
 
                 </div>
 
                 <!-- PLAYERS -->
-                <div class="container row players-container" ng-show="selectedTab == 3">
+                <div id="edit-players" class="container row" ng-show="selectedTab == 3">
 
                     <div class="section-header">
                         <span class="head" translate="GAME-PLAYERS"></span>
                         <span class="sub" translate="GAME-PLAYERS-SUB"></span>
                     </div>
-                    
-                    <span class="input-group-btn">
-                        <button ng-click="addPlayer()" class="btn">Add Player</button>
-                    </span>
 
-                    <ul>
-                        <li ng-repeat="player in game.players">
-                            <div>{{ player.name }}</div>
-                        </li>
-                    </ul>
+                    <div class="col-sm-5">
+                        <div class="search-players row">
 
+                            <!-- USER NAME -->
+                            <h4 translate="GAME-PLAYER-INVITE"></h4>
+
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" name="username" ng-model="searchUserName" placeholder="Mail or Username" required>
+                                </div>
+                            </div>
+
+                            <button ng-click="addPlayer()" class="btn">Add Player</button>
+                        </div>
+
+                        <div class="recent-players row">
+                            <h4 translate="GAME-PLAYER-RECENT"></h4>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <div class="invited-players row">
+                            <h4 translate="GAME-PLAYER-SELECTED"></h4>
+
+                            <ul>
+                                <li ng-repeat="player in game.players">
+                                    <div>{{ player.name }}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
