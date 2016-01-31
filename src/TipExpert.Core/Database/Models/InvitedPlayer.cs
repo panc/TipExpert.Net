@@ -12,6 +12,6 @@ namespace TipExpert.Core
 
         public string Email { get; set; }
 
-        public string InvitationToken { get; set; }
+        public ObjectId InvitationToken { get; set; }
     }
 }

@@ -18,13 +18,13 @@ namespace TipExpert.Net.Controllers
     {
         private readonly IGameStore _gameStore;
         private readonly IMatchSelectorFactory _matchSelectorFactory;
-        private readonly IMailInvitationService _mailService;
+        private readonly IInvitationService _invitationService;
 
-        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory, IMailInvitationService mailService)
+        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory, IInvitationService invitationService)
         {
             _gameStore = gameStore;
             _matchSelectorFactory = matchSelectorFactory;
-            _mailService = mailService;
+            _invitationService = invitationService;
         }
 
         [HttpGet("{gameId}")]
@@ -93,13 +93,61 @@ namespace TipExpert.Net.Controllers
             game.Players = new List<Player>();
             game.Players.Add(new Player { UserId = creatorId });
 
-            _UpdateGameData(game, newGame);
             _UpdatePlayers(game, newGame);
+            _UpdateGameData(game, newGame);
             await _UpdateMatches(game, newGame);
 
             await _gameStore.Add(game);
 
+            _invitationService.SendInvitationsAsync(game);
+
             return Mapper.Map<GameDto>(game);
+        }
+
+        [HttpPut("{gameId}/edit/data")]
+        public async Task<IActionResult> UpdateGame(string gameId, [FromBody]GameDto gameDto)
+        {
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
+
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, id) ??
+                _CheckCurrentUserIsGameCreator(game) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
+
+            _UpdateGameData(game, gameDto);
+            _UpdatePlayers(game, gameDto);
+            await _UpdateMatches(game, gameDto);
+
+            await _gameStore.Update(game);
+
+            _invitationService.SendInvitationsAsync(game);
+
+            return Json(Mapper.Map<GameDto>(game));
+        }
+
+        [HttpDelete("{gameId}/edit")]
+        public async Task<IActionResult> DeleteGame(string gameId)
+        {
+            var id = gameId.ToObjectId();
+            var game = await _gameStore.GetById(id);
+
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, id) ??
+                _CheckCurrentUserIsGameCreator(game) ??
+                _CheckGameIsNotFinished(game);
+
+            if (errorResult != null)
+                return errorResult;
+
+            // todo: check whether the game is already running
+
+            await _gameStore.Remove(game);
+
+            return Json(new { success = true });
         }
 
         [HttpPut("{gameId}/stake")]
@@ -166,50 +214,6 @@ namespace TipExpert.Net.Controllers
             return Json(_PrepareGameForUser(game));
         }
 
-        [HttpPut("{gameId}/edit/data")]
-        public async Task<IActionResult> UpdateGame(string gameId, [FromBody]GameDto gameDto)
-        {
-            var id = gameId.ToObjectId();
-            var game = await _gameStore.GetById(id);
-
-            IActionResult errorResult =
-                _CheckGameIsNotNull(game, id) ??
-                _CheckCurrentUserIsGameCreator(game) ??
-                _CheckGameIsNotFinished(game);
-
-            if (errorResult != null)
-                return errorResult;
-
-            _UpdateGameData(game, gameDto);
-            _UpdatePlayers(game, gameDto);
-            await _UpdateMatches(game, gameDto);
-
-            await _gameStore.Update(game);
-
-            return Json(Mapper.Map<GameDto>(game));
-        }
-
-        [HttpDelete("{gameId}/edit")]
-        public async Task<IActionResult> DeleteGame(string gameId)
-        {
-            var id = gameId.ToObjectId();
-            var game = await _gameStore.GetById(id);
-
-            IActionResult errorResult =
-                _CheckGameIsNotNull(game, id) ??
-                _CheckCurrentUserIsGameCreator(game) ?? 
-                _CheckGameIsNotFinished(game);
-
-            if (errorResult != null)
-                return errorResult;
-
-            // todo: check whether the game is already running
-
-            await _gameStore.Remove(game);
-
-            return Json(new { success = true });
-        }
-
         private static void _UpdateGameData(Game game, GameDto gameDto)
         {
             game.Title = gameDto.title;
@@ -222,7 +226,8 @@ namespace TipExpert.Net.Controllers
             if (game.InvitedPlayers == null)
                 game.InvitedPlayers = new List<InvitedPlayer>();
 
-            var invitedPlayers = new List<InvitedPlayer>();
+            // build a new list to also take removed invitations into account
+            game.InvitedPlayers = new List<InvitedPlayer>();
 
             foreach (var invitedPlayer in gameDto.invitedPlayers)
             {
@@ -230,17 +235,10 @@ namespace TipExpert.Net.Controllers
                 var player = game.InvitedPlayers.FirstOrDefault(x => x.Email == email);
 
                 if (player == null)
-                {
                     player = Mapper.Map<InvitedPlayer>(invitedPlayer);
-                    _mailService.SendInvitation(player);
 
-                    if (!string.IsNullOrEmpty(invitedPlayer.userId)) { /* Do something for known user*/ } 
-                }
-
-                invitedPlayers.Add(player);
+                game.InvitedPlayers.Add(player);
             }
-
-            game.InvitedPlayers = invitedPlayers;
         }
 
         private async Task _UpdateMatches(Game game, GameDto gameDto)

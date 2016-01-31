@@ -7,18 +7,18 @@ namespace TipExpert.Net.Controllers
     [Route("api/invitation")]
     public class InvitationController : Controller
     {
-        private readonly IInvitationTokeService _tokeService;
+        private readonly IInvitationService _invitationService;
 
-        public InvitationController(IInvitationTokeService tokeService)
+        public InvitationController(IInvitationService invitationService)
         {
-            _tokeService = tokeService;
+            _invitationService = invitationService;
         }
 
         [HttpPost("accept")]
         public async Task<IActionResult> Post([FromBody]string token)
         {
             var userId = User.GetUserIdAsObjectId();
-            await _tokeService.UpdatePlayerForToken(token, userId);
+            await _invitationService.UpdateInvitationForPlayer(token, userId);
 
             return Json(new {success = true});
         }

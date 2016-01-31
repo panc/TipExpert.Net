@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using MongoDB.Bson;
+using TipExpert.Core;
 
 namespace TipExpert.Net
 {
@@ -9,15 +10,6 @@ namespace TipExpert.Net
         {
             var userId = principal.GetUserId();
             return userId.ToObjectId();
-        }
-
-        public static ObjectId ToObjectId(this string value)
-        {
-            ObjectId id;
-            if (ObjectId.TryParse(value, out id))
-                return id;
-
-            return ObjectId.Empty;
         }
     }
 }

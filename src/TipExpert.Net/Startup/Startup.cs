@@ -59,10 +59,10 @@ namespace TipExpert.Net
             services.AddTransient<LeagueMatchSelector, LeagueMatchSelector>();
             services.AddTransient<Em2016MatchSelector, Em2016MatchSelector>();
 
-            services.AddTransient<IInvitationTokeService, InvitationTokeService>(); 
-            services.AddTransient<IMailInvitationService, MailInvitationService>(x => 
-                new MailInvitationService(
-                        x.GetService<IInvitationTokeService>(),
+            services.AddTransient<IInvitationService, InvitationService>(x => 
+                new InvitationService(
+                        x.GetService<IGameStore>(),
+                        x.GetService<IInvitationTokenStore>(),
                         Configuration["MailSettings:UserName"],
                         Configuration["MailSettings:Passwort"],
                         Configuration["MailSettings:Host"],
@@ -77,6 +77,7 @@ namespace TipExpert.Net
             services.AddTransient<ILeagueStore, LeagueStore>();
             services.AddTransient<IMatchStore, MatchStore>();
             services.AddTransient<IGameStore, GameStore>();
+            services.AddTransient<IInvitationTokenStore, InvitationTokenStore>();
 
             // Add MVC services to the services container.
             services.AddMvc();
