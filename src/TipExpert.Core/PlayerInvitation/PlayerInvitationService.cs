@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -24,11 +25,37 @@ namespace TipExpert.Core.PlayerInvitation
             _port = port;
         }
 
-        public void SendInvitationsAsync(Game game)
+        public void SendInvitationsAsync(Game game, InvitedPlayer[] invitedPlayers)
         {
-            Task.Run(async () => { await _SendInvitations(game); });
+            Task.Run(async () =>
+            {
+                _UpdateInvitedPlayers(game, invitedPlayers);
+                await _SendInvitations(game);
+            });
         }
-        
+
+        private void _UpdateInvitedPlayers(Game game, InvitedPlayer[] invitedPlayers)
+        {
+            if (game.InvitedPlayers == null)
+                game.InvitedPlayers = new List<InvitedPlayer>();
+
+            // build a new list to also take removed invitations into account
+            game.InvitedPlayers = new List<InvitedPlayer>();
+
+            // TODO:
+            // handle delete players -> remove invitation!
+            foreach (var invitedPlayer in invitedPlayers)
+            {
+                var email = invitedPlayer.Email;
+                var player = game.InvitedPlayers.FirstOrDefault(x => x.Email == email);
+
+                if (player == null)
+                    player = invitedPlayer;
+
+                game.InvitedPlayers.Add(player);
+            }
+        }
+
         public async Task UpdateInvitationForPlayer(string token, ObjectId userId)
         {
             var invitationId = token.ToObjectId();

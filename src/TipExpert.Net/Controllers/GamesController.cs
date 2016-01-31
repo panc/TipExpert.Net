@@ -99,7 +99,7 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.Add(game);
 
-            _playerInvitationService.SendInvitationsAsync(game);
+            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<InvitedPlayer[]>(newGame.invitedPlayers));
 
             return Mapper.Map<GameDto>(game);
         }
@@ -124,7 +124,7 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.Update(game);
 
-            _playerInvitationService.SendInvitationsAsync(game);
+            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<InvitedPlayer[]>(gameDto.invitedPlayers));
 
             return Json(Mapper.Map<GameDto>(game));
         }
@@ -223,22 +223,8 @@ namespace TipExpert.Net.Controllers
 
         private void _UpdatePlayers(Game game, GameDto gameDto)
         {
-            if (game.InvitedPlayers == null)
-                game.InvitedPlayers = new List<InvitedPlayer>();
-
-            // build a new list to also take removed invitations into account
-            game.InvitedPlayers = new List<InvitedPlayer>();
-
-            foreach (var invitedPlayer in gameDto.invitedPlayers)
-            {
-                var email = invitedPlayer.email;
-                var player = game.InvitedPlayers.FirstOrDefault(x => x.Email == email);
-
-                if (player == null)
-                    player = Mapper.Map<InvitedPlayer>(invitedPlayer);
-
-                game.InvitedPlayers.Add(player);
-            }
+            // TODO
+            // update game.Players
         }
 
         private async Task _UpdateMatches(Game game, GameDto gameDto)
@@ -275,7 +261,7 @@ namespace TipExpert.Net.Controllers
                     return MatchSelectionMode.League;
 
                 default:
-                    throw new NotSupportedException(string.Format("MatchSelectionMode '{0}' is not supported!", matchSelectionMode));
+                    throw new NotSupportedException($"MatchSelectionMode '{matchSelectionMode}' is not supported!");
             }
         }
 
