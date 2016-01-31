@@ -2,7 +2,7 @@
 
 namespace TipExpert.Core
 {
-    public class InvitationToken
+    public class Invitation
     {
         public ObjectId Id { get; set; }
 

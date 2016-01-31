@@ -1,26 +1,43 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
-using TipExpert.Core.Invitation;
+using AutoMapper;
+using TipExpert.Core;
+using TipExpert.Core.PlayerInvitation;
+using TipExpert.Net.Models;
 
 namespace TipExpert.Net.Controllers
 {
     [Route("api/invitation")]
     public class InvitationController : Controller
     {
-        private readonly IInvitationService _invitationService;
+        private readonly IPlayerInvitationService _playerInvitationService;
+        private readonly IInvitationStore _invitationStore;
 
-        public InvitationController(IInvitationService invitationService)
+        public InvitationController(IPlayerInvitationService playerInvitationService, IInvitationStore invitationStore)
         {
-            _invitationService = invitationService;
+            _playerInvitationService = playerInvitationService;
+            _invitationStore = invitationStore;
+        }
+
+        [HttpGet("{token}")]
+        public async Task<InvitationDto> GetDetails(string token)
+        {
+            var invitationId = token.ToObjectId();
+            var invitation = await _invitationStore.GetById(invitationId);
+
+            // TODO
+            // check if user is correct
+
+            return Mapper.Map<InvitationDto>(invitation);
         }
 
         [HttpPost("accept")]
         public async Task<IActionResult> Post([FromBody]string token)
         {
             var userId = User.GetUserIdAsObjectId();
-            await _invitationService.UpdateInvitationForPlayer(token, userId);
+            await _playerInvitationService.UpdateInvitationForPlayer(token, userId);
 
-            return Json(new {success = true});
+            return Json(new { success = true });
         }
     }
 }

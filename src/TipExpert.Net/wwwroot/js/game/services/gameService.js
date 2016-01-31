@@ -44,9 +44,5 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
         delete: function(gameId) {
             return $http.delete('/api/games/' + gameId + '/edit');
         },
-
-        acceptInvitation: function(token) {
-            return $http.post('/api/invitation/accept', { value: token });
-        }
     };
 }]);

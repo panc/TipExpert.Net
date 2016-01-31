@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using MongoDB.Bson;
 
-namespace TipExpert.Core.Invitation
+namespace TipExpert.Core.PlayerInvitation
 {
-    public interface IInvitationService
+    public interface IPlayerInvitationService
     {
         void SendInvitationsAsync(Game game);
 

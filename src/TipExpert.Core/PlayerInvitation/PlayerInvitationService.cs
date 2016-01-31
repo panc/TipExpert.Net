@@ -3,21 +3,21 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 
-namespace TipExpert.Core.Invitation
+namespace TipExpert.Core.PlayerInvitation
 {
-    public class InvitationService : IInvitationService
+    public class PlayerInvitationService : IPlayerInvitationService
     {
         private readonly IGameStore _gameStore;
-        private readonly IInvitationTokenStore _invitationTokenStore;
+        private readonly IInvitationStore _invitationStore;
         private readonly string _userName;
         private readonly string _password;
         private readonly string _host;
         private readonly int _port;
 
-        public InvitationService(IGameStore gameStore, IInvitationTokenStore invitationTokenStore, string userName, string password, string host, int port)
+        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, string userName, string password, string host, int port)
         {
             _gameStore = gameStore;
-            _invitationTokenStore = invitationTokenStore;
+            _invitationStore = invitationStore;
             _userName = userName;
             _password = password;
             _host = host;
@@ -66,13 +66,13 @@ namespace TipExpert.Core.Invitation
 
         private async Task _SendInvitation(Game game, InvitedPlayer player)
         {
-            var token = new InvitationToken
+            var token = new Invitation
             {
                 GameId = game.Id,
                 Email = player.Email
             };
 
-            await _invitationTokenStore.Add(token);
+            await _invitationStore.Add(token);
 
             player.InvitationToken = token.Id;
 

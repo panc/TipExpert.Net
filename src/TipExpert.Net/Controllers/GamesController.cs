@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MongoDB.Bson;
 using TipExpert.Core;
-using TipExpert.Core.Invitation;
+using TipExpert.Core.PlayerInvitation;
 using TipExpert.Core.MatchSelection;
 using TipExpert.Net.Models;
 
@@ -18,13 +18,13 @@ namespace TipExpert.Net.Controllers
     {
         private readonly IGameStore _gameStore;
         private readonly IMatchSelectorFactory _matchSelectorFactory;
-        private readonly IInvitationService _invitationService;
+        private readonly IPlayerInvitationService _playerInvitationService;
 
-        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory, IInvitationService invitationService)
+        public GamesController(IGameStore gameStore, IMatchSelectorFactory matchSelectorFactory, IPlayerInvitationService playerInvitationService)
         {
             _gameStore = gameStore;
             _matchSelectorFactory = matchSelectorFactory;
-            _invitationService = invitationService;
+            _playerInvitationService = playerInvitationService;
         }
 
         [HttpGet("{gameId}")]
@@ -99,7 +99,7 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.Add(game);
 
-            _invitationService.SendInvitationsAsync(game);
+            _playerInvitationService.SendInvitationsAsync(game);
 
             return Mapper.Map<GameDto>(game);
         }
@@ -124,7 +124,7 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.Update(game);
 
-            _invitationService.SendInvitationsAsync(game);
+            _playerInvitationService.SendInvitationsAsync(game);
 
             return Json(Mapper.Map<GameDto>(game));
         }

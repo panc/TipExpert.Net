@@ -1,7 +1,8 @@
 <div class="container">
     <h3>New Invitation</h3>
 
-    <p>Someone invited you to a tip game at TipExpert.Net :-)</p>
+    <p>Someone invited you to a tip game '{{details.gameId}}' at TipExpert.Net :-)</p>
+    <p>Your email: {{details.email}}</p>
     <p>Have fun!</p>
 
     <button class="signup-button" ng-click="acceptInvitation()">Challange Accepted</button>

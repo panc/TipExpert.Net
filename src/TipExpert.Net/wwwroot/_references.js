@@ -10,6 +10,7 @@
 /// <reference path="js/game/directives/matchSelectionEm2016Directive.js" />
 /// <reference path="js/game/directives/matchselectionleaguesdirective.js" />
 /// <reference path="js/game/services/gameService.js" />
+/// <reference path="js/game/services/invitationservice.js" />
 /// <reference path="js/home/controller/homeController.js" />
 /// <reference path="js/home/controller/languageController.js" />
 /// <reference path="js/home/controller/logincontroller.js" />

@@ -9,7 +9,7 @@ using TipExpert.Net.Middleware;
 using TipExpert.Core;
 using TipExpert.Net.Implementation;
 using TipExpert.Core.Calculation;
-using TipExpert.Core.Invitation;
+using TipExpert.Core.PlayerInvitation;
 using TipExpert.Core.MatchSelection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -59,10 +59,10 @@ namespace TipExpert.Net
             services.AddTransient<LeagueMatchSelector, LeagueMatchSelector>();
             services.AddTransient<Em2016MatchSelector, Em2016MatchSelector>();
 
-            services.AddTransient<IInvitationService, InvitationService>(x => 
-                new InvitationService(
+            services.AddTransient<IPlayerInvitationService, PlayerInvitationService>(x => 
+                new PlayerInvitationService(
                         x.GetService<IGameStore>(),
-                        x.GetService<IInvitationTokenStore>(),
+                        x.GetService<IInvitationStore>(),
                         Configuration["MailSettings:UserName"],
                         Configuration["MailSettings:Passwort"],
                         Configuration["MailSettings:Host"],
@@ -77,7 +77,7 @@ namespace TipExpert.Net
             services.AddTransient<ILeagueStore, LeagueStore>();
             services.AddTransient<IMatchStore, MatchStore>();
             services.AddTransient<IGameStore, GameStore>();
-            services.AddTransient<IInvitationTokenStore, InvitationTokenStore>();
+            services.AddTransient<IInvitationStore, InvitationStore>();
 
             // Add MVC services to the services container.
             services.AddMvc();
