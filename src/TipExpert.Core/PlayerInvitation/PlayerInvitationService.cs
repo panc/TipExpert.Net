@@ -31,23 +31,20 @@ namespace TipExpert.Core.PlayerInvitation
         
         public async Task UpdateInvitationForPlayer(string token, ObjectId userId)
         {
-            // for now we search all games for the token...
-            // later we will store the game id in the token...
-            var games = await _gameStore.GetGamesCreatedByUser(userId);
-            var tokenId = token.ToObjectId();
+            var invitationId = token.ToObjectId();
+            var invitation = await _invitationStore.GetById(invitationId);
+            var game = await _gameStore.GetById(invitation.GameId);
 
-            foreach (var game in games)
+            var invitedPlayer = game?.InvitedPlayers?.SingleOrDefault(x => x.InvitationToken == invitationId);
+
+            if (invitedPlayer != null)
             {
-                var invitedPlayer = game.InvitedPlayers?.SingleOrDefault(x => x.InvitationToken == tokenId);
+                var player = new Player {UserId = userId};
+                game.Players.Add(player);
+                game.InvitedPlayers.Remove(invitedPlayer);
 
-                if (invitedPlayer != null)
-                {
-                    var player = new Player { UserId = userId };
-                    game.Players.Add(player);
-
-                    await _gameStore.Update(game);
-                    break;
-                }
+                await _gameStore.Update(game);
+                await _invitationStore.Remove(invitation);
             }
         }
 
