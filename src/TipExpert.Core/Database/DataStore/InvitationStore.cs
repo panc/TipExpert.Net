@@ -29,5 +29,12 @@ namespace TipExpert.Core
                 .Find(x => x.Id == id)
                 .SingleOrDefaultAsync();
         }
+
+        public async Task<Invitation[]> GetInvitationsForGame(ObjectId gameId)
+        {
+            return await _collection
+                .Find(x => x.GameId == gameId)
+                .ToArrayAsync();
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace TipExpert.Core
         Task Remove(Invitation token);
 
         Task<Invitation> GetById(ObjectId id);
+
+        Task<Invitation[]> GetInvitationsForGame(ObjectId gameId);
     }
 }

@@ -8,6 +8,8 @@ namespace TipExpert.Core
 
         public ObjectId GameId { get; set; }
 
+        public ObjectId UserId{ get; set; }
+
         public string Email { get; set; }
     }
 }

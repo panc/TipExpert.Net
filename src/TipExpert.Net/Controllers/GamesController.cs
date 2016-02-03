@@ -50,7 +50,12 @@ namespace TipExpert.Net.Controllers
             if (errorResult != null)
                 return errorResult;
 
-            return Json(Mapper.Map<GameDto>(game));
+            var invitedPlayer = _playerInvitationService.GetInvitatedPlayersForGame(game.Id);
+
+            var gameDto = Mapper.Map<GameDto>(game);
+            gameDto.invitedPlayers = Mapper.Map<InvitedPlayerDto[]>(invitedPlayer).ToList();
+
+            return Json(gameDto);
         }
 
         [HttpGet("created")]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -29,84 +30,87 @@ namespace TipExpert.Core.PlayerInvitation
         {
             Task.Run(async () =>
             {
-                _UpdateInvitedPlayers(game, invitedPlayers);
-                await _SendInvitations(game);
+                await _UpdateInvitedPlayers(game, invitedPlayers);
             });
-        }
-
-        private void _UpdateInvitedPlayers(Game game, InvitedPlayer[] invitedPlayers)
-        {
-            if (game.InvitedPlayers == null)
-                game.InvitedPlayers = new List<InvitedPlayer>();
-
-            // build a new list to also take removed invitations into account
-            game.InvitedPlayers = new List<InvitedPlayer>();
-
-            // TODO:
-            // handle delete players -> remove invitation!
-            foreach (var invitedPlayer in invitedPlayers)
-            {
-                var email = invitedPlayer.Email;
-                var player = game.InvitedPlayers.FirstOrDefault(x => x.Email == email);
-
-                if (player == null)
-                    player = invitedPlayer;
-
-                game.InvitedPlayers.Add(player);
-            }
         }
 
         public async Task UpdateInvitationForPlayer(string token, ObjectId userId)
         {
+            // the token is the id of the invitation
             var invitationId = token.ToObjectId();
             var invitation = await _invitationStore.GetById(invitationId);
+
+            if (invitation == null)
+            {
+                // TODO: Proper error handling
+                throw new NotImplementedException("Invitation not found!");
+            }
+
             var game = await _gameStore.GetById(invitation.GameId);
 
-            var invitedPlayer = game?.InvitedPlayers?.SingleOrDefault(x => x.InvitationToken == invitationId);
-
-            if (invitedPlayer != null)
+            if (game == null)
             {
-                var player = new Player {UserId = userId};
-                game.Players.Add(player);
-                game.InvitedPlayers.Remove(invitedPlayer);
-
-                await _gameStore.Update(game);
-                await _invitationStore.Remove(invitation);
-            }
-        }
-
-        private async Task _SendInvitations(Game game)
-        {
-            if (game?.InvitedPlayers == null)
-                return;
-
-            foreach (var player in game.InvitedPlayers.Where(x => x.InvitationToken == ObjectId.Empty))
-            {
-                await _SendInvitation(game, player);
+                // TODO: Proper error handling
+                throw new NotImplementedException("Game for invitation not found!");
             }
 
+            // add player to game
+            var player = new Player {UserId = userId};
+            game.Players.Add(player);
+            
             await _gameStore.Update(game);
+
+            // remove invitation
+            await _invitationStore.Remove(invitation);
         }
 
-        private async Task _SendInvitation(Game game, InvitedPlayer player)
+        public Task<Invitation[]> GetInvitatedPlayersForGame(ObjectId gameId)
         {
-            var token = new Invitation
+            return _invitationStore.GetInvitationsForGame(gameId);
+        }
+
+        private async Task _UpdateInvitedPlayers(Game game, InvitedPlayer[] invitedPlayers)
+        {
+            var invitaions = await _invitationStore.GetInvitationsForGame(game.Id);
+
+            // remove invitations if needed
+            foreach (var invitation in invitaions)
             {
-                GameId = game.Id,
-                Email = player.Email
-            };
+                var player = invitedPlayers.FirstOrDefault(x => x.Email == invitation.Email);
+                if (player == null)
+                    await _invitationStore.Remove(invitation);
+            }
 
-            await _invitationStore.Add(token);
+            // add new invitations and send invitaiton mail
+            foreach (var invitedPlayer in invitedPlayers)
+            {
+                var email = invitedPlayer.Email;
+                var invitation = invitaions.FirstOrDefault(x => x.Email == email);
 
-            player.InvitationToken = token.Id;
+                if (invitation == null)
+                {
+                    invitation = new Invitation
+                    {
+                        Email = invitedPlayer.Email,
+                        UserId = invitedPlayer.UserId,
+                        GameId = game.Id
+                    };
 
-            MailMessage message = new MailMessage();
-            message.Body = string.Format(MESSAGE_BODY, player.InvitationToken);
+                    await _invitationStore.Add(invitation);
+                    await _SendInvitation(game, invitation);
+                }
+            }
+        }
+
+        private async Task _SendInvitation(Game game, Invitation invitation)
+        {
+            var message = new MailMessage();
+            message.Body = string.Format(MESSAGE_BODY, invitation.Id);
             message.Subject = MESSAGE_SUBJECT;
-            message.To.Add(player.Email);
+            message.To.Add(invitation.Email);
             message.From = new MailAddress("invitation@tipexpert.net");
 
-            SmtpClient client = new SmtpClient
+            var client = new SmtpClient
             {
                 Host = _host,
                 Port = _port,
