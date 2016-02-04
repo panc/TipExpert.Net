@@ -50,10 +50,10 @@ namespace TipExpert.Net.Controllers
             if (errorResult != null)
                 return errorResult;
 
-            var invitedPlayer = _playerInvitationService.GetInvitatedPlayersForGame(game.Id);
+            var invitedPlayer = await _playerInvitationService.GetInvitatedPlayersForGame(game.Id);
 
             var gameDto = Mapper.Map<GameDto>(game);
-            gameDto.invitedPlayers = Mapper.Map<InvitedPlayerDto[]>(invitedPlayer).ToList();
+            gameDto.invitedPlayers = Mapper.Map<InvitationDto[]>(invitedPlayer).ToList();
 
             return Json(gameDto);
         }
@@ -104,7 +104,7 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.Add(game);
 
-            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<InvitedPlayer[]>(newGame.invitedPlayers));
+            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<Invitation[]>(newGame.invitedPlayers));
 
             return Mapper.Map<GameDto>(game);
         }
@@ -129,7 +129,7 @@ namespace TipExpert.Net.Controllers
 
             await _gameStore.Update(game);
 
-            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<InvitedPlayer[]>(gameDto.invitedPlayers));
+            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<Invitation[]>(gameDto.invitedPlayers));
 
             return Json(Mapper.Map<GameDto>(game));
         }

@@ -6,10 +6,12 @@ namespace TipExpert.Core
 {
     public class InvitationStore : IInvitationStore
     {
+        private readonly IUserStore _userStore;
         private readonly IMongoCollection<Invitation> _collection;
 
-        public InvitationStore(IMongoDatabase database)
+        public InvitationStore(IMongoDatabase database, IUserStore userStore)
         {
+            _userStore = userStore;
             _collection = database.GetCollection<Invitation>("invitations");
         }
 
@@ -32,9 +34,28 @@ namespace TipExpert.Core
 
         public async Task<Invitation[]> GetInvitationsForGame(ObjectId gameId)
         {
-            return await _collection
+            var invitations = await _collection
                 .Find(x => x.GameId == gameId)
                 .ToArrayAsync();
+
+            await _PopulateRelations(invitations);
+
+            return invitations;
+        }
+
+        private async Task _PopulateRelations(Invitation[] invitations)
+        {
+            if (invitations == null)
+                return;
+
+            foreach (var invitation in invitations)
+                await _PopulateRelations(invitation);
+        }
+
+        private async Task _PopulateRelations(Invitation invitation)
+        {
+            if (invitation?.User != null)
+                invitation.User = await _userStore.GetById(invitation.UserId);
         }
     }
 }

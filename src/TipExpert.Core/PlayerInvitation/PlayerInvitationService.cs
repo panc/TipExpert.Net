@@ -13,20 +13,20 @@ namespace TipExpert.Core.PlayerInvitation
         private readonly IInvitationStore _invitationStore;
         private readonly string _userName;
         private readonly string _password;
-        private readonly string _host;
-        private readonly int _port;
+        private readonly string _smtpHost;
+        private readonly int _smtpPort;
 
-        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, string userName, string password, string host, int port)
+        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, string userName, string password, string smtpHost, int smtpPort)
         {
             _gameStore = gameStore;
             _invitationStore = invitationStore;
             _userName = userName;
             _password = password;
-            _host = host;
-            _port = port;
+            _smtpHost = smtpHost;
+            _smtpPort = smtpPort;
         }
 
-        public void SendInvitationsAsync(Game game, InvitedPlayer[] invitedPlayers)
+        public void SendInvitationsAsync(Game game, Invitation[] invitedPlayers)
         {
             Task.Run(async () =>
             {
@@ -69,7 +69,7 @@ namespace TipExpert.Core.PlayerInvitation
             return _invitationStore.GetInvitationsForGame(gameId);
         }
 
-        private async Task _UpdateInvitedPlayers(Game game, InvitedPlayer[] invitedPlayers)
+        private async Task _UpdateInvitedPlayers(Game game, Invitation[] invitedPlayers)
         {
             var invitaions = await _invitationStore.GetInvitationsForGame(game.Id);
 
@@ -112,8 +112,8 @@ namespace TipExpert.Core.PlayerInvitation
 
             var client = new SmtpClient
             {
-                Host = _host,
-                Port = _port,
+                Host = _smtpHost,
+                Port = _smtpPort,
                 EnableSsl = true,
                 Timeout = 10000,
                 DeliveryMethod = SmtpDeliveryMethod.Network,

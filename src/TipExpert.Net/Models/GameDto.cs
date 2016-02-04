@@ -24,7 +24,7 @@ namespace TipExpert.Net.Models
         
         public List<PlayerDto> players { get; set; }
 
-        public List<InvitedPlayerDto> invitedPlayers { get; set; }
+        public List<InvitationDto> invitedPlayers { get; set; }
 
         public List<MatchTipsDto> matches { get; set; }
 

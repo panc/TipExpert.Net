@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TipExpert.Core
 {
@@ -11,5 +12,8 @@ namespace TipExpert.Core
         public ObjectId UserId{ get; set; }
 
         public string Email { get; set; }
+
+        [BsonIgnore]
+        public User User { get; set; }
     }
 }
