@@ -63,10 +63,11 @@ namespace TipExpert.Net
                 new PlayerInvitationService(
                         x.GetService<IGameStore>(),
                         x.GetService<IInvitationStore>(),
+                        Configuration["AppSettings:HostName"],
                         Configuration["MailSettings:UserName"],
                         Configuration["MailSettings:Passwort"],
-                        Configuration["MailSettings:Host"],
-                        Configuration.Get<int>("MailSettings:Port")
+                        Configuration["MailSettings:SmtpHost"],
+                        Configuration.Get<int>("MailSettings:SmtpPort")
                     ));
 
             services.AddSingleton(s => 

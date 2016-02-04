@@ -28,6 +28,9 @@ namespace TipExpert.Net.Controllers
             // TODO
             // check if user is correct
 
+            // TODO
+            // return 404 if invitation is null/not found
+
             return Mapper.Map<InvitationDto>(invitation);
         }
 

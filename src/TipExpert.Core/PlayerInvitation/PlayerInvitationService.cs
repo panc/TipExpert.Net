@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -11,15 +10,18 @@ namespace TipExpert.Core.PlayerInvitation
     {
         private readonly IGameStore _gameStore;
         private readonly IInvitationStore _invitationStore;
+        private readonly string _hostName;
         private readonly string _userName;
         private readonly string _password;
         private readonly string _smtpHost;
         private readonly int _smtpPort;
 
-        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, string userName, string password, string smtpHost, int smtpPort)
+        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, 
+            string hostName, string userName, string password, string smtpHost, int smtpPort)
         {
             _gameStore = gameStore;
             _invitationStore = invitationStore;
+            _hostName = hostName;
             _userName = userName;
             _password = password;
             _smtpHost = smtpHost;
@@ -104,9 +106,14 @@ namespace TipExpert.Core.PlayerInvitation
 
         private async Task _SendInvitation(Game game, Invitation invitation)
         {
-            var message = new MailMessage();
-            message.Body = string.Format(MESSAGE_BODY, invitation.Id);
-            message.Subject = MESSAGE_SUBJECT;
+            var link = string.Format(LINK, _hostName, invitation.Id);
+
+            var message = new MailMessage
+            {
+                Body = string.Format(MESSAGE_BODY, game.Title, link),
+                Subject = string.Format(MESSAGE_SUBJECT, game.Title)
+            };
+
             message.To.Add(invitation.Email);
             message.From = new MailAddress("invitation@tipexpert.net");
 
@@ -121,13 +128,17 @@ namespace TipExpert.Core.PlayerInvitation
                 Credentials = new System.Net.NetworkCredential(_userName, _password)
             };
 
+            // TODO
+            // Add error handling and show the state of the email-send process in the edit view.
+
             await client.SendMailAsync(message);
         }
 
-        private static string MESSAGE_SUBJECT = "Someone invited you to a tip game";
-        private static string MESSAGE_BODY = "Hello my friend,\r\n\r\n" +
-                                             "Someone invited you to a tip game at TipExpert.Net :-)\r\n\r\n" +
-                                             "Check it out at http://tipexpert.azurewebsites.net/token/{0} !\r\n\r\n" +
+        private const string LINK = "{0}/invitation/{1}";
+        private const string MESSAGE_SUBJECT = "Someone invited you to '{0}'";
+        private const string MESSAGE_BODY = "Hello my friend,\r\n\r\n" +
+                                             "Someone invited you to the tip game '{0}' at TipExpert.Net :-)\r\n\r\n" +
+                                             "Check it out at {1} !\r\n\r\n" +
                                              "Have fun!";
     }
 }
