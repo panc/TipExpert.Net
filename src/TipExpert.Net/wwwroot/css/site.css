@@ -379,6 +379,16 @@ li.login-button > a:hover, li.login-button > a:focus {
 }
 
 
+
+#edit-players .mail-error {
+    background-color: red;
+}
+
+#edit-players .mail-sending {
+    background-color: yellow;
+}
+
+
 /* User Profile */
 .profile-row {
     line-height: 2;

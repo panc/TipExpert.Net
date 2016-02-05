@@ -9,5 +9,9 @@
         public string email { get; set; }
 
         public string name { get; set; }
+
+        public string error { get; set; }
+
+        public int state { get; set; }
     }
 }

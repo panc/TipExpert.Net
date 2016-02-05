@@ -2,7 +2,6 @@
 /// <reference path="../gulpfile.js" />
 /// <reference path="js/app.js" />
 /// <reference path="js/game/controller/addOrEditGameController.js" />
-/// <reference path="js/game/controller/editGameController.js" />
 /// <reference path="js/game/controller/gameController.js" />
 /// <reference path="js/game/controller/gamesHistoryPresenter.js" />
 /// <reference path="js/game/controller/invitationcontroller.js" />

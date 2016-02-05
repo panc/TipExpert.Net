@@ -25,6 +25,11 @@ namespace TipExpert.Core
             await _collection.DeleteOneAsync(x => x.Id == token.Id);
         }
 
+        public async Task Update(Invitation invitation)
+        {
+            await _collection.ReplaceOneAsync(x => x.Id == invitation.Id, invitation);
+        }
+
         public async Task<Invitation> GetById(ObjectId id)
         {
             return await _collection

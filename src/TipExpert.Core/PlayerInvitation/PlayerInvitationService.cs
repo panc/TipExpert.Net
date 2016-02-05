@@ -86,8 +86,8 @@ namespace TipExpert.Core.PlayerInvitation
             // add new invitations and send invitaiton mail
             foreach (var invitedPlayer in invitedPlayers)
             {
-                var email = invitedPlayer.Email;
-                var invitation = invitaions.FirstOrDefault(x => x.Email == email);
+                // todo: check for double email address
+                var invitation = invitaions.FirstOrDefault(x => x.Id == invitedPlayer.Id);
 
                 if (invitation == null)
                 {
@@ -95,16 +95,31 @@ namespace TipExpert.Core.PlayerInvitation
                     {
                         Email = invitedPlayer.Email,
                         UserId = invitedPlayer.UserId,
-                        GameId = game.Id
+                        GameId = game.Id,
+                        State = InvitationState.SendingMail
                     };
 
+                    // save the first time so that the user can see the current state
                     await _invitationStore.Add(invitation);
-                    await _SendInvitation(game, invitation);
+
+                    try
+                    {
+                        _SendInvitation(game, invitation);
+                        invitation.State = InvitationState.Success;
+                    }
+                    catch (Exception ex)
+                    {
+                        invitation.Error = $"{ex.Message}\r\n{ex.StackTrace}";
+                        invitation.State = InvitationState.Error;
+                    }
+
+                    // save again to update the current state.
+                    await _invitationStore.Update(invitation);
                 }
             }
         }
 
-        private async Task _SendInvitation(Game game, Invitation invitation)
+        private void _SendInvitation(Game game, Invitation invitation)
         {
             var link = string.Format(LINK, _hostName, invitation.Id);
 
@@ -117,21 +132,21 @@ namespace TipExpert.Core.PlayerInvitation
             message.To.Add(invitation.Email);
             message.From = new MailAddress("invitation@tipexpert.net");
 
-            var client = new SmtpClient
+            using (var client = new SmtpClient())
             {
-                Host = _smtpHost,
-                Port = _smtpPort,
-                EnableSsl = true,
-                Timeout = 10000,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new System.Net.NetworkCredential(_userName, _password)
+                client.Host = _smtpHost;
+                client.Port = _smtpPort;
+                client.EnableSsl = true;
+                client.Timeout = 10000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential(_userName, _password);
+
+                // TODO
+                // Add error handling and show the state of the email-send process in the edit view.
+
+                client.Send(message);
             };
-
-            // TODO
-            // Add error handling and show the state of the email-send process in the edit view.
-
-            await client.SendMailAsync(message);
         }
 
         private const string LINK = "{0}/invitation/{1}";
