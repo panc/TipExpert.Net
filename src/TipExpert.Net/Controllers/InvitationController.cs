@@ -23,7 +23,6 @@ namespace TipExpert.Net.Controllers
         [HttpGet("{token}")]
         public async Task<IActionResult> GetDetails(string token)
         {
-            var userId = User.GetUserIdAsObjectId();
             var invitation = await _playerInvitationService.GetInvitatationsForToken(token);
 
             IActionResult errorResult =

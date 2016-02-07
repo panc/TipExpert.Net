@@ -18,13 +18,16 @@ game.controller('invitationController', [
                 .success(function(details) {
                     $scope.details = details;
                 })
-                .error(alertService.error);
+                .error(function(e) {
+                    $state.go('games.overview');
+                    alertService.error(e);
+                });
         }
 
         $scope.acceptInvitation = function() {
             invitationService.acceptInvitation(token)
-                .success(function() {
-                    $state.go('games.overview');
+                .success(function(result) {
+                    $state.go('games.show', { gameId: result.gameId });
                 })
                 .error(alertService.error);
         };
