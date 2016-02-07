@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 
 namespace TipExpert.Core.PlayerInvitation
@@ -10,17 +11,19 @@ namespace TipExpert.Core.PlayerInvitation
     {
         private readonly IGameStore _gameStore;
         private readonly IInvitationStore _invitationStore;
+        private readonly ILogger<PlayerInvitationService> _logger;
         private readonly string _hostName;
         private readonly string _userName;
         private readonly string _password;
         private readonly string _smtpHost;
         private readonly int _smtpPort;
 
-        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, 
+        public PlayerInvitationService(IGameStore gameStore, IInvitationStore invitationStore, ILogger<PlayerInvitationService> logger,
             string hostName, string userName, string password, string smtpHost, int smtpPort)
         {
             _gameStore = gameStore;
             _invitationStore = invitationStore;
+            _logger = logger;
             _hostName = hostName;
             _userName = userName;
             _password = password;
@@ -32,18 +35,23 @@ namespace TipExpert.Core.PlayerInvitation
         {
             Task.Run(async () =>
             {
+                _logger.LogInformation($"Start informing new users about invitation to game '{game.Id}'.");
                 await _UpdateInvitedPlayers(game, invitedPlayers);
             });
         }
 
         public async Task UpdateInvitationForPlayer(string token, ObjectId userId)
         {
+            _logger.LogInformation($"User '{userId}' has accepted invitation '{token}'.");
+
             // the token is the id of the invitation
             var invitationId = token.ToObjectId();
             var invitation = await _invitationStore.GetById(invitationId);
 
             if (invitation == null)
             {
+                _logger.LogError("Invitation '{0}' not found!", invitationId);
+
                 // TODO: Proper error handling
                 throw new NotImplementedException("Invitation not found!");
             }
@@ -52,6 +60,8 @@ namespace TipExpert.Core.PlayerInvitation
 
             if (game == null)
             {
+                _logger.LogError("Game with id '{0}' not found - but it is defined in invitation '{1}'!", invitation.GameId, invitationId);
+                
                 // TODO: Proper error handling
                 throw new NotImplementedException("Game for invitation not found!");
             }
@@ -90,32 +100,33 @@ namespace TipExpert.Core.PlayerInvitation
                 var invitation = invitaions.FirstOrDefault(x => x.Id == invitedPlayer.Id);
 
                 if (invitation == null)
-                {
-                    invitation = new Invitation
-                    {
-                        Email = invitedPlayer.Email,
-                        UserId = invitedPlayer.UserId,
-                        GameId = game.Id,
-                        State = InvitationState.SendingMail
-                    };
+                    await _AddInvitation(game, invitedPlayer);
+            }
+        }
 
-                    // save the first time so that the user can see the current state
-                    await _invitationStore.Add(invitation);
+        private async Task _AddInvitation(Game game, Invitation invitedPlayer)
+        {
+            _logger.LogInformation($"Adding new invitatton for '{invitedPlayer.Email}'...");
 
-                    try
-                    {
-                        _SendInvitation(game, invitation);
-                        invitation.State = InvitationState.Success;
-                    }
-                    catch (Exception ex)
-                    {
-                        invitation.Error = $"{ex.Message}\r\n{ex.StackTrace}";
-                        invitation.State = InvitationState.Error;
-                    }
+            var invitation = new Invitation
+            {
+                Email = invitedPlayer.Email,
+                UserId = invitedPlayer.UserId,
+                GameId = game.Id,
+            };
 
-                    // save again to update the current state.
-                    await _invitationStore.Update(invitation);
-                }
+            // save the first time so that the user can see the current state
+            await _invitationStore.Add(invitation);
+
+            try
+            {
+                _SendInvitation(game, invitation);
+                _logger.LogInformation("Invitation Mail successfully sent.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to send invitation mail:\r\n{ex.Message}\r\n{ex.StackTrace}");
+                await _invitationStore.Update(invitation);
             }
         }
 

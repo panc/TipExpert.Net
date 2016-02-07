@@ -13,10 +13,6 @@ namespace TipExpert.Core
 
         public string Email { get; set; }
 
-        public string Error { get; set; }
-
-        public InvitationState State { get; set; }
-
         [BsonIgnore]
         public User User { get; set; }
     }

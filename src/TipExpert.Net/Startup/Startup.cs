@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using System.Diagnostics;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,6 +64,7 @@ namespace TipExpert.Net
                 new PlayerInvitationService(
                         x.GetService<IGameStore>(),
                         x.GetService<IInvitationStore>(),
+                        x.GetService<ILogger<PlayerInvitationService>>(),
                         Configuration["AppSettings:HostName"],
                         Configuration["MailSettings:UserName"],
                         Configuration["MailSettings:Passwort"],
@@ -87,8 +89,11 @@ namespace TipExpert.Net
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            // TODO: Add file logging e.g. NLog
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+
+            if (Debugger.IsAttached)
+                loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {

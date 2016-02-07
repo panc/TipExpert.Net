@@ -9,6 +9,7 @@
         "dnx46": { }
     },
     "dependencies": {
+        "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final",
         "MongoDB.Driver": "2.2.0",
         "Newtonsoft.Json": "8.0.1"
     }
