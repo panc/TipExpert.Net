@@ -13,6 +13,7 @@ namespace TipExpert.Core.PlayerInvitation
         private readonly IGameStore _gameStore;
         private readonly IInvitationStore _invitationStore;
         private readonly ILogger<PlayerInvitationService> _logger;
+
         private readonly string _hostName;
         private readonly string _userName;
         private readonly string _password;
@@ -40,40 +41,24 @@ namespace TipExpert.Core.PlayerInvitation
             _SendInvitationsAsync(game, newInvitations);
         }
 
-        public async Task AcceptInvitation(string token, ObjectId userId)
+        public async Task AcceptInvitation(Invitation invitation, ObjectId userId)
         {
-            _logger.LogInformation($"User '{userId}' has accepted invitation '{token}'.");
-
-            // the token is the id of the invitation
-            var invitationId = token.ToObjectId();
-            var invitation = await _invitationStore.GetById(invitationId);
-
-            if (invitation == null)
-            {
-                _logger.LogError("Invitation '{0}' not found!", invitationId);
-
-                // TODO: Proper error handling
-                throw new NotImplementedException("Invitation not found!");
-            }
-
-            var game = await _gameStore.GetById(invitation.GameId);
-
-            if (game == null)
-            {
-                _logger.LogError("Game with id '{0}' not found - but it is defined in invitation '{1}'!", invitation.GameId, invitationId);
-
-                // TODO: Proper error handling
-                throw new NotImplementedException("Game for invitation not found!");
-            }
+            _logger.LogInformation($"User '{userId}' has accepted invitation '{invitation.Id}'.");
 
             // add player to game
             var player = new Player { UserId = userId };
-            game.Players.Add(player);
+            invitation.Game.Players.Add(player);
 
-            await _gameStore.Update(game);
+            await _gameStore.Update(invitation.Game);
 
             // remove invitation
             await _invitationStore.Remove(invitation);
+        }
+
+        public async Task<Invitation> GetInvitatationsForToken(string token)
+        {
+            var invitationId = token.ToObjectId();
+            return await _invitationStore.GetById(invitationId);
         }
 
         public Task<Invitation[]> GetInvitatationsForGame(ObjectId gameId)

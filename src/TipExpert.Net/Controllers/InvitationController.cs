@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using TipExpert.Core;
 using TipExpert.Core.PlayerInvitation;
 using TipExpert.Net.Models;
@@ -11,36 +12,68 @@ namespace TipExpert.Net.Controllers
     public class InvitationController : Controller
     {
         private readonly IPlayerInvitationService _playerInvitationService;
-        private readonly IInvitationStore _invitationStore;
+        private readonly ILogger<InvitationController> _logger;
 
-        public InvitationController(IPlayerInvitationService playerInvitationService, IInvitationStore invitationStore)
+        public InvitationController(IPlayerInvitationService playerInvitationService, ILogger<InvitationController> logger)
         {
             _playerInvitationService = playerInvitationService;
-            _invitationStore = invitationStore;
+            _logger = logger;
         }
 
         [HttpGet("{token}")]
-        public async Task<InvitationDto> GetDetails(string token)
+        public async Task<IActionResult> GetDetails(string token)
         {
-            var invitationId = token.ToObjectId();
-            var invitation = await _invitationStore.GetById(invitationId);
+            var userId = User.GetUserIdAsObjectId();
+            var invitation = await _playerInvitationService.GetInvitatationsForToken(token);
 
-            // TODO
-            // check if user is correct
+            IActionResult errorResult =
+                _CheckInvitationIsNotNull(invitation, token) ??
+                _CheckGameIsNotNull(invitation);
 
-            // TODO
-            // return 404 if invitation is null/not found
+            if (errorResult != null)
+                return errorResult;
 
-            return Mapper.Map<InvitationDto>(invitation);
+            return Json(Mapper.Map<InvitationDto>(invitation));
         }
 
         [HttpPost("accept")]
         public async Task<IActionResult> Post([FromBody]string token)
         {
             var userId = User.GetUserIdAsObjectId();
-            await _playerInvitationService.AcceptInvitation(token, userId);
+            var invitation = await _playerInvitationService.GetInvitatationsForToken(token);
 
-            return Json(new { success = true });
+            IActionResult errorResult =
+                _CheckInvitationIsNotNull(invitation, token) ??
+                _CheckGameIsNotNull(invitation);
+
+            if (errorResult != null)
+                return errorResult;
+            
+            await _playerInvitationService.AcceptInvitation(invitation, userId);
+
+            return Json(new { gameId = invitation.GameId });
+        }
+
+        private IActionResult _CheckInvitationIsNotNull(Invitation invitation, string token)
+        {
+            if (invitation != null)
+                return null;
+
+            var msg = $"Invitation for token '{token}' not found!";
+            _logger.LogError(msg);
+
+            return HttpBadRequest(msg);
+        }
+
+        private IActionResult _CheckGameIsNotNull(Invitation invitation)
+        {
+            if (invitation.Game != null)
+                return null;
+
+            var msg = $"Game with id '{invitation.GameId}' not found - but it is defined in invitation '{invitation.Id}'!";
+            _logger.LogError(msg);
+
+            return HttpBadRequest(msg);
         }
     }
 }

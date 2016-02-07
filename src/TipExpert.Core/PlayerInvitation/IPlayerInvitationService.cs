@@ -7,7 +7,9 @@ namespace TipExpert.Core.PlayerInvitation
     {
         Task SendInvitationsAsync(Game game, Invitation[] map);
 
-        Task AcceptInvitation(string token, ObjectId userId);
+        Task AcceptInvitation(Invitation invitation, ObjectId userId);
+
+        Task<Invitation> GetInvitatationsForToken(string token);
 
         Task<Invitation[]> GetInvitatationsForGame(ObjectId gameId);
     }

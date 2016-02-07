@@ -38,7 +38,8 @@ namespace TipExpert.Net
                 c.CreateMap<InvitationDto, Invitation>();
                 c.CreateMap<Invitation, InvitationDto>()
                     .ForMember(x => x.name, x => x.MapFrom(p => p.User.Name))
-                    .ForMember(x => x.email, x => x.ResolveUsing(p => p.User == null ? p.Email : p.User.Email));
+                    .ForMember(x => x.email, x => x.ResolveUsing(p => p.User == null ? p.Email : p.User.Email))
+                    .ForMember(x => x.gameName, x => x.MapFrom(p => p.Game.Title));
 
                 c.CreateMap<string, ObjectId>().ConvertUsing(x => x.ToObjectId());
             });

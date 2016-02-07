@@ -15,5 +15,8 @@ namespace TipExpert.Core
 
         [BsonIgnore]
         public User User { get; set; }
+
+        [BsonIgnore]
+        public Game Game { get; set; }
     }
 }

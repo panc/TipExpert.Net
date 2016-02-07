@@ -4,7 +4,7 @@
     {
         public string id { get; set; }
 
-        public string gameId { get; set; }
+        public string gameName { get; set; }
 
         public string email { get; set; }
 
