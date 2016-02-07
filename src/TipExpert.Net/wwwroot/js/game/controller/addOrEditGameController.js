@@ -47,7 +47,12 @@ game.controller('addOrEditGameController', [
             }
         };
 
-        $scope.removePlayer = function(player) {
+        $scope.removePlayer = function (player) {
+            if ($scope.game.creatorId === player.userId) {
+                $window.alert("The creator of a game can not be deleted!");
+                return;
+            }
+
             if ($window.confirm("Do you really want to delete user '" + player.name + "'?")) {
                 var index = $scope.game.players.indexOf(player);
                 $scope.game.players.splice(index, 1);
