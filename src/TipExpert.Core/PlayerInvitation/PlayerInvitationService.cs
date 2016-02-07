@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -31,16 +32,15 @@ namespace TipExpert.Core.PlayerInvitation
             _smtpPort = smtpPort;
         }
 
-        public void SendInvitationsAsync(Game game, Invitation[] invitedPlayers)
+        public async Task SendInvitationsAsync(Game game, Invitation[] invitedPlayers)
         {
-            Task.Run(async () =>
-            {
-                _logger.LogInformation($"Start informing new users about invitation to game '{game.Id}'.");
-                await _UpdateInvitedPlayers(game, invitedPlayers);
-            });
+            var newInvitations = await _UpdateInvitedPlayers(game, invitedPlayers);
+
+            // send invitations asynchronously as sending a mail might take a while
+            _SendInvitationsAsync(game, newInvitations);
         }
 
-        public async Task UpdateInvitationForPlayer(string token, ObjectId userId)
+        public async Task AcceptInvitation(string token, ObjectId userId)
         {
             _logger.LogInformation($"User '{userId}' has accepted invitation '{token}'.");
 
@@ -61,73 +61,88 @@ namespace TipExpert.Core.PlayerInvitation
             if (game == null)
             {
                 _logger.LogError("Game with id '{0}' not found - but it is defined in invitation '{1}'!", invitation.GameId, invitationId);
-                
+
                 // TODO: Proper error handling
                 throw new NotImplementedException("Game for invitation not found!");
             }
 
             // add player to game
-            var player = new Player {UserId = userId};
+            var player = new Player { UserId = userId };
             game.Players.Add(player);
-            
+
             await _gameStore.Update(game);
 
             // remove invitation
             await _invitationStore.Remove(invitation);
         }
 
-        public Task<Invitation[]> GetInvitatedPlayersForGame(ObjectId gameId)
+        public Task<Invitation[]> GetInvitatationsForGame(ObjectId gameId)
         {
             return _invitationStore.GetInvitationsForGame(gameId);
         }
 
-        private async Task _UpdateInvitedPlayers(Game game, Invitation[] invitedPlayers)
+        private async Task<List<Invitation>> _UpdateInvitedPlayers(Game game, Invitation[] invitedPlayers)
         {
-            var invitaions = await _invitationStore.GetInvitationsForGame(game.Id);
+            var invitations = await _invitationStore.GetInvitationsForGame(game.Id);
 
             // remove invitations if needed
-            foreach (var invitation in invitaions)
+            foreach (var invitation in invitations)
             {
                 var player = invitedPlayers.FirstOrDefault(x => x.Email == invitation.Email);
                 if (player == null)
                     await _invitationStore.Remove(invitation);
             }
 
-            // add new invitations and send invitaiton mail
+            // gather info about new invitations
+            var newInvitations = new List<Invitation>();
+            var invitationsToSend = new List<Invitation>();
+
             foreach (var invitedPlayer in invitedPlayers)
             {
-                // todo: check for double email address
-                var invitation = invitaions.FirstOrDefault(x => x.Id == invitedPlayer.Id);
+                var invitation = invitations.FirstOrDefault(x => x.Id == invitedPlayer.Id);
+                var invitationMail = invitations.FirstOrDefault(x => x.Email == invitedPlayer.Email);
 
-                if (invitation == null)
-                    await _AddInvitation(game, invitedPlayer);
+                if (invitationMail != null && invitation == null)
+                {
+                    invitationsToSend.Add(invitationMail);
+                }
+                else if (invitation == null)
+                {
+                    var item = new Invitation
+                    {
+                        Email = invitedPlayer.Email,
+                        UserId = invitedPlayer.UserId,
+                        GameId = game.Id,
+                    };
+
+                    newInvitations.Add(item);
+                    invitationsToSend.Add(item);
+                }
             }
+
+            await _invitationStore.Add(newInvitations.ToArray());
+
+            return invitationsToSend;
         }
 
-        private async Task _AddInvitation(Game game, Invitation invitedPlayer)
+        private void _SendInvitationsAsync(Game game, List<Invitation> invitaions)
         {
-            _logger.LogInformation($"Adding new invitatton for '{invitedPlayer.Email}'...");
-
-            var invitation = new Invitation
+            Task.Run(() =>
             {
-                Email = invitedPlayer.Email,
-                UserId = invitedPlayer.UserId,
-                GameId = game.Id,
-            };
-
-            // save the first time so that the user can see the current state
-            await _invitationStore.Add(invitation);
-
-            try
-            {
-                _SendInvitation(game, invitation);
-                _logger.LogInformation("Invitation Mail successfully sent.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Failed to send invitation mail:\r\n{ex.Message}\r\n{ex.StackTrace}");
-                await _invitationStore.Update(invitation);
-            }
+                foreach (var invitation in invitaions)
+                {
+                    try
+                    {
+                        _logger.LogInformation($"Sending invitation mail to '{invitation.Email}' ...");
+                        _SendInvitation(game, invitation);
+                        _logger.LogInformation("Invitation successfully sent.");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Failed to send invitation:\r\n{ex.Message}\r\n{ex.StackTrace}");
+                    }
+                }
+            });
         }
 
         private void _SendInvitation(Game game, Invitation invitation)
@@ -152,9 +167,6 @@ namespace TipExpert.Core.PlayerInvitation
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_userName, _password);
-
-                // TODO
-                // Add error handling and show the state of the email-send process in the edit view.
 
                 client.Send(message);
             };

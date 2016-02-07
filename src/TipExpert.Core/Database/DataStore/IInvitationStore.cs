@@ -5,9 +5,11 @@ namespace TipExpert.Core
 {
     public interface IInvitationStore
     {
-        Task Add(Invitation token);
+        Task Add(Invitation invitation);
 
-        Task Remove(Invitation token);
+        Task Add(Invitation[] invitations);
+
+        Task Remove(Invitation invitation);
 
         Task Update(Invitation invitation);
 

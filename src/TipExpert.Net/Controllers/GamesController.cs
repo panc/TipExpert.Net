@@ -50,7 +50,7 @@ namespace TipExpert.Net.Controllers
             if (errorResult != null)
                 return errorResult;
 
-            var invitedPlayer = await _playerInvitationService.GetInvitatedPlayersForGame(game.Id);
+            var invitedPlayer = await _playerInvitationService.GetInvitatationsForGame(game.Id);
 
             var gameDto = Mapper.Map<GameDto>(game);
             gameDto.invitedPlayers = Mapper.Map<InvitationDto[]>(invitedPlayer).ToList();

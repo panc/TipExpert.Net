@@ -38,7 +38,7 @@ namespace TipExpert.Net.Controllers
         public async Task<IActionResult> Post([FromBody]string token)
         {
             var userId = User.GetUserIdAsObjectId();
-            await _playerInvitationService.UpdateInvitationForPlayer(token, userId);
+            await _playerInvitationService.AcceptInvitation(token, userId);
 
             return Json(new { success = true });
         }

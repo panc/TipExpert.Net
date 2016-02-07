@@ -5,10 +5,10 @@ namespace TipExpert.Core.PlayerInvitation
 {
     public interface IPlayerInvitationService
     {
-        void SendInvitationsAsync(Game game, Invitation[] map);
+        Task SendInvitationsAsync(Game game, Invitation[] map);
 
-        Task UpdateInvitationForPlayer(string token, ObjectId userId);
+        Task AcceptInvitation(string token, ObjectId userId);
 
-        Task<Invitation[]> GetInvitatedPlayersForGame(ObjectId gameId);
+        Task<Invitation[]> GetInvitatationsForGame(ObjectId gameId);
     }
 }

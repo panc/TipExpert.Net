@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -15,14 +17,20 @@ namespace TipExpert.Core
             _collection = database.GetCollection<Invitation>("invitations");
         }
 
-        public async Task Add(Invitation token)
+        public async Task Add(Invitation invitation)
         {
-            await _collection.InsertOneAsync(token);
+            await _collection.InsertOneAsync(invitation);
         }
 
-        public async Task Remove(Invitation token)
+        public async Task Add(Invitation[] invitations)
         {
-            await _collection.DeleteOneAsync(x => x.Id == token.Id);
+            if (invitations != null && invitations.Any())
+                await _collection.InsertManyAsync(invitations);
+        }
+
+        public async Task Remove(Invitation invitation)
+        {
+            await _collection.DeleteOneAsync(x => x.Id == invitation.Id);
         }
 
         public async Task Update(Invitation invitation)
