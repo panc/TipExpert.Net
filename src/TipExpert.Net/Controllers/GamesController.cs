@@ -90,12 +90,12 @@ namespace TipExpert.Net.Controllers
         {
             var game = new Game
             {
-                CreatorId = User.GetUserIdAsObjectId()
+                CreatorId = User.GetUserIdAsObjectId(),
+                Players = new List<Player>()
             };
 
             // game creator always has to be part of the players list
             var creatorId = User.GetUserIdAsObjectId();
-            game.Players = new List<Player>();
             game.Players.Add(new Player { UserId = creatorId });
 
             _UpdatePlayers(game, newGame);
@@ -103,8 +103,7 @@ namespace TipExpert.Net.Controllers
             await _UpdateMatches(game, newGame);
 
             await _gameStore.Add(game);
-
-            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<Invitation[]>(newGame.invitedPlayers));
+            await _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<Invitation[]>(newGame.invitedPlayers));
 
             return Mapper.Map<GameDto>(game);
         }
@@ -128,8 +127,7 @@ namespace TipExpert.Net.Controllers
             await _UpdateMatches(game, gameDto);
 
             await _gameStore.Update(game);
-
-            _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<Invitation[]>(gameDto.invitedPlayers));
+            await _playerInvitationService.SendInvitationsAsync(game, Mapper.Map<Invitation[]>(gameDto.invitedPlayers));
 
             return Json(Mapper.Map<GameDto>(game));
         }
@@ -228,8 +226,22 @@ namespace TipExpert.Net.Controllers
 
         private void _UpdatePlayers(Game game, GameDto gameDto)
         {
-            // TODO
-            // update game.Players
+            // players can only deleted not added/updated
+            // to add a player it must be invited
+
+            var newPlayers = Mapper.Map<List<Player>>(gameDto.players);
+
+            // game creator always has to be part of the players list
+            var creatorId = User.GetUserIdAsObjectId();
+            
+            // remove players which are not available in the provided list of players
+            for (int i = game.Players.Count - 1; i >= 0; i--)
+            {
+                var userId = game.Players[i].UserId;
+
+                if (userId != creatorId && newPlayers.All(x => x.UserId != userId))
+                    game.Players.RemoveAt(i);
+            }
         }
 
         private async Task _UpdateMatches(Game game, GameDto gameDto)
@@ -251,6 +263,9 @@ namespace TipExpert.Net.Controllers
 
                 list.Add(entry);
             }
+
+            // TODO:
+            // Check whether a deleted match already contains tipps
 
             game.Matches = list;
         }

@@ -5,6 +5,8 @@ namespace TipExpert.Core
 {
     public class Player
     {
+        public ObjectId Id { get; set; }
+
         public ObjectId UserId { get; set; }
 
         [BsonIgnore]

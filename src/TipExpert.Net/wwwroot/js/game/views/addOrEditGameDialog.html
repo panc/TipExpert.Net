@@ -134,9 +134,7 @@
                                 <li ng-repeat="player in game.invitedPlayers">
                                     <div title="{{ player.error }}">
                                         {{ player.email }}
-                                        <span class="delete-button" 
-                                              ng-class="{'mail-sending':player.state==0, 'mail-error':player.state==2 }" 
-                                              ng-click="removeInvitedPlayer(player)">X</span>
+                                        <span class="delete-button" ng-click="removeInvitation(player)">X</span>
                                     </div>
                                 </li>
                             </ul>
@@ -147,7 +145,10 @@
 
                             <ul>
                                 <li ng-repeat="player in game.players">
-                                    <div>{{ player.name }}</div>
+                                    <div>
+                                        {{ player.name }}
+                                        <span class="delete-button" ng-click="removePlayer(player)">X</span>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

@@ -3,8 +3,8 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('addOrEditGameController', [
-    '$scope', '$uibModalInstance', '$state', '$location', 'gameService', 'alertService', 'game',
-    function ($scope, $uibModalInstance, $state, $location, gameService, alertService, game) {
+    '$scope', '$uibModalInstance', '$window', 'gameService', 'alertService', 'game',
+    function ($scope, $uibModalInstance, $window, gameService, alertService, game) {
 
         game.matchSelectionMode = 'em2016';
 
@@ -40,9 +40,18 @@ game.controller('addOrEditGameController', [
             $scope.game.invitedPlayers.push(user);
         };
 
-        $scope.removeInvitedPlayer = function(player) {
-            var index = $scope.game.invitedPlayers.indexOf(player);
-            $scope.game.invitedPlayers.splice(index, 1);
+        $scope.removeInvitation = function(player) {
+            if ($window.confirm("Do you really want to delete invitation for '" + player.email + "'?")) {
+                var index = $scope.game.invitedPlayers.indexOf(player);
+                $scope.game.invitedPlayers.splice(index, 1);
+            }
+        };
+
+        $scope.removePlayer = function(player) {
+            if ($window.confirm("Do you really want to delete user '" + player.name + "'?")) {
+                var index = $scope.game.players.indexOf(player);
+                $scope.game.players.splice(index, 1);
+            }
         };
 
         $scope.save = function() {
