@@ -1,13 +1,17 @@
 <div class="container">    
     <div class="row">
         <h2 translate="MYGAMES-CREATED"></h2>
-        <ul>
-            <li ng-repeat="game in createdGames">
-                <span>
-                    {{game.title}}
-                    <a ui-sref="games.show({ gameId: game.id })">Show</a>
-                    <a href="#" ng-click="editGame(game)">Edit</a>
-                </span>
+        <ul class="list-group games-list">
+            <li ng-repeat="game in createdGames track by game.id">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <span>
+                            {{game.title}}
+                            <a ui-sref="games.show({ gameId: game.id })">Show</a>
+                            <a href="#" ng-click="editGame(game)">Edit</a>
+                        </span>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>

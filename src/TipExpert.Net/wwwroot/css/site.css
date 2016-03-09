@@ -383,3 +383,20 @@ li.login-button > a:hover, li.login-button > a:focus {
 .profile-row {
     line-height: 2;
 }
+
+
+/* My Games */
+.games-list {
+    list-style: none;
+}
+
+.games-list li {
+    float: left;
+    width: 170px;
+    height: 200px;
+    margin: 10px;
+}
+
+.games-list li .panel {
+    height: 100%;
+}
