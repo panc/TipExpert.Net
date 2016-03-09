@@ -6,13 +6,9 @@ game.factory('gameService', ['$http', '$q', function ($http, $q) {
 
     return {
         loadGamesForCurrentUser: function() {
-            return $http.get('/api/games/invited');
+            return $http.get('/api/games');
         },
-
-        loadGamesCreatedByCurrentUser: function() {
-            return $http.get('/api/games/created');
-        },
-
+        
         loadFinishedGamesForCurrentUser: function() {
             return $http.get('/api/games/finished');
         },

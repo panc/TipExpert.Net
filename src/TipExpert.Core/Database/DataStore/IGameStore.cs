@@ -13,9 +13,7 @@ namespace TipExpert.Core
 
         Task<Game> GetById(ObjectId id);
 
-        Task<Game[]> GetGamesCreatedByUser(ObjectId userId);
-
-        Task<Game[]> GetGamesUserIsInvitedTo(ObjectId userId);
+        Task<Game[]> GetGamesForUser(ObjectId userId);
 
         Task<Game[]> GetFinishedGames(ObjectId userId);
 

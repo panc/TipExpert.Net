@@ -5,8 +5,7 @@ var game = angular.module('tipExpert.game');
 game.controller('myGamesController', [
     '$scope', '$uibModal', '$location', '$state', 'gameService', 'alertService', 'gameIdToEdit',
     function ($scope, $uibModal, $location, $state, gameService, alertService, gameIdToEdit) {
-        $scope.createdGames = [];
-        $scope.invitedGames = [];
+        $scope.games = [];
 
         if (gameIdToEdit !== null)
             loadGameForEdit(gameIdToEdit, false);
@@ -59,25 +58,9 @@ game.controller('myGamesController', [
         }
 
         function reload() {
-            gameService.loadGamesCreatedByCurrentUser()
-                .success(function(games) {
-                    //$scope.createdGames = games;
-                    $scope.createdGames.push({ id: 1, title: 'test1' });
-                    $scope.createdGames.push({id: 2, title: 'test2'});
-                    $scope.createdGames.push({id: 3, title: 'test3'});
-                    $scope.createdGames.push({id: 4, title: 'test4'});
-                    $scope.createdGames.push({id: 5, title: 'test5'});
-                    $scope.createdGames.push({id: 6, title: 'test6'});
-                    $scope.createdGames.push({id: 7, title: 'test7'});
-                    $scope.createdGames.push({id: 8, title: 'test8'});
-                    $scope.createdGames.push({id: 9, title: 'test9'});
-                    $scope.createdGames.push({ id: 10, title: 'test10' });
-                })
-                .error(alertService.error);
-
             gameService.loadGamesForCurrentUser()
                 .success(function(games) {
-                    $scope.invitedGames = games;
+                    $scope.games = games;
                 })
                 .error(alertService.error);
         };

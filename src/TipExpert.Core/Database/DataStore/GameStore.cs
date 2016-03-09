@@ -21,6 +21,8 @@ namespace TipExpert.Core
 
         public async Task Add(Game game)
         {
+            game.CreateDate = DateTime.Now;
+
             await _collection.InsertOneAsync(game);
             await _PopulateRelations(game);
         }
@@ -36,21 +38,10 @@ namespace TipExpert.Core
             await _PopulateRelations(game);
         }
 
-        public async Task<Game[]> GetGamesCreatedByUser(ObjectId userId)
+        public async Task<Game[]> GetGamesForUser(ObjectId userId)
         {
             var games = await _collection
-                .Find(x => x.CreatorId == userId && x.IsFinished == false)
-                .ToArrayAsync();
-
-            await _PopulateRelations(games);
-
-            return games;
-        }
-
-        public async Task<Game[]> GetGamesUserIsInvitedTo(ObjectId userId)
-        {
-            var games = await _collection
-                .Find(x => !x.IsFinished && x.Players.Any(p => p.UserId == userId))
+                .Find(x => !x.IsFinished && (x.CreatorId == userId || x.Players.Any(p => p.UserId == userId)))
                 .ToArrayAsync();
 
             await _PopulateRelations(games);

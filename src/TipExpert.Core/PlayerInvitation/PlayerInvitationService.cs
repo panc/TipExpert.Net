@@ -68,7 +68,13 @@ namespace TipExpert.Core.PlayerInvitation
 
         private async Task<List<Invitation>> _UpdateInvitedPlayers(Game game, Invitation[] invitedPlayers)
         {
+            if (invitedPlayers == null)
+                return new List<Invitation>();
+
             var invitations = await _invitationStore.GetInvitationsForGame(game.Id);
+
+            if (invitations == null)
+                invitations = new Invitation[0];
 
             // remove invitations if needed
             foreach (var invitation in invitations)

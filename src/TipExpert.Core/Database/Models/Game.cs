@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 
@@ -12,6 +13,8 @@ namespace TipExpert.Core
         public string Description { get; set; }
 
         public ObjectId CreatorId { get; set; }
+
+        public DateTime CreateDate { get; set; }
 
         public double MinStake { get; set; }
 

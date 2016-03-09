@@ -400,3 +400,7 @@ li.login-button > a:hover, li.login-button > a:focus {
 .games-list li .panel {
     height: 100%;
 }
+
+.games-list li .panel:hover {
+    cursor: pointer;
+}

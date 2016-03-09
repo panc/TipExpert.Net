@@ -1,8 +1,8 @@
 <div class="container">    
     <div class="row">
-        <h2 translate="MYGAMES-CREATED"></h2>
+        <h2 translate="MYGAMES-TITLE"></h2>
         <ul class="list-group games-list">
-            <li ng-repeat="game in createdGames track by game.id">
+            <li ng-repeat="game in games track by game.id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <span>
@@ -13,23 +13,14 @@
                     </div>
                 </div>
             </li>
-        </ul>
-    </div>
-    
-    <div class="row">
-        <h2 translate="MYGAMES-INVITED"></h2>
-        <ul>
-            <li ng-repeat="game in invitedGames">
-                <span>
-                    {{game.title}}
-                    <a ui-sref="games.show({ gameId: game.id })">Show</a>
-                </span>
+
+            <li>
+                <div class="panel panel-default" ng-click="createGame()">
+                    <div class="panel-body" >
+                       NEW GAME
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
-
-    <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="createGame()">Add game</button>
-    </span>
-    
 </div>

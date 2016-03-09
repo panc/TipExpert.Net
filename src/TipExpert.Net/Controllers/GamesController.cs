@@ -58,21 +58,12 @@ namespace TipExpert.Net.Controllers
             return Json(gameDto);
         }
 
-        [HttpGet("created")]
-        public async Task<GameDto[]> GetCreatedGames()
+        [HttpGet]
+        public async Task<GameDto[]> GetGames()
         {
             var userId = User.GetUserIdAsObjectId();
 
-            var games = await _gameStore.GetGamesCreatedByUser(userId);
-            return Mapper.Map<GameDto[]>(games);
-        }
-
-        [HttpGet("invited")]
-        public async Task<GameDto[]> GetInvitedGames()
-        {
-            var userId = User.GetUserIdAsObjectId();
-
-            var games = await _gameStore.GetGamesUserIsInvitedTo(userId);
+            var games = await _gameStore.GetGamesForUser(userId);
             return Mapper.Map<GameDto[]>(games);
         }
 
