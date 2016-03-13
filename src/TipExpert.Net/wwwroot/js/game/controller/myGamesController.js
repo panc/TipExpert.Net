@@ -3,9 +3,10 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('myGamesController', [
-    '$scope', '$uibModal', '$location', '$state', 'gameService', 'alertService', 'gameIdToEdit',
-    function ($scope, $uibModal, $location, $state, gameService, alertService, gameIdToEdit) {
+    '$scope', '$uibModal', '$location', '$state', 'authService', 'gameService', 'alertService', 'gameIdToEdit',
+    function ($scope, $uibModal, $location, $state, authService, gameService, alertService, gameIdToEdit) {
         $scope.games = [];
+        $scope.userId = authService.user.id;
 
         if (gameIdToEdit !== null)
             loadGameForEdit(gameIdToEdit, false);

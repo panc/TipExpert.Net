@@ -8,9 +8,14 @@
                         <span>
                             {{game.title}}
                             <a ui-sref="games.show({ gameId: game.id })">Show</a>
-                            <a href="#" ng-click="editGame(game)">Edit</a>
                         </span>
                     </div>
+                </div>
+                <div>
+                    <span>{{ game.creator }}</span>
+                    <span ng-show="game.creatorId == userId">
+                        <a href="#" ng-click="editGame(game)">Edit</a>
+                    </span>
                 </div>
             </li>
 

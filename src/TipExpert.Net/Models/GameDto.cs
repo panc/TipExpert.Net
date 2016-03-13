@@ -12,6 +12,8 @@ namespace TipExpert.Net.Models
 
         public string creatorId { get; set; }
 
+        public string creator { get; set; }
+
         public double minStake { get; set; }
 
         public bool isFinished { get; set; }

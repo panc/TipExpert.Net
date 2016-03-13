@@ -96,6 +96,8 @@ namespace TipExpert.Core
             if (game == null)
                 return;
 
+            game.Creator = await _userStore.GetById(game.CreatorId);
+            
             if (game.Players != null)
             {
                 foreach (var player in game.Players)

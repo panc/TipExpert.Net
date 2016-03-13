@@ -23,8 +23,10 @@ namespace TipExpert.Net
                 c.CreateMap<Invitation, InvitationDto>();
                 c.CreateMap<InvitationDto, Invitation>();
 
-                c.CreateMap<Game, GameDto>();
                 c.CreateMap<GameDto, Game>();
+                c.CreateMap<Game, GameDto>()
+                    .ForMember(x => x.creator, x => x.MapFrom(p => p.Creator.Name));
+
                 c.CreateMap<MatchTips, MatchTipsDto>();
                 c.CreateMap<MatchTipsDto, MatchTips>();
                 c.CreateMap<Tip, TipDto>();

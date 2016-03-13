@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TipExpert.Core
 {
@@ -13,6 +14,9 @@ namespace TipExpert.Core
         public string Description { get; set; }
 
         public ObjectId CreatorId { get; set; }
+
+        [BsonIgnore]
+        public User Creator { get; set; }
 
         public DateTime CreateDate { get; set; }
 
