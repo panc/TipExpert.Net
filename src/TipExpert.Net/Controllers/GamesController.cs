@@ -46,7 +46,10 @@ namespace TipExpert.Net.Controllers
             var id = gameId.ToObjectId();
             var game = await _gameStore.GetById(id);
 
-            IActionResult errorResult = _CheckGameIsNotNull(game, id);
+            IActionResult errorResult =
+                _CheckGameIsNotNull(game, id) ??
+                _CheckCurrentUserIsGameCreator(game);
+
             if (errorResult != null)
                 return errorResult;
 
