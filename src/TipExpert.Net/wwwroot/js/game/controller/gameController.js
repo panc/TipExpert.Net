@@ -3,10 +3,10 @@
 var game = angular.module('tipExpert.game');
 
 game.controller('gameController', [
-    '$scope', '$uibModal', '$stateParams', 'gameService', 'alertService',
-    function ($scope, $uibModal, $stateParams, gameService, alertService) {
+    '$scope', '$uibModalInstance', 'gameService', 'alertService', 'game',
+    function ($scope, $uibModalInstance, gameService, alertService, game) {
 
-        $scope.game = {};
+        $scope.game = game;
         $scope.submitted = true;
         $scope.editStake = false;
 
@@ -42,12 +42,8 @@ game.controller('gameController', [
             mt.tipOfPlayer.guestScore = mt.tipOfPlayer.oldGuestScore;
         };
 
-        if ($stateParams.gameId) {
-            gameService.load($stateParams.gameId)
-                .success(function(game) {
-                    $scope.game = game;
-                })
-                .error(alertService.error);
-        }
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     }
 ]);

@@ -15,14 +15,6 @@ game.controller('addOrEditGameController', [
         
         var matchSelections = {};
 
-        if (!$scope.isNewGame) {
-            gameService.loadForEdit(game.id)
-                .success(function (game) {
-                    $scope.game = game;
-                })
-                .error(alertService.error);
-        }
-
         $scope.registerMatchSelection = function (name, getMetadataCallback) {
             matchSelections[name] = {
                 getMetadata: getMetadataCallback
