@@ -4,18 +4,22 @@
         <ul class="list-group games-list">
             <li ng-repeat="game in games track by game.id">
                 <div class="panel panel-default">
-                    <div class="panel-body">
-                        <span>
-                            {{game.title}}
-                            <a href="#" ng-click="playGame(game)">Show</a>
+
+                    <div class="panel-body panel-info" ng-click="playGame(game)">
+                        <span>{{game.title}}</span>
+                    </div>
+
+                    <div class="panel-statistic">
+                        Todo :-)
+                    </div>
+
+                    <div class="panel-editor">
+                        <span ng-hide="game.creatorId == userId">{{ game.creator }}</span>
+                        <span ng-show="game.creatorId == userId">
+                            <a href="#" ng-click="editGame(game)">{{ game.creator }} (Edit)</a>
                         </span>
                     </div>
-                </div>
-                <div>
-                    <span>{{ game.creator }}</span>
-                    <span ng-show="game.creatorId == userId">
-                        <a href="#" ng-click="editGame(game)">Edit</a>
-                    </span>
+
                 </div>
             </li>
 

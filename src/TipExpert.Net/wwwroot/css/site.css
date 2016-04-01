@@ -392,7 +392,7 @@ li.login-button > a:hover, li.login-button > a:focus {
 
 .games-list li {
     float: left;
-    width: 170px;
+    width: 200px;
     height: 200px;
     margin: 10px;
 }
@@ -401,6 +401,19 @@ li.login-button > a:hover, li.login-button > a:focus {
     height: 100%;
 }
 
-.games-list li .panel:hover {
+.games-list li .panel .panel-info:hover {
     cursor: pointer;
+}
+
+.games-list li .panel .panel-info {
+    height: calc( 100% - 30px - 50px );
+    background-color: #8cbe39;
+}
+
+.games-list li .panel-statistic {
+    height: 50px;
+}
+
+.games-list li .panel-editor {
+    height: 30px;
 }
