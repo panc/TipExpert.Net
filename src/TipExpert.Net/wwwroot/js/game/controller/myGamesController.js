@@ -78,8 +78,8 @@ game.controller('myGamesController', [
                 $state.go("games.play", { gameId: game.id }, { location: true, notify: false, reload: false });
 
             var modalInstance = $uibModal.open({
-                templateUrl: '/js/game/views/game.html',
-                controller: 'gameController',
+                templateUrl: '/js/game/views/playGameDialog.html',
+                controller: 'playGameController',
                 windowClass: 'edit-game-modal-window',
                 resolve: {
                     game: function () {
