@@ -6,7 +6,17 @@
                 <div class="panel panel-default game-panel">
 
                     <div class="panel-info" ng-click="playGame(game)">
-                        <span>{{game.title}}</span>
+                        <div class="panel-info-ranking">
+
+                            <img class="rank-item" src="/images/Lorbeer.svg" onerror="this.src = '/images/Lorbeer.png'"/>
+
+                            <div class="rank-item rank">1</div>
+                            <div class="rank-item participants">/10</div>
+
+                            <img class="rank-item" src="/images/Lorbeer.svg" onerror="this.src = '/images/Lorbeer.png'" />
+
+                        </div>
+                        <div class="panel-game-name">{{game.title}}</div>
                     </div>
 
                     <div class="panel-statistic">
@@ -21,8 +31,8 @@
                             </div>
 
                             <div class="panel-statistic-item">
-                                <div class="panel-statistic-value">3</div>
-                                <div class="panel-statistic-type">blank bets</div>
+                                <div class="panel-statistic-value red-item">3</div>
+                                <div class="panel-statistic-type red-item">blank bets</div>
                             </div>
                         </div>
                     </div>

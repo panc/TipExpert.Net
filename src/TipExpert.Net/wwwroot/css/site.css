@@ -416,6 +416,14 @@ li.login-button > a:hover, li.login-button > a:focus {
     background-color: #8cbe39;
 }
 
+.games-list li .panel .panel-info .panel-info-ranking .rank-item{
+    display: inline-block;
+}
+
+.games-list li .panel .panel-info .panel-info-ranking img{
+    height: 80px;
+}
+
 .games-list li .panel-statistic {
     height: 50px;
     text-align: center;
@@ -440,12 +448,17 @@ li.login-button > a:hover, li.login-button > a:focus {
 
 .games-list li .panel-statistic .panel-statistic-value {
     font-weight: bold;
+    font-size: 1.15em;
     color: rgb(95, 122, 66);
 }
 
 .games-list li .panel-statistic .panel-statistic-type {
-    font-size: 10px;
+    font-size: 0.86em;
     color: rgb(194, 192, 192);
+}
+
+.games-list li .panel-statistic .panel-statistic-item .red-item{
+    color: #aa0d0d;
 }
 
 .games-list li .panel-editor {
