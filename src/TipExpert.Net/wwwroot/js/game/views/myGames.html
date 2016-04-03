@@ -3,20 +3,34 @@
         <h2 translate="MYGAMES-TITLE"></h2>
         <ul class="list-group games-list">
             <li ng-repeat="game in games track by game.id">
-                <div class="panel panel-default">
+                <div class="panel panel-default game-panel">
 
-                    <div class="panel-body panel-info" ng-click="playGame(game)">
+                    <div class="panel-info" ng-click="playGame(game)">
                         <span>{{game.title}}</span>
                     </div>
 
                     <div class="panel-statistic">
-                        Todo :-)
+                        <div class="panel-statistic-inner">
+                            <div class="panel-statistic-item">
+                                <div class="panel-statistic-value">90%</div>
+                                <div class="panel-statistic-type">completed</div>
+                            </div>
+                            <div class="panel-statistic-item">
+                                <div class="panel-statistic-value">21</div>
+                                <div class="panel-statistic-type">Points</div>
+                            </div>
+
+                            <div class="panel-statistic-item">
+                                <div class="panel-statistic-value">3</div>
+                                <div class="panel-statistic-type">blank bets</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="panel-editor">
-                        <span ng-hide="game.creatorId == userId">{{ game.creator }}</span>
-                        <span ng-show="game.creatorId == userId">
-                            <a href="#" ng-click="editGame(game)">{{ game.creator }} (Edit)</a>
+                        <span>{{ game.creator }}</span>
+                        <span class="panel-edit-button" ng-show="game.creatorId == userId">
+                            <a href="#" ng-click="editGame(game)">Edit</a>
                         </span>
                     </div>
 
@@ -24,7 +38,7 @@
             </li>
 
             <li>
-                <div class="panel panel-default" ng-click="createGame()">
+                <div class="panel panel-default game-panel" ng-click="createGame()">
                     <div class="panel-body" >
                        NEW GAME
                     </div>
