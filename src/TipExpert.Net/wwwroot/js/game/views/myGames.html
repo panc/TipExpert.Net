@@ -37,11 +37,11 @@
                         </div>
                     </div>
 
-                    <div class="panel-editor">
-                        <span>{{ game.creator }}</span>
-                        <span class="panel-edit-button" ng-show="game.creatorId == userId">
-                            <a href="#" ng-click="editGame(game); $event.stopPropagation();">Edit</a>
-                        </span>
+                    <div class="panel-creator">
+                        <div class="creator">{{ game.creator }}</div>
+                        <div class="panel-edit-button" ng-show="game.creatorId == userId">
+                            <a href="#" ng-click="editGame(game); $event.stopPropagation();">[Edit]</a>
+                        </div>
                     </div>
 
                 </div>

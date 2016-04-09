@@ -481,15 +481,33 @@ li.login-button > a:hover, li.login-button > a:focus {
     color: #aa0d0d;
 }
 
-.games-list li .panel-editor {
+.games-list li .panel-creator {
     height: 30px;
     padding: 5px;
+
+    text-align: center;
+    white-space: nowrap;
 }
 
-.games-list li .panel-editor .panel-edit-button {
-    float: right;
+.games-list li .panel-creator:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
 }
 
-.games-list li .panel-statistic, .games-list li .panel-editor {
+.games-list li .panel-creator div{
+    display: inline-block;
+}
+
+.games-list li .panel-creator .creator{
+    color: #73a044;
+}
+
+.games-list li .panel-creator .panel-edit-button {
+    margin-left: 5px;
+}
+
+.games-list li .panel-statistic, .games-list li .panel-creator {
     background-color: #e6e6e6;   
 }
