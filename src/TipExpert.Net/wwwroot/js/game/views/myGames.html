@@ -3,12 +3,12 @@
         <h2 translate="MYGAMES-TITLE"></h2>
         <ul class="list-group games-list">
             <li ng-repeat="game in games track by game.id">
-                <div class="panel panel-default game-panel">
+                <div class="panel panel-default game-panel" ng-click="playGame(game)">
 
-                    <div class="panel-info" ng-click="playGame(game)">
+                    <div class="panel-info">
                         <div class="panel-info-ranking">
 
-                            <img class="rank-item" src="/images/Lorbeer.svg" onerror="this.src = '/images/Lorbeer.png'"/>
+                            <img class="rank-item img-left" src="/images/Lorbeer.svg" onerror="this.src = '/images/Lorbeer.png'"/>
 
                             <div class="rank-item rank">1</div>
                             <div class="rank-item participants">/10</div>
@@ -40,7 +40,7 @@
                     <div class="panel-editor">
                         <span>{{ game.creator }}</span>
                         <span class="panel-edit-button" ng-show="game.creatorId == userId">
-                            <a href="#" ng-click="editGame(game)">Edit</a>
+                            <a href="#" ng-click="editGame(game); $event.stopPropagation();">Edit</a>
                         </span>
                     </div>
 
