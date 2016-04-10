@@ -1,0 +1,51 @@
+.edit-game-modal-window .modal-dialog {
+  height: 100%;
+  width: 100%; }
+
+.section-header {
+  margin-bottom: 35px;
+  border-bottom: 1px #E3E4E6 solid; }
+
+.section-header > span.head {
+  font-size: 25px;
+  margin-right: 5px; }
+
+.section-header > span.sub {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: #777; }
+
+.edit-game-buttons {
+  margin-top: 40px; }
+
+#edit-game-headline {
+  margin-bottom: 30px; }
+
+#edit-section-list ul {
+  list-style: none;
+  font-size: 18px;
+  font-weight: 400; }
+
+#edit-section-list ul li {
+  margin-left: 5px;
+  padding-left: 5px;
+  line-height: 2;
+  margin-bottom: 15px; }
+
+#edit-section-list ul li:hover {
+  cursor: pointer; }
+
+#edit-section-list ul li.selected {
+  margin-left: 0;
+  border-left: 5px #8cbe39 solid; }
+
+#edit-matches .match-selection-row {
+  margin-top: 30px; }
+
+#edit-players .recent-players {
+  margin-top: 50px; }
+
+#edit-players .delete-button {
+  margin-left: 10px;
+  cursor: pointer; }

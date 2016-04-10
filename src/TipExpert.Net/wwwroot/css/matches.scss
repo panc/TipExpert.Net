@@ -1,0 +1,85 @@
+﻿.league-list {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.league-item, .league-item-editor {
+    line-height: 3em;
+    padding: 0px 5px 0px 5px;
+}
+
+    .league-item:hover, .league-item.selected:hover {
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    .league-item.selected {
+        background-color: #c0c3ce;
+    }
+
+.new-item {
+    margin-top: 10px;
+}
+
+.league-list li {
+    border-bottom: 1px #fff solid;
+}
+
+    .league-list li:first-child {
+        border-top: 1px #fff solid;
+    }
+
+    .league-list li:last-child {
+        border-bottom: 0;
+    }
+
+.league-item > .league-edit-buttons {
+    display: none;
+}
+
+.league-item:hover > .league-edit-buttons {
+    display: block;
+    float: right;
+    margin-right: 5px;
+}
+
+.edit-button {
+    margin: 5px;
+}
+
+.left-area {
+    padding: 10px;
+    max-width: 300px;
+    background-color: #dedede;
+}
+
+.match-content {
+    margin-top: 15px;
+    margin-left: 40px;
+}
+
+.save-match-buttons {
+    margin: 10px 20px;
+}
+
+    .save-match-buttons .input-group-btn {
+        width: 100px;
+    }
+
+.match-team-col {
+    padding: 0 10px 0 10px;
+    max-width: 200px;
+}
+
+.match-score {
+    width: 30px;
+}
+
+.match-score-left-col {
+    padding-left: 40px;
+}
+
+.match-table-row {
+    cursor: pointer;
+}

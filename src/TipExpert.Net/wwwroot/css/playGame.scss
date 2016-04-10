@@ -1,0 +1,76 @@
+﻿/* GAME */
+.game-description {
+    margin-left: 5px;
+}
+
+.game-tip-team-col {
+    padding: 0 10px 0 10px;
+    max-width: 200px;
+}
+
+.game-tip-score {
+    width: 45px;
+}
+
+.game-tip-score-left-col {
+    padding-left: 40px;
+}
+
+.game-tip-result-left-col {
+    padding-left: 10px;
+}
+
+.game-tip-result-col, .game-tip-result-caption-col {
+    padding-left: 50px;
+}
+
+.game-tip-result-caption-col {
+    text-align: center;
+}
+
+.game-tip-sumrow-col, .game-tip-sumrow-value-col {
+    font-weight: bold;
+    padding-top: 15px;
+}
+
+.game-tip-rankingrow-col, .game-tip-rankingrow-value-col {
+    font-weight: bold;
+}
+
+.game-tip-sumrow-value-col, .game-tip-rankingrow-value-col {
+    text-align: center;
+    padding-left: 50px;
+}
+
+.game-tip-sumrow-col, .game-tip-rankingrow-col {
+    text-align: right;
+}
+
+.game-finished-statistics {
+    padding-left: 15px;
+}
+
+.game-stake {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.edit-stake-button {
+    margin-left: 25px;
+    color: #beb9b9;
+    cursor: pointer;
+}
+
+.stake-text {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.stake-form {
+    margin-left: 10px;
+    margin-top: -5px;
+}
+
+.game-participants, .game-tips, .game-finished-tips {
+    margin-top: 40px;
+}

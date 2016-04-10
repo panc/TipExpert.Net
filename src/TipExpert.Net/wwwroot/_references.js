@@ -33,6 +33,5 @@
 /// <reference path="lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js" />
 /// <reference path="lib/angular-translate-storage-cookie/angular-translate-storage-cookie.js" />
 /// <reference path="lib/angular-ui-router/release/angular-ui-router.js" />
-/// <reference path="lib/angular-ui-utils/ui-utils.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />

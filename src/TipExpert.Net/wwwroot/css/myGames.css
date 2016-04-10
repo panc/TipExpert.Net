@@ -1,0 +1,102 @@
+.games-list {
+  list-style: none; }
+
+.games-list li {
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin: 10px; }
+
+.games-list li .panel {
+  height: 100%; }
+
+.games-list li .game-panel {
+  box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.15);
+  border: 0;
+  background: #95d057;
+  /* For browsers that do not support gradients */
+  background: linear-gradient(to right, #95d057, #78a946); }
+
+.games-list li .game-panel:hover {
+  box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.55);
+  cursor: pointer; }
+
+.games-list li .panel .panel-info {
+  height: calc( 100% - 30px - 50px); }
+
+.games-list li .panel .panel-info .panel-info-ranking .rank-item {
+  display: inline-block; }
+
+.games-list li .panel .panel-info .panel-info-ranking img {
+  height: 60px;
+  vertical-align: top;
+  margin-top: 16px;
+  margin-left: -10px; }
+
+.games-list li .panel .panel-info .panel-info-ranking .img-left {
+  transform: scale(-1, 1);
+  margin-left: 18px;
+  margin-right: -10px; }
+
+.games-list li .panel .panel-info .panel-info-ranking .rank {
+  font-size: 4em;
+  color: #4a5934; }
+
+.games-list li .panel .panel-info .panel-info-ranking .participants {
+  color: #C2E48C;
+  vertical-align: top;
+  margin-top: 16px; }
+
+.games-list li .panel-statistic {
+  height: 50px;
+  text-align: center;
+  white-space: nowrap; }
+
+.games-list li .panel-statistic:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%; }
+
+.games-list li .panel-statistic-inner {
+  display: inline-block; }
+
+.games-list li .panel-statistic .panel-statistic-item {
+  display: inline-block;
+  padding: 5px; }
+
+.games-list li .panel-statistic .panel-statistic-value {
+  font-weight: bold;
+  font-size: 1.15em;
+  color: #5f7a42; }
+
+.games-list li .panel-statistic .panel-statistic-type {
+  font-size: 0.86em;
+  color: #aeaeae; }
+
+.games-list li .panel-statistic .panel-statistic-item .red-item {
+  color: #aa0d0d; }
+
+.games-list li .panel-creator {
+  height: 30px;
+  padding: 5px;
+  text-align: center;
+  white-space: nowrap; }
+
+.games-list li .panel-creator:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%; }
+
+.games-list li .panel-creator div {
+  display: inline-block; }
+
+.games-list li .panel-creator .creator {
+  color: #73a044; }
+
+.games-list li .panel-creator .panel-edit-button {
+  margin-left: 5px; }
+
+.games-list li .panel-statistic, .games-list li .panel-creator {
+  background-color: #e6e6e6; }

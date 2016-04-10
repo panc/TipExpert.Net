@@ -1,498 +1,96 @@
-﻿.login-info {
-    margin: 10px 0 10px 40px;
-}
-
-.center-login {
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-/* HOME */
-.home-container a, .home-container a:hover {
-    text-decoration: none;
-}
-
-.home-container .bg {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../images/LandingBG1920.jpg);
-}
-
-.home-buttons-top .header-logo {
-    margin-top: 10px;
-}
-
-.home-buttons-top > ul > li > a {
-    display: block;
-    padding: 10px 15px;
-}
-
-.home-buttons-top:after {
-    clear: both;
-    display: table;
-    content: " ";
-}
-
-.login-button > a, .signup-button > a {
-    margin-top: 10px !important;
-    color: #fff !important;
-    text-shadow: none !important;
-}
-
-li.login-button > a:hover, li.login-button > a:focus {
-    color: #fff !important;
-    background-color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.22) !important;
-}
-
-.login-button, .signup-button {
-    margin-right: 10px;
-}
-
-.signup-button a {
-    background-color: #8cbe39;
-    border-radius: 5px;
-}
-
-.signup-button > a:hover, .signup-button > a:focus {
-    color: #fff !important;
-    background-color: #90A20A !important;
-    background-color: rgba(255, 255, 255, 0.22) !important;
-}
-
-.home-main-content {
-    color: #fff;
-    font-size: 2.5em;
-    text-align: center;
-    margin-top: 40px;
-    height: 100%;
-}
-
-.home-main-content > .image-wrapper {
-    margin-top: -30px;
-    margin-bottom: -30px;
-    height: 50%;
-}
-
-.home-main-content > .image-wrapper > img {
-    max-height: 100%;
-}
-
-.home-main-content a {
-    display: block;
-    padding: 10px 15px;
-}
-
-.home-main-content .signup-button a {
-    display: inline-block;
-    border-radius: 7px;
-    font-size: 0.7em;
-}
-
-#home-slogan {
-    font-family: 'Open Sans', sans-serif;
-}
-
-.home-top {
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    height: 70%;
-    width: 100%;
-}
-
-.home-bottom {
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    height: 30%;
-    width: 100%;
-    
-    overflow: hidden;
-    background-color: #EFEFEF;
-}
-
-
-/* MATCH  */
-.league-list {
-    list-style: none;
-    margin-top: 20px;
-    padding: 0;
-}
-
-.league-item, .league-item-editor {
-    line-height: 3em;
-    padding: 0px 5px 0px 5px;
-}
-
-    .league-item:hover, .league-item.selected:hover {
-        background-color: #fff;
-        cursor: pointer;
-    }
-
-    .league-item.selected {
-        background-color: #c0c3ce;
-    }
-
-.new-item {
-    margin-top: 10px;
-}
-
-.league-list li {
-    border-bottom: 1px #fff solid;
-}
-
-    .league-list li:first-child {
-        border-top: 1px #fff solid;
-    }
-
-    .league-list li:last-child {
-        border-bottom: 0;
-    }
-
-.league-item > .league-edit-buttons {
-    display: none;
-}
-
-.league-item:hover > .league-edit-buttons {
-    display: block;
-    float: right;
-    margin-right: 5px;
-}
-
-.edit-button {
-    margin: 5px;
-}
-
-.left-area {
-    padding: 10px;
-    max-width: 300px;
-    background-color: #dedede;
-}
-
-.match-content {
-    margin-top: 15px;
-    margin-left: 40px;
-}
-
-.save-match-buttons {
-    margin: 10px 20px;
-}
-
-    .save-match-buttons .input-group-btn {
-        width: 100px;
-    }
-
-.match-team-col {
-    padding: 0 10px 0 10px;
-    max-width: 200px;
-}
-
-.match-score {
-    width: 30px;
-}
-
-.match-score-left-col {
-    padding-left: 40px;
-}
-
-.match-table-row {
-    cursor: pointer;
-}
-
-
-/* GAME */
-.game-description {
-    margin-left: 5px;
-}
-
-.game-tip-team-col {
-    padding: 0 10px 0 10px;
-    max-width: 200px;
-}
-
-.game-tip-score {
-    width: 45px;
-}
-
-.game-tip-score-left-col {
-    padding-left: 40px;
-}
-
-.game-tip-result-left-col {
-    padding-left: 10px;
-}
-
-.game-tip-result-col, .game-tip-result-caption-col {
-    padding-left: 50px;
-}
-
-.game-tip-result-caption-col {
-    text-align: center;
-}
-
-.game-tip-sumrow-col, .game-tip-sumrow-value-col {
-    font-weight: bold;
-    padding-top: 15px;
-}
-
-.game-tip-rankingrow-col, .game-tip-rankingrow-value-col {
-    font-weight: bold;
-}
-
-.game-tip-sumrow-value-col, .game-tip-rankingrow-value-col {
-    text-align: center;
-    padding-left: 50px;
-}
-
-.game-tip-sumrow-col, .game-tip-rankingrow-col {
-    text-align: right;
-}
-
-.game-finished-statistics {
-    padding-left: 15px;
-}
-
-.game-stake {
-    margin-top: 20px;
-    font-size: 18px;
-}
-
-.edit-stake-button {
-    margin-left: 25px;
-    color: #beb9b9;
-    cursor: pointer;
-}
-
-.stake-text {
-    margin-left: 10px;
-    font-weight: bold;
-}
-
-.stake-form {
-    margin-left: 10px;
-    margin-top: -5px;
-}
-
-.game-participants, .game-tips, .game-finished-tips {
-    margin-top: 40px;
-}
-
-
-/* EDIT GAME */
-.edit-game-modal-window .modal-dialog {
-    height: 100%;
-    width: 100%;
-}
-
-.section-header {
-    margin-bottom: 35px;
-    border-bottom: 1px #E3E4E6 solid;
-}
-
-.section-header > span.head {
-    font-size: 25px;
-    margin-right: 5px;
-}
-
-.section-header > span.sub {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-    color: #777;
-}
-
-.edit-game-buttons {
-    margin-top: 40px;
-}
-
-#edit-game-headline {
-    margin-bottom: 30px;
-}
-
-#edit-section-list ul {
-    list-style: none;
-    font-size: 18px;
-    font-weight: 400;
-}
-
-#edit-section-list ul li {
-    margin-left: 5px;
-    padding-left: 5px;
-    line-height: 2;
-    margin-bottom: 15px;
-}
-
-#edit-section-list ul li:hover {
-    cursor: pointer;
-}
-
-#edit-section-list ul li.selected {
-    margin-left: 0;
-    border-left: 5px #8cbe39 solid;
-}
-
-
-#edit-matches .match-selection-row {
-    margin-top: 30px;
-}
-
-
-#edit-players .recent-players {
-    margin-top: 50px;
-}
-
-#edit-players .delete-button {
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-
-/* User Profile */
-.profile-row {
-    line-height: 2;
-}
-
-
-/* My Games */
-.games-list {
-    list-style: none;
-}
-
-.games-list li {
-    float: left;
-    width: 200px;
-    height: 200px;
-    margin: 10px;
-}
-
-.games-list li .panel {
-    height: 100%;
-}
-
-.games-list li .game-panel {
-    box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.15);
-    border: 0;
-
-    background: #95d057; /* For browsers that do not support gradients */
-    background: linear-gradient(to right, #95d057, #78a946);
-}
-
-.games-list li .game-panel:hover {
-    box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.55);
-    cursor: pointer;
-}
-
-.games-list li .panel .panel-info {
-    height: calc( 100% - 30px - 50px );
-}
-
-.games-list li .panel .panel-info .panel-info-ranking .rank-item{
-    display: inline-block;
-}
-
-.games-list li .panel .panel-info .panel-info-ranking img{
-    height: 60px;
-    vertical-align: top;
-    margin-top: 16px;
-    margin-left: -10px;
-}
-
-.games-list li .panel .panel-info .panel-info-ranking .img-left{
-    transform: scale(-1, 1);
-    margin-left: 18px;
-    margin-right: -10px;
-}
-
-.games-list li .panel .panel-info .panel-info-ranking .rank {
-    font-size: 4em;
-    color: #4a5934;
-}
-
-.games-list li .panel .panel-info .panel-info-ranking .participants {
-    color: #C2E48C;
-    vertical-align: top;
-    margin-top: 16px;
-}
-
-.games-list li .panel-statistic {
-    height: 50px;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.games-list li .panel-statistic:before {
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-    height: 100%;
-}
-
-.games-list li .panel-statistic-inner {
-    display: inline-block;
-}
-
-.games-list li .panel-statistic .panel-statistic-item {
-    display: inline-block;
-    padding: 5px
-}
-
-.games-list li .panel-statistic .panel-statistic-value {
-    font-weight: bold;
-    font-size: 1.15em;
-    color: rgb(95, 122, 66);
-}
-
-.games-list li .panel-statistic .panel-statistic-type {
-    font-size: 0.86em;
-    color: rgb(174, 174, 174);
-}
-
-.games-list li .panel-statistic .panel-statistic-item .red-item{
-    color: #aa0d0d;
-}
-
-.games-list li .panel-creator {
-    height: 30px;
-    padding: 5px;
-
-    text-align: center;
-    white-space: nowrap;
-}
-
-.games-list li .panel-creator:before {
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-    height: 100%;
-}
-
-.games-list li .panel-creator div{
-    display: inline-block;
-}
-
-.games-list li .panel-creator .creator{
-    color: #73a044;
-}
-
-.games-list li .panel-creator .panel-edit-button {
-    margin-left: 5px;
-}
-
-.games-list li .panel-statistic, .games-list li .panel-creator {
-    background-color: #e6e6e6;   
-}
+body {
+  background-color: #ECECEC; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; }
+
+#root-container {
+  min-height: 100%;
+  position: relative; }
+
+#header {
+  padding: 0; }
+
+#body {
+  padding-bottom: 2.5em;
+  /* Height of the footer */ }
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5em;
+  /* Height of the footer */
+  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.24); }
+
+#footer .container {
+  margin-bottom: auto;
+  margin-top: auto; }
+
+.header-logo {
+  background: url(../images/tipexpert_v4_2_white.png) no-repeat;
+  background-size: 130px;
+  width: 160px;
+  height: 25px; }
+
+.navbar-inverse {
+  border-color: #080808;
+  background-image: inherit;
+  border-radius: 0; }
+
+.navbar-inverse .navbar-toggle {
+  border-color: transparent; }
+
+.alert-container {
+  position: absolute;
+  top: 64px;
+  left: 50%; }
+
+.inner-alert-container {
+  position: relative;
+  left: -50%; }
+
+.alert {
+  margin-bottom: 0; }
+
+.footer-navbar {
+  min-height: 60px;
+  background: #8cbe39;
+  border-top: 5px #52646E solid; }
+
+.footer-content-left {
+  color: #FFFFFF;
+  margin: 5px 10px 0 0; }
+
+.footer-content-right {
+  color: #FFFFFF;
+  margin: 5px 0 0 10px; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.clear {
+  clear: both; }
+
+.modal-description {
+  margin-bottom: 30px; }
+
+.buttonbar-offset {
+  margin-top: 80px; }
+
+.modal {
+  overflow: auto; }
+
+.modal-dialog {
+  margin: 0;
+  padding: 30px; }
+
+.modal-dialog .modal-content {
+  height: 100%;
+  overflow-y: auto; }
