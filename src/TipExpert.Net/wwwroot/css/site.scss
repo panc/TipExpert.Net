@@ -1,5 +1,8 @@
-﻿body {
-    background-color: #ECECEC;
+﻿@import '_theme.scss';
+
+body {
+    background-color: #ffffff;
+    font-family: $text-font;
 }
 
 html, body {
@@ -69,7 +72,7 @@ html, body {
 
 .footer-navbar {
     min-height: 60px;
-    background: #8cbe39;
+    background: $primary-color;
     border-top: 5px #52646E solid;
 }
 

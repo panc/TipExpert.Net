@@ -77,9 +77,6 @@ li.login-button > a:hover, li.login-button > a:focus {
   border-radius: 7px;
   font-size: 0.7em; }
 
-#home-slogan {
-  font-family: 'Open Sans', sans-serif; }
-
 .home-top {
   box-sizing: border-box;
   position: absolute;

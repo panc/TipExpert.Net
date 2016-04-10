@@ -1,0 +1,12 @@
+﻿$primary-color: #8cbe39;
+$dark-green: #4a5934;
+$light-green: #C2E48C;
+$header-color: #2B4029;
+
+$header-font: 'Dancing Script', cursive;
+$text-font: 'Droid Serif', serif;
+
+@mixin green-gradient() {
+    background: #95d057; /* For browsers that do not support gradients */
+    background: linear-gradient(to right, #95d057, #78a946);
+} 
