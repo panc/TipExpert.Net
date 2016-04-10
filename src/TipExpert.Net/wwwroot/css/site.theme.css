@@ -103,3 +103,17 @@ html, body {
 .buttonbar-offset {
     margin-top: 80px;
 }
+
+.modal {
+    overflow: auto;
+}
+
+.modal-dialog {
+    margin: 0;
+    padding: 30px;
+}
+
+.modal-dialog .modal-content {
+    height: 100%;
+    overflow-y: auto;   
+}
